@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 :root {
   --ifm-color-primary: #00e5ff;
@@ -10,12 +10,12 @@
   --ifm-color-primary-lighter: #4defff;
   --ifm-color-primary-lightest: #99f6ff;
 
-  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-base: "Inter", system-ui, -apple-system, sans-serif;
   --ifm-heading-font-family: var(--ifm-font-family-base);
   --ifm-code-font-size: 90%;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ifm-color-primary: #00e5ff;
   --ifm-background-color: #050810;
   /* Deep Cyber Navy matching logo */
@@ -55,14 +55,16 @@
 
 /* Subtle grid overlay to give it a "dashboard / tech" feel */
 .hero::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   background-position: center center;

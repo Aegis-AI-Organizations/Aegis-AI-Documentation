@@ -1,1 +1,12 @@
-{"parameters":[{"name":"severity","in":"query","schema":{"type":"string","enum":["critical","high","medium","low"]}}]}
+{
+  "parameters": [
+    {
+      "name": "severity",
+      "in": "query",
+      "schema": {
+        "type": "string",
+        "enum": ["critical", "high", "medium", "low"]
+      }
+    }
+  ]
+}
