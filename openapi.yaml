@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: Aegis AI Gateway API
+  description: Control plane and orchestration endpoints for the Aegis AI Enterprise Platform.
+  version: 2.1.0
+  contact:
+    name: Aegis Security Team
+    url: https://aegis.ai
+servers:
+  - url: https://api.aegis.ai/v2
+    description: Production Cluster
+  - url: http://localhost:8080/v2
+    description: Local Development Environment
+tags:
+  - name: Pentest Operations
+    description: Launch and manage offensive security workflows
+  - name: Vulnerabilities
+    description: Retrieve intelligence on discovered CVEs and misconfigurations
+  - name: Remediation
+    description: Auto-generated patch manifests and Pull Requests
+paths:
+  /pentests:
+    post:
+      summary: Initialize a new Pentest Scan
+      tags:
+        - Pentest Operations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target_url:
+                  type: string
+                scan_profile:
+                  type: string
+                  enum: [stealth, aggressive, standard]
+      responses:
+        '201':
+          description: Scan Job successfully dispatched to Temporal
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+        '403':
+          description: Insufficient SOC credits
+  /vulnerabilities:
+    get:
+      summary: List Live Vulnerabilities
+      tags:
+        - Vulnerabilities
+      parameters:
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+      responses:
+        '200':
+          description: A list of current vulnerabilities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    cve_id:
+                      type: string
+                    description:
+                      type: string
+                    severity:
+                      type: string
