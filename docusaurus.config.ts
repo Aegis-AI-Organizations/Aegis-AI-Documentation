@@ -131,7 +131,19 @@ const config: Config = {
       },
     ],
 
-    // 8. Aegis Worker Fixer
+    // 8. Aegis Worker Deployer
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "worker-deployer-docs",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/",
+        outDir: "docs/Worker-Deployer",
+        documents: ["architecture.md", "api.md"],
+      },
+    ],
+
+    // 9. Aegis Worker Fixer
     [
       "docusaurus-plugin-remote-content",
       {
@@ -143,7 +155,7 @@ const config: Config = {
       },
     ],
 
-    // 9. Aegis Worker Ingest
+    // 10. Aegis Worker Ingest
     [
       "docusaurus-plugin-remote-content",
       {
@@ -155,7 +167,7 @@ const config: Config = {
       },
     ],
 
-    // 10. Aegis Worker Pentest
+    // 11. Aegis Worker Pentest
     [
       "docusaurus-plugin-remote-content",
       {
