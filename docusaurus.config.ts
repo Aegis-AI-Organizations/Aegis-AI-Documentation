@@ -10,10 +10,10 @@ const config: Config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://docs.aegis.ai",
+  url: "https://aegis-ai-organizations.github.io/Aegis-AI-Documentation/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/",
+  baseUrl: "/Aegis-AI-Documentation/",
 
   // GitHub pages deployment config.
   organizationName: "Aegis-AI-Organizations", // Usually your GitHub org/user name.
