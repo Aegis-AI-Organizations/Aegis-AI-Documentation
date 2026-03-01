@@ -103,7 +103,13 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/",
         outDir: "docs/Infra",
-        documents: ["kubernetes.md", "gvisor-sandbox.md", "cilium-network.md"],
+        documents: [
+          "architecture.md",
+          "getting-started.md",
+          "kubernetes.md",
+          "gvisor-sandbox.md",
+          "cilium-network.md",
+        ],
       },
     ],
 
@@ -261,8 +267,16 @@ const config: Config = {
           title: "Infrastructure",
           items: [
             {
-              label: "Kubernetes & gVisor",
+              label: "Architecture",
               to: "/docs/Infra/architecture",
+            },
+            {
+              label: "Getting Started",
+              to: "/docs/Infra/getting-started",
+            },
+            {
+              label: "Kubernetes & gVisor",
+              to: "/docs/Infra/kubernetes",
             },
           ],
         },

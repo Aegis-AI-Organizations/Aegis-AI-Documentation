@@ -1,1 +1,16 @@
-* @enzogaggiotti
+.github @enzogaggiotti
+.gitignore @enzogaggiotti
+pre-commit-config.yaml @enzogaggiotti
+
+LICENSE @enzogaggiotti
+README.md @enzogaggiotti
+docs @enzogaggiotti
+
+src @enzogaggiotti
+static @enzogaggiotti
+docusaurus.config.ts @enzogaggiotti
+openapi.yaml @enzogaggiotti
+package.json @enzogaggiotti
+package-lock.json @enzogaggiotti
+sidebars.ts @enzogaggiotti
+tsconfig.json @enzogaggiotti
