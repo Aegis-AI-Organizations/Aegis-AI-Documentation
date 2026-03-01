@@ -5,6 +5,9 @@ import type * as Preset from "@docusaurus/preset-classic";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
+  markdown: {
+    mermaid: true,
+  },
   title: "Aegis AI Docs",
   tagline: "Enterprise-Grade Offensive Cyberdefense Platform",
   favicon: "img/favicon.ico",
@@ -204,7 +207,7 @@ const config: Config = {
     ],
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
 
   themeConfig: {
     // Replace with your project's social card
