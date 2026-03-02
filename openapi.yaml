@@ -19,9 +19,24 @@ tags:
   - name: Remediation
     description: Auto-generated patch manifests and Pull Requests
 paths:
-  /pentests:
+  /scans:
+    get:
+      summary: List all Pentest Scans
+      tags:
+        - Pentest Operations
+      responses:
+        '200':
+          description: A list of all scans ordered by start date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Scan'
+        '500':
+          description: Internal Server Error
     post:
-      summary: Initialize a new Pentest Scan
+      summary: Initialize a new Pentest Scan Workflow
       tags:
         - Pentest Operations
       requestBody:
@@ -30,12 +45,12 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - target_image
               properties:
-                target_url:
+                target_image:
                   type: string
-                scan_profile:
-                  type: string
-                  enum: [stealth, aggressive, standard]
+                  description: The Docker image to scan (e.g. nginx:latest)
       responses:
         '201':
           description: Scan Job successfully dispatched to Temporal
@@ -44,27 +59,60 @@ paths:
               schema:
                 type: object
                 properties:
-                  job_id:
+                  scan_id:
                     type: string
                     format: uuid
+                  temporal_workflow_id:
+                    type: string
                   status:
                     type: string
-        '403':
-          description: Insufficient SOC credits
-  /vulnerabilities:
+                    example: PENDING
+        '400':
+          description: Invalid JSON or missing parameters
+        '500':
+          description: Internal Server Error (Database or Temporal unreachable)
+
+  /scans/{id}:
     get:
-      summary: List Live Vulnerabilities
+      summary: Retrieve the Status of a Specific Scan
+      tags:
+        - Pentest Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique ID of the Scan
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Details and current status of the scan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scan'
+        '404':
+          description: Scan not found
+        '500':
+          description: Internal Server Error
+
+  /scans/{id}/vulnerabilities:
+    get:
+      summary: Retrieve Vulnerabilities for a Specific Scan
       tags:
         - Vulnerabilities
       parameters:
-        - name: severity
-          in: query
+        - name: id
+          in: path
+          required: true
+          description: Unique ID of the Scan
           schema:
             type: string
-            enum: [critical, high, medium, low]
+            format: uuid
       responses:
         '200':
-          description: A list of current vulnerabilities
+          description: A list of discovered vulnerabilities for the given scan
           content:
             application/json:
               schema:
@@ -72,9 +120,44 @@ paths:
                 items:
                   type: object
                   properties:
-                    cve_id:
+                    id:
                       type: string
-                    description:
+                      format: uuid
+                    vuln_type:
                       type: string
                     severity:
                       type: string
+                    target_endpoint:
+                      type: string
+                    description:
+                      type: string
+                    discovered_at:
+                      type: string
+                      format: date-time
+        '400':
+          description: Missing or invalid scan ID
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+    Scan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        temporal_workflow_id:
+          type: string
+        target_image:
+          type: string
+        status:
+          type: string
+          example: PENDING
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
