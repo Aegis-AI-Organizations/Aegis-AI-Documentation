@@ -16,9 +16,21 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "Swagger-API/initialize-a-new-pentest-scan",
-          label: "Initialize a new Pentest Scan",
+          id: "Swagger-API/list-all-pentest-scans",
+          label: "List all Pentest Scans",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/initialize-a-new-pentest-scan-workflow",
+          label: "Initialize a new Pentest Scan Workflow",
           className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/retrieve-the-status-of-a-specific-scan",
+          label: "Retrieve the Status of a Specific Scan",
+          className: "api-method get",
         },
       ],
     },
@@ -32,8 +44,8 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "Swagger-API/list-live-vulnerabilities",
-          label: "List Live Vulnerabilities",
+          id: "Swagger-API/retrieve-vulnerabilities-for-a-specific-scan",
+          label: "Retrieve Vulnerabilities for a Specific Scan",
           className: "api-method get",
         },
       ],

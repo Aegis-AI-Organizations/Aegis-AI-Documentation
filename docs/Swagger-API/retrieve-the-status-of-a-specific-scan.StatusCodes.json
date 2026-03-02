@@ -1,0 +1,29 @@
+{
+  "responses": {
+    "200": {
+      "description": "Details and current status of the scan",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "temporal_workflow_id": { "type": "string" },
+              "target_image": { "type": "string" },
+              "status": { "type": "string", "example": "PENDING" },
+              "started_at": { "type": "string", "format": "date-time" },
+              "completed_at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              }
+            },
+            "title": "Scan"
+          }
+        }
+      }
+    },
+    "404": { "description": "Scan not found" },
+    "500": { "description": "Internal Server Error" }
+  }
+}
