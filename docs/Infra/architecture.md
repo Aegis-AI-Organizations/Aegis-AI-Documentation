@@ -106,17 +106,17 @@ graph TD
 
 ### Presentation Layer (Frontend)
 
-| Service           | Tech        | Role                                                                                                          |
-| ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------- |
-| **Landing Site**  | Vite / SSG  | Public-facing marketing site. Handles auth/signup flows redirected to the API Gateway.                        |
+| Service | Tech | Role |
+|---|---|---|
+| **Landing Site** | Vite / SSG | Public-facing marketing site. Handles auth/signup flows redirected to the API Gateway. |
 | **Admin Console** | React / SPA | Internal DevSecOps dashboard. Full management interface communicating with the API Gateway via REST/gRPC-Web. |
 
 ---
 
 ### Client Infrastructure
 
-| Service         | Tech | Role                                                                                                                                                                                                                            |
-| --------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Service | Tech | Role |
+|---|---|---|
 | **Aegis Agent** | Rust | Lightweight module deployed **on the client's own infrastructure** (the target being analyzed). Streams telemetry data (network events, syscalls, process activity) to the Aegis cluster via a persistent authenticated stream. |
 
 The Agent is the sole data collection point on the client side. It operates under a strictly minimal footprint and communicates exclusively with the cluster Ingress over mTLS.
@@ -128,7 +128,6 @@ The Agent is the sole data collection point on the client side. It operates unde
 #### 🛡️ Nginx Ingress (mTLS / WAF)
 
 Single entry point for all inbound traffic. Enforces:
-
 - **mTLS** — mutual TLS client certificate authentication for the Agent stream
 - **WAF** — web application firewall rules for HTTP traffic
 - No internal service is reachable without going through the Ingress
@@ -136,7 +135,6 @@ Single entry point for all inbound traffic. Enforces:
 #### 🐹 API Gateway (Go / Gin)
 
 Central hub of the platform. Exposes the REST and gRPC-Web API consumed by the Admin Console and the Landing Site. Routes requests to:
-
 - PostgreSQL (persistent state)
 - ClickHouse (log queries)
 - Neo4j (topology graph queries)
@@ -147,10 +145,10 @@ Central hub of the platform. Exposes the REST and gRPC-Web API consumed by the A
 
 The cognitive core of Aegis:
 
-| Component           | Tech   | Role                                                                                                                                         |
-| ------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Temporal Server** | Go     | Durable workflow orchestrator. Schedules and tracks all long-running analysis and remediation workflows. Guarantees at-least-once execution. |
-| **Brain AI Logic**  | Python | Consumes topology data from Neo4j, applies AI/ML reasoning, and dispatches tasks to the Worker Pools via Temporal workflows.                 |
+| Component | Tech | Role |
+|---|---|---|
+| **Temporal Server** | Go | Durable workflow orchestrator. Schedules and tracks all long-running analysis and remediation workflows. Guarantees at-least-once execution. |
+| **Brain AI Logic** | Python | Consumes topology data from Neo4j, applies AI/ML reasoning, and dispatches tasks to the Worker Pools via Temporal workflows. |
 
 The Brain Cluster runs in **High Availability mode** — multiple replicas ensure no single point of failure in the decision pipeline.
 
@@ -158,23 +156,23 @@ The Brain Cluster runs in **High Availability mode** — multiple replicas ensur
 
 All workers consume tasks from Temporal. Each pool scales independently based on queue depth.
 
-| Pool         | Tech   | Role                                                                                                                                                                    |
-| ------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Ingest**   | Rust   | Receives the raw telemetry stream from the Agent. Buffers events into Redis (hot path) and batch-writes to ClickHouse (cold path). High-throughput, zero-copy pipeline. |
-| **Deployer** | Go     | Provisions and configures **Digital Twin** environments in the gVisor sandbox in response to Brain decisions.                                                           |
-| **Pentest**  | Python | Executes attack simulations against Digital Twin pods. Leverages offensive security tooling under controlled, sandboxed conditions.                                     |
-| **Fixer**    | Go     | Applies remediation actions based on Brain analysis — generates patches, configuration fixes, and hardening recommendations.                                            |
+| Pool | Tech | Role |
+|---|---|---|
+| **Ingest** | Rust | Receives the raw telemetry stream from the Agent. Buffers events into Redis (hot path) and batch-writes to ClickHouse (cold path). High-throughput, zero-copy pipeline. |
+| **Deployer** | Go | Provisions and configures **Digital Twin** environments in the gVisor sandbox in response to Brain decisions. |
+| **Pentest** | Python | Executes attack simulations against Digital Twin pods. Leverages offensive security tooling under controlled, sandboxed conditions. |
+| **Fixer** | Go | Applies remediation actions based on Brain analysis — generates patches, configuration fixes, and hardening recommendations. |
 
 ---
 
 ### Data Layer
 
-| Store          | Tech            | Role                                                                                                                                                        |
-| -------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **PostgreSQL** | PostgreSQL 16   | Primary relational store. Holds platform state: users, tenants, scan results, configurations.                                                               |
-| **ClickHouse** | ClickHouse 23.8 | Columnar store for high-volume telemetry logs. Optimized for time-series analytical queries over agent-streamed events.                                     |
-| **Neo4j**      | Neo4j 5.15      | Graph database storing the **topology map** of the client infrastructure — nodes, relationships, attack paths, blast radius. Core input to Brain reasoning. |
-| **Redis**      | Redis 7.2       | In-memory hot cache. Used by the Ingest worker as a real-time event buffer and by the API Gateway for low-latency reads.                                    |
+| Store | Tech | Role |
+|---|---|---|
+| **PostgreSQL** | PostgreSQL 16 | Primary relational store. Holds platform state: users, tenants, scan results, configurations. |
+| **ClickHouse** | ClickHouse 23.8 | Columnar store for high-volume telemetry logs. Optimized for time-series analytical queries over agent-streamed events. |
+| **Neo4j** | Neo4j 5.15 | Graph database storing the **topology map** of the client infrastructure — nodes, relationships, attack paths, blast radius. Core input to Brain reasoning. |
+| **Redis** | Redis 7.2 | In-memory hot cache. Used by the Ingest worker as a real-time event buffer and by the API Gateway for low-latency reads. |
 
 ---
 
@@ -183,7 +181,6 @@ All workers consume tasks from Temporal. Each pool scales independently based on
 Digital Twin pods run in dedicated `sandbox-*` namespaces under the **gVisor (`runsc`)** runtime. They represent a faithful replica of the client's infrastructure used as the attack target for the Pentest Worker.
 
 Security guarantees:
-
 - **gVisor** sandboxes all syscalls at the kernel level
 - **Cilium deny-all** network policy — no ingress, no egress
 - All interaction is mediated exclusively by the Worker Pools
@@ -195,7 +192,6 @@ See [gVisor Sandbox Runtime](gvisor-sandbox.md) for detailed configuration.
 ## 🔁 Key Data Flows
 
 ### 1. Agent Telemetry Ingestion
-
 ```
 Aegis Agent (client infra)
   → [mTLS Stream] → Nginx Ingress
@@ -204,7 +200,6 @@ Aegis Agent (client infra)
 ```
 
 ### 2. DevSecOps Operation
-
 ```
 Admin Console (React)
   → [REST/gRPC-Web] → Nginx Ingress → API Gateway (Go)
@@ -212,7 +207,6 @@ Admin Console (React)
 ```
 
 ### 3. AI Analysis & Attack Simulation
-
 ```
 Brain (Python) reads Neo4j topology graph
   → Dispatches Temporal workflow

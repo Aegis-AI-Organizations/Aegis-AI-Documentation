@@ -8,14 +8,14 @@ This guide walks you through running the full Aegis AI infrastructure locally on
 
 Make sure the following tools are installed before proceeding:
 
-| Tool                                        | Minimum Version | Installation                                                              |
-| ------------------------------------------- | --------------- | ------------------------------------------------------------------------- |
-| Docker Desktop                              | latest stable   | [docker.com](https://www.docker.com/products/docker-desktop/)             |
-| Kubernetes (via Docker Desktop or kind)     | 1.28+           | [kind.sigs.k8s.io](https://kind.sigs.k8s.io/)                             |
-| `kubectl`                                   | 1.28+           | [kubernetes.io/docs/tasks/tools](https://kubernetes.io/docs/tasks/tools/) |
-| `helm`                                      | 3.x             | [helm.sh/docs/intro/install](https://helm.sh/docs/intro/install/)         |
-| `git`                                       | —               | [git-scm.com](https://git-scm.com/)                                       |
-| `pre-commit` _(optional, for contributing)_ | —               | `pip install pre-commit`                                                  |
+| Tool | Minimum Version | Installation |
+|---|---|---|
+| Docker Desktop | latest stable | [docker.com](https://www.docker.com/products/docker-desktop/) |
+| Kubernetes (via Docker Desktop or kind) | 1.28+ | [kind.sigs.k8s.io](https://kind.sigs.k8s.io/) |
+| `kubectl` | 1.28+ | [kubernetes.io/docs/tasks/tools](https://kubernetes.io/docs/tasks/tools/) |
+| `helm` | 3.x | [helm.sh/docs/intro/install](https://helm.sh/docs/intro/install/) |
+| `git` | — | [git-scm.com](https://git-scm.com/) |
+| `pre-commit` *(optional, for contributing)* | — | `pip install pre-commit` |
 
 ---
 
@@ -40,18 +40,18 @@ echo $POSTGRES_USER
 
 > 💡 All scripts (`setup-env.sh`, `stop-env.sh`, `teardown-env.sh`) automatically source `.env` on startup — you don't need to source it manually before running them.
 
-| Variable            | Description                          | Default                |
-| ------------------- | ------------------------------------ | ---------------------- |
-| `POSTGRES_HOST`     | PostgreSQL host (after port-forward) | `localhost`            |
-| `POSTGRES_PORT`     | PostgreSQL port                      | `5432`                 |
-| `POSTGRES_DB`       | Database name                        | `aegis_db`             |
-| `POSTGRES_USER`     | DB username                          | `aegis_admin`          |
-| `POSTGRES_PASSWORD` | DB password                          | `password123`          |
-| `TEMPORAL_HOST`     | Temporal host (after port-forward)   | `localhost`            |
-| `TEMPORAL_PORT`     | Temporal gRPC port                   | `7233`                 |
-| `ARGOCD_SERVER`     | ArgoCD server address                | `localhost:8080`       |
-| `GHCR_USERNAME`     | GitHub username for GHCR auth        | _(your GitHub handle)_ |
-| `GHCR_TOKEN`        | GitHub PAT (`read:packages` scope)   | _(generate on GitHub)_ |
+| Variable | Description | Default |
+|---|---|---|
+| `POSTGRES_HOST` | PostgreSQL host (after port-forward) | `localhost` |
+| `POSTGRES_PORT` | PostgreSQL port | `5432` |
+| `POSTGRES_DB` | Database name | `aegis_db` |
+| `POSTGRES_USER` | DB username | `aegis_admin` |
+| `POSTGRES_PASSWORD` | DB password | `password123` |
+| `TEMPORAL_HOST` | Temporal host (after port-forward) | `localhost` |
+| `TEMPORAL_PORT` | Temporal gRPC port | `7233` |
+| `ARGOCD_SERVER` | ArgoCD server address | `localhost:8080` |
+| `GHCR_USERNAME` | GitHub username for GHCR auth | *(your GitHub handle)* |
+| `GHCR_TOKEN` | GitHub PAT (`read:packages` scope) | *(generate on GitHub)* |
 
 ---
 
@@ -99,7 +99,6 @@ Once your cluster is ready, from the **repository root**:
 ```
 
 This script will automatically:
-
 1. Create the `argocd` and `aegis-system` namespaces
 2. Install **Nginx Ingress Controller**
 3. Install **ArgoCD** (latest stable version)
@@ -123,7 +122,6 @@ Then open in your browser: **[https://localhost:8080](https://localhost:8080)**
 > ⚠️ Your browser will show a self-signed certificate warning → click "Advanced → Proceed anyway".
 
 **Credentials:**
-
 - **Username:** `admin`
 - **Password:** retrieved with the following command:
 
@@ -169,7 +167,6 @@ kubectl port-forward svc/aegis-postgres-pre-alpha-postgresql -n aegis-system 543
 ```
 
 **Credentials (pre-alpha dev only):**
-
 - Host: `localhost:5432`
 - Database: `aegis_db`
 - Username: `aegis_admin`
@@ -253,19 +250,19 @@ All commits must follow this format:
 [TYPE] Message in English
 ```
 
-| Type       | Usage                               |
-| ---------- | ----------------------------------- |
-| `ADD`      | New feature or resource             |
-| `FIX`      | Bug fix                             |
-| `UPDATE`   | Dependency or configuration update  |
-| `REMOVE`   | Code or resource removal            |
-| `DOC`      | Documentation only                  |
+| Type | Usage |
+|---|---|
+| `ADD` | New feature or resource |
+| `FIX` | Bug fix |
+| `UPDATE` | Dependency or configuration update |
+| `REMOVE` | Code or resource removal |
+| `DOC` | Documentation only |
 | `REFACTOR` | Refactoring without behavior change |
-| `TEST`     | Adding or modifying tests           |
-| `CI`       | CI/CD pipeline changes              |
-| `CONFIG`   | Configuration changes               |
-| `MERGE`    | Branch merges                       |
-| `WIP`      | Work in progress (avoid on `main`)  |
+| `TEST` | Adding or modifying tests |
+| `CI` | CI/CD pipeline changes |
+| `CONFIG` | Configuration changes |
+| `MERGE` | Branch merges |
+| `WIP` | Work in progress (avoid on `main`) |
 
 ### Modifying a service's configuration
 
@@ -341,4 +338,4 @@ kubectl describe nodes
 
 ---
 
-_Aegis AI — Infrastructure Team — 2026_
+*Aegis AI — Infrastructure Team — 2026*

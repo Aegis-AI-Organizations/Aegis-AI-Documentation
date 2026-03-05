@@ -5,7 +5,6 @@ The `Aegis-AI-Worker-Deployer` exposes a fast and secure API for interacting wit
 ## Internal gRPC Endpoints (v1)
 
 ### `DeployWorker(DeployRequest) returns (DeployResponse)`
-
 - **Description**: Submits a request to instantiate a new isolated worker (e.g., Pentest or Ingest worker).
 - **DeployRequest Structure**:
   - `tenant_id` (string): Identifies the customer/environment.
@@ -16,11 +15,9 @@ The `Aegis-AI-Worker-Deployer` exposes a fast and secure API for interacting wit
   - `status` (Enum): `DEPLOYING`, `FAILED`, `READY`.
 
 ### `GetWorkerStatus(StatusRequest) returns (StatusResponse)`
-
 - **Description**: Returns the real-time resource usage and heartbeat of a specific worker container.
 
 ### `TerminateWorker(TerminateRequest) returns (TerminateResponse)`
-
 - **Description**: Signals the deployer to force-kill a worker container and purge its temporary data volumes.
 
-_Note: All API endpoints are tightly coupled with the Protobuf specs defined in the `Aegis-AI-Proto` repository._
+*Note: All API endpoints are tightly coupled with the Protobuf specs defined in the `Aegis-AI-Proto` repository.*

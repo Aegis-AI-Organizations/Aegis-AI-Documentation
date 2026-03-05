@@ -39,11 +39,11 @@ root-app-pre-alpha.yaml
 
 ArgoCD deploys resources in the order defined by the `argocd.argoproj.io/sync-wave` annotation:
 
-| Wave | Services                                                                  |
-| ---- | ------------------------------------------------------------------------- |
-| `1`  | `postgresql`, `temporal` (infrastructure layer)                           |
-| `2`  | `db-init` PostgreSQL schema job                                           |
-| `3`  | `api-gateway`, `brain`, `dashboard`, `pentest-worker` (application layer) |
+| Wave | Services |
+|---|---|
+| `1` | `postgresql`, `temporal` (infrastructure layer) |
+| `2` | `db-init` PostgreSQL schema job |
+| `3` | `api-gateway`, `brain`, `dashboard`, `pentest-worker` (application layer) |
 
 This guarantees that databases and the workflow engine are available **before** the microservices start.
 
@@ -68,7 +68,6 @@ kubernetes/charts/aegis-service/
 Each service in each environment has its own `values.yaml` file under `kubernetes/envs/<env>/<service>/values.yaml`. This file overrides the chart's default values.
 
 **Example — `brain/values.yaml` (pre-alpha):**
-
 ```yaml
 nameOverride: "brain-pre-alpha"
 replicaCount: 1
@@ -94,12 +93,12 @@ resources:
 
 ## 🔗 Namespaces
 
-| Namespace       | Contents                                      |
-| --------------- | --------------------------------------------- |
-| `argocd`        | ArgoCD (GitOps controller)                    |
-| `aegis-system`  | All Aegis services (microservices + infra)    |
-| `ingress-nginx` | Nginx Ingress Controller                      |
-| `sandbox-*`     | Isolated sandbox namespaces (gVisor required) |
+| Namespace | Contents |
+|---|---|
+| `argocd` | ArgoCD (GitOps controller) |
+| `aegis-system` | All Aegis services (microservices + infra) |
+| `ingress-nginx` | Nginx Ingress Controller |
+| `sandbox-*` | Isolated sandbox namespaces (gVisor required) |
 
 ---
 
@@ -108,7 +107,6 @@ resources:
 The Nginx Ingress Controller is used to expose HTTP services. In pre-alpha, only the **api-gateway** has an Ingress enabled on `api.aegis.pre-alpha.local`.
 
 To access it locally, add this entry to `/etc/hosts`:
-
 ```
 127.0.0.1   api.aegis.pre-alpha.local
 ```
