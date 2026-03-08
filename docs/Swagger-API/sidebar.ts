@@ -32,6 +32,12 @@ const sidebar: SidebarsConfig = {
           label: "Retrieve the Status of a Specific Scan",
           className: "api-method get",
         },
+        {
+          type: "doc",
+          id: "Swagger-API/download-the-pentest-pdf-report-for-a-given-scan",
+          label: "Download the Pentest PDF Report for a given Scan",
+          className: "api-method get",
+        },
       ],
     },
     {
@@ -46,6 +52,12 @@ const sidebar: SidebarsConfig = {
           type: "doc",
           id: "Swagger-API/retrieve-vulnerabilities-for-a-specific-scan",
           label: "Retrieve Vulnerabilities for a Specific Scan",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/retrieve-evidences-for-a-specific-vulnerability",
+          label: "Retrieve Evidences for a Specific Vulnerability",
           className: "api-method get",
         },
       ],

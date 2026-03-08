@@ -139,6 +139,34 @@ paths:
         '500':
           description: Internal Server Error
 
+  /scans/{id}/report:
+    get:
+      summary: Download the Pentest PDF Report for a given Scan
+      tags:
+        - Pentest Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique ID of the Scan
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The generated PDF report for the scan
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Missing or invalid scan ID
+        '404':
+          description: Scan not found or PDF not yet generated
+        '500':
+          description: Internal Server Error
+
   /vulnerabilities/{id}/evidences:
     get:
       summary: Retrieve Evidences for a Specific Vulnerability
