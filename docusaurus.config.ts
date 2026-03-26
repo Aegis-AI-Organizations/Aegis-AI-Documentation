@@ -63,7 +63,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/en/",
         outDir: "docs/Agent",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -73,7 +73,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Agent",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 2. Aegis Api Gateway
@@ -84,7 +84,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/en/",
         outDir: "docs/API",
-        documents: ["endpoints.md", "auth-keycloak.md"],
+        documents: ["endpoints.md"],
       },
     ],
     [
@@ -94,7 +94,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/API",
-        documents: ["endpoints.md", "auth-keycloak.md"],
+        documents: ["endpoints.md"],
       },
     ],
     // 3. Aegis Brain
@@ -105,7 +105,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/en/",
         outDir: "docs/Brain",
-        documents: ["workflows.md", "llm-payloads.md", "neo4j-graph.md"],
+        documents: ["workflows.md"],
       },
     ],
     [
@@ -115,7 +115,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Brain",
-        documents: ["workflows.md", "llm-payloads.md", "neo4j-graph.md"],
+        documents: ["workflows.md"],
       },
     ],
     // 4. Aegis Dashboard
@@ -126,7 +126,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/en/",
         outDir: "docs/Dashboard",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -136,7 +136,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Dashboard",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 5. Aegis Infra
@@ -147,13 +147,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/en/",
         outDir: "docs/Infra",
-        documents: [
-          "architecture.md",
-          "getting-started.md",
-          "kubernetes.md",
-          "gvisor-sandbox.md",
-          "cilium-network.md",
-        ],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -163,13 +157,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Infra",
-        documents: [
-          "architecture.md",
-          "getting-started.md",
-          "kubernetes.md",
-          "gvisor-sandbox.md",
-          "cilium-network.md",
-        ],
+        documents: ["architecture.md"],
       },
     ],
     // 6. Aegis Landing Page
@@ -180,7 +168,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/en/",
         outDir: "docs/Landing-Page",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -190,7 +178,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Landing-Page",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 7. Aegis Proto
@@ -201,7 +189,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/en/",
         outDir: "docs/Proto",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -211,7 +199,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Proto",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 8. Aegis Worker Deployer
@@ -222,7 +210,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/en/",
         outDir: "docs/Worker-Deployer",
-        documents: ["architecture.md", "api.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -233,7 +221,7 @@ const config: Config = {
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/fr/",
         outDir:
           "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Deployer",
-        documents: ["architecture.md", "api.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 9. Aegis Worker Fixer
@@ -244,7 +232,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/en/",
         outDir: "docs/Worker-Fixer",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -254,7 +242,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Fixer",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 10. Aegis Worker Ingest
@@ -265,7 +253,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/en/",
         outDir: "docs/Worker-Ingest",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -275,7 +263,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Ingest",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     // 11. Aegis Worker Pentest
@@ -286,7 +274,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/en/",
         outDir: "docs/Worker-Pentest",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
     [
@@ -296,7 +284,7 @@ const config: Config = {
         sourceBaseUrl:
           "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Pentest",
-        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+        documents: ["architecture.md"],
       },
     ],
   ],
@@ -388,11 +376,11 @@ const config: Config = {
             },
             {
               label: "Getting Started",
-              to: "/docs/Infra/getting-started",
+              to: "/docs/Infra/architecture", // Fallback to architecture since getting-started isn't localized yet
             },
             {
               label: "Kubernetes & gVisor",
-              to: "/docs/Infra/kubernetes",
+              to: "/docs/Infra/architecture", // Fallback
             },
           ],
         },
