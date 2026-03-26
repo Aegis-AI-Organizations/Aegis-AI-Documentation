@@ -4,6 +4,8 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
+  repository_dispatch:
+    types: [docs_updated]
 
 permissions:
   contents: write
@@ -21,8 +23,8 @@ jobs:
     needs: call-lint
     uses: ./.github/workflows/build-and-test.yml
 
-  # 3. Deploy Documentation (On push to main)
+  # 3. Deploy Documentation (On push to main or docs update dispatch)
   call-docs:
     needs: call-tests
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'repository_dispatch')
     uses: ./.github/workflows/documentation.yml
