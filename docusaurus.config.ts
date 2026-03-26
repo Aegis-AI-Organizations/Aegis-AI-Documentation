@@ -30,7 +30,11 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "fr"],
+    localeConfigs: {
+      en: { label: "English" },
+      fr: { label: "Français" },
+    },
   },
 
   plugins: [
@@ -223,6 +227,7 @@ const config: Config = {
         src: "img/logo.svg",
       },
       items: [
+        { type: "localeDropdown", position: "right" },
         {
           type: "docSidebar",
           sidebarId: "docsSidebar",
@@ -248,6 +253,7 @@ const config: Config = {
         {
           title: "Developers",
           items: [
+            { type: "localeDropdown", position: "right" },
             {
               label: "Gateway API (Swagger)",
               to: "/docs/Swagger-API/aegis-ai-gateway-api",
@@ -269,6 +275,7 @@ const config: Config = {
         {
           title: "Infrastructure",
           items: [
+            { type: "localeDropdown", position: "right" },
             {
               label: "Architecture",
               to: "/docs/Infra/architecture",
@@ -286,6 +293,7 @@ const config: Config = {
         {
           title: "Aegis Security",
           items: [
+            { type: "localeDropdown", position: "right" },
             {
               label: "Official Website",
               href: "https://www.aegis.ai",
