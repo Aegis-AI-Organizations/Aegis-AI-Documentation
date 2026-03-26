@@ -253,7 +253,6 @@ const config: Config = {
         {
           title: "Developers",
           items: [
-            { type: "localeDropdown", position: "right" },
             {
               label: "Gateway API (Swagger)",
               to: "/docs/Swagger-API/aegis-ai-gateway-api",
@@ -275,7 +274,6 @@ const config: Config = {
         {
           title: "Infrastructure",
           items: [
-            { type: "localeDropdown", position: "right" },
             {
               label: "Architecture",
               to: "/docs/Infra/architecture",
@@ -293,7 +291,6 @@ const config: Config = {
         {
           title: "Aegis Security",
           items: [
-            { type: "localeDropdown", position: "right" },
             {
               label: "Official Website",
               href: "https://www.aegis.ai",
