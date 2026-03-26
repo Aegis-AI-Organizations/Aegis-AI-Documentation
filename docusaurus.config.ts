@@ -55,14 +55,24 @@ const config: Config = {
         },
       },
     ],
-    // 🦀 1. Télémétrie & Agent (Rust)
+    // 1. Aegis Agent
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "agent-docs",
+        name: "agent-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/en/",
         outDir: "docs/Agent",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "agent-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Agent",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
@@ -70,45 +80,72 @@ const config: Config = {
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "api-docs",
+        name: "api-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/en/",
         outDir: "docs/API",
         documents: ["endpoints.md", "auth-keycloak.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "api-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/API",
+        documents: ["endpoints.md", "auth-keycloak.md"],
+      },
+    ],
     // 3. Aegis Brain
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "brain-docs",
+        name: "brain-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/en/",
         outDir: "docs/Brain",
         documents: ["workflows.md", "llm-payloads.md", "neo4j-graph.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "brain-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Brain",
+        documents: ["workflows.md", "llm-payloads.md", "neo4j-graph.md"],
+      },
+    ],
     // 4. Aegis Dashboard
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "dashboard-docs",
+        name: "dashboard-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/en/",
         outDir: "docs/Dashboard",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "dashboard-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Dashboard",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
     // 5. Aegis Infra
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "infra-docs",
+        name: "infra-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/en/",
         outDir: "docs/Infra",
         documents: [
           "architecture.md",
@@ -119,75 +156,146 @@ const config: Config = {
         ],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "infra-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Infra",
+        documents: [
+          "architecture.md",
+          "getting-started.md",
+          "kubernetes.md",
+          "gvisor-sandbox.md",
+          "cilium-network.md",
+        ],
+      },
+    ],
     // 6. Aegis Landing Page
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "landing-page-docs",
+        name: "landing-page-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/en/",
         outDir: "docs/Landing-Page",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "landing-page-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Landing-Page",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
     // 7. Aegis Proto
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "proto-docs",
+        name: "proto-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/en/",
         outDir: "docs/Proto",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "proto-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Proto",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
     // 8. Aegis Worker Deployer
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "worker-deployer-docs",
+        name: "worker-deployer-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/en/",
         outDir: "docs/Worker-Deployer",
         documents: ["architecture.md", "api.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "worker-deployer-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/fr/",
+        outDir:
+          "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Deployer",
+        documents: ["architecture.md", "api.md"],
+      },
+    ],
     // 9. Aegis Worker Fixer
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "worker-fixer-docs",
+        name: "worker-fixer-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/en/",
         outDir: "docs/Worker-Fixer",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "worker-fixer-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Fixer",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
     // 10. Aegis Worker Ingest
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "worker-ingest-docs",
+        name: "worker-ingest-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/en/",
         outDir: "docs/Worker-Ingest",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
-
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "worker-ingest-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Ingest",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
     // 11. Aegis Worker Pentest
     [
       "docusaurus-plugin-remote-content",
       {
-        name: "worker-pentest-docs",
+        name: "worker-pentest-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/",
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/en/",
         outDir: "docs/Worker-Pentest",
+        documents: ["architecture.md", "telemetry.md", "quickstart.md"],
+      },
+    ],
+    [
+      "docusaurus-plugin-remote-content",
+      {
+        name: "worker-pentest-docs-fr",
+        sourceBaseUrl:
+          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/fr/",
+        outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Pentest",
         documents: ["architecture.md", "telemetry.md", "quickstart.md"],
       },
     ],
