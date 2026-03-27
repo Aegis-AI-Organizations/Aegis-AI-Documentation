@@ -167,6 +167,61 @@ paths:
         '500':
           description: Internal Server Error
 
+  /scans/stream:
+    get:
+      summary: Establish a global Server-Sent Events (SSE) stream for all scans
+      description: |
+        Provides real-time updates on scan statuses across the platform.
+        The client should maintain a persistent connection.
+      tags:
+        - Pentest Operations
+      responses:
+        '200':
+          description: SSE stream established
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  scan_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+        '500':
+          description: Internal Server Error
+
+  /scans/{id}/stream:
+    get:
+      summary: Establish an SSE stream for a specific scan
+      tags:
+        - Pentest Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique ID of the Scan
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: SSE stream established for the specific scan
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  scan_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+        '404':
+          description: Scan not found
+        '500':
+          description: Internal Server Error
+
   /vulnerabilities/{id}/evidences:
     get:
       summary: Retrieve Evidences for a Specific Vulnerability
