@@ -18,7 +18,85 @@ tags:
     description: Retrieve intelligence on discovered CVEs and misconfigurations
   - name: Remediation
     description: Auto-generated patch manifests and Pull Requests
+  - name: Authentication
+    description: Identity management and session control
+security:
+  - BearerAuth: []
 paths:
+  /auth/login:
+    post:
+      summary: Authenticate a User and retrieve an Access Token
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  expires_in:
+                    type: integer
+                  token_type:
+                    type: string
+                    example: Bearer
+        '401':
+          description: Invalid credentials
+        '500':
+          description: Internal Server Error
+
+  /auth/refresh:
+    post:
+      summary: Refresh an expired Access Token
+      tags:
+        - Authentication
+      description: Uses the refresh_token stored in the HTTP-only cookie.
+      responses:
+        '200':
+          description: New Access Token generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        '401':
+          description: Invalid or expired refresh token
+        '500':
+          description: Internal Server Error
+
+  /auth/logout:
+    post:
+      summary: Revoke session and logout
+      tags:
+        - Authentication
+      responses:
+        '204':
+          description: Successfully logged out
+        '500':
+          description: Internal Server Error
+
   /scans:
     get:
       summary: List all Pentest Scans
@@ -265,6 +343,11 @@ paths:
           description: Internal Server Error
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Scan:
       type: object

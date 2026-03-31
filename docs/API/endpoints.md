@@ -1,24 +1,27 @@
 # Endpoints | Aegis-AI-Api-Gateway
 
-## Scans
+All endpoints (except `/auth/login`) require a valid JWT token passed in the `Authorization` header.
 
-### Real-time Status Updates (SSE)
+## Security
+
+- **Header**: `Authorization: Bearer <access_token>`
+
+## Authentication
+
+- `POST /auth/login`: Authenticate and retrieve a token.
+- `POST /auth/refresh`: Refresh an expired access token using a cookie.
+- `POST /auth/logout`: Revoke session and logout.
+
+## Scans (Real-time SSE)
 
 - `GET /scans/stream`: Start a global SSE stream for all scan updates.
-- `GET /scans/{id}/stream`: Start an SSE stream for a specific scan update for a single scan.
-
-Data format (JSON):
-
-```json
-{
-  "scan_id": "uuid",
-  "status": "RUNNING"
-}
-```
+- `GET /scans/{id}/stream`: Start an SSE stream for a specific scan.
 
 ## Scans (Standard)
 
 - `POST /scans`: Create a new scan.
-- `GET /scans`: List all scans.
-- `GET /scans/{id}`: Get a specific scan by ID.
+- `GET /scans`: List all scans for the current company.
+- `GET /scans/{id}`: Get a specific scan status.
 - `GET /scans/{id}/report`: Download a PDF report.
+- `GET /scans/{id}/vulnerabilities`: List vulnerabilities for a scan.
+- `GET /vulnerabilities/{id}/evidences`: Get loot and evidence blocks.
