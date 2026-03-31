@@ -5,6 +5,7 @@ Aegis AI prend en charge plusieurs organisations sur une infrastructure partagé
 ## Partitionnement par ID Entreprise
 
 Chaque table de base de données dans l'écosystème Aegis AI est partitionnée à l'aide d'une colonne `company_id`. Cela s'applique à :
+
 - `scans`
 - `vulnerabilities` (vulnerabilités)
 - `users` (utilisateurs)
@@ -22,5 +23,5 @@ Lorsqu'une requête atteint un microservice (comme le Brain), la logique d'isola
 
 Un utilisateur de **l'Entreprise A** ne peut pas accéder, modifier, ou même connaître l'existence d'un scan appartenant à **l'Entreprise B**, même s'il devine l'UUID. Ceci est appliqué au niveau de la logique métier et pas seulement à la couche API.
 
--   **Base de Données** : Des contraintes de clés étrangères garantissent que toutes les données relationnelles (ex: vulnérabilités) appartiennent intrinsèquement au même tenant que la ressource parente (ex: scan).
--   **Stockage** : Les rapports PDF et autres artefacts sont stockés dans des chemins isolés par tenant.
+- **Base de Données** : Des contraintes de clés étrangères garantissent que toutes les données relationnelles (ex: vulnérabilités) appartiennent intrinsèquement au même tenant que la ressource parente (ex: scan).
+- **Stockage** : Les rapports PDF et autres artefacts sont stockés dans des chemins isolés par tenant.

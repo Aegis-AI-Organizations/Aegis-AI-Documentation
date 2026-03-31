@@ -14,8 +14,8 @@ Contrairement aux versions précédentes qui dépendaient de fournisseurs extern
 
 Pour garantir une sécurité maximale et l'isolation des services, l'identité est propagée selon un modèle **"Forward-and-Verify"** :
 
--   **API Gateway** : Valide le jeton entrant de l'utilisateur. S'il est valide, elle extrait les informations et transfère le **jeton brut** aux microservices aval (comme le Brain) via les métadonnées gRPC.
--   **Microservices (Brain)** : Re-vérifient indépendamment la signature du jeton. Cela garantit que même si le réseau interne est compromis, un service n'exécutera jamais une commande non authentifiée.
+- **API Gateway** : Valide le jeton entrant de l'utilisateur. S'il est valide, elle extrait les informations et transfère le **jeton brut** aux microservices aval (comme le Brain) via les métadonnées gRPC.
+- **Microservices (Brain)** : Re-vérifient indépendamment la signature du jeton. Cela garantit que même si le réseau interne est compromis, un service n'exécutera jamais une commande non authentifiée.
 
 ## Utilisation
 
@@ -26,7 +26,9 @@ Authorization: Bearer <votre_token_acces>
 ```
 
 ### Contenu du Jeton (Claims)
+
 Vos jetons incluent les informations standard suivantes :
+
 - `sub` : Votre identifiant utilisateur unique.
 - `company_id` : L'identifiant unique de votre organisation (utilisé pour l'isolation multi-tenant).
 - `role` : Votre niveau d'accès (ex: `admin`, `user`).
