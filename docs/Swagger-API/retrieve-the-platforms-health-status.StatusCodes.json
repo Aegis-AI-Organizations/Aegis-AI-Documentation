@@ -1,0 +1,18 @@
+{
+  "responses": {
+    "200": {
+      "description": "System is operational",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string", "example": "UP" },
+              "timestamp": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

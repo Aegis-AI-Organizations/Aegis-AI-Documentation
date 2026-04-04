@@ -1,0 +1,26 @@
+{
+  "title": "Body",
+  "body": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "required": ["email", "password"],
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "User's corporate email address"
+            },
+            "password": {
+              "type": "string",
+              "format": "password",
+              "description": "User's clear-text password"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,20 +1,54 @@
-# Aegis AI Worker Deployer Architecture
+# 🏗️ Deployer Architecture: Digital Twin Rendering Engine
 
-## Overview
+The **Aegis AI Deployer Worker** is the platform's "Replication Engine". Written in **Go** for its native Kubernetes integration, it is responsible for reconstructing isolated, high-fidelity replicas of client infrastructure to enable safe offensive testing.
 
-The `Aegis-AI-Worker-Deployer` is a core microservice built in Go. Its primary responsibility is to handle the deployment and orchestration of dynamic Pentest/Fixer workers within the Aegis AI ecosystem.
+---
 
-## Flow
+## 🏗️ Core Design Principles
 
-1. **Trigger**: Receives a deployment request via gRPC or message queue (e.g., RabbitMQ).
-2. **Validation**: Validates the payload and required permissions.
-3. **Execution**: Interfaces with the target infrastructure (Kubernetes via client-go, or Docker Engine) to spawn the isolated worker container.
-4. **Monitoring**: Monitors the lifecycle of the deployed worker until task completion.
-5. **Teardown**: Gracefully tears down the worker and cleans up allocated resources.
+The Deployer Worker is built for **accuracy**, **isolation**, and **speed**:
 
-## Project Structure (Go Standard Layout)
+1. **Graph-to-Manifest Translation**: Reconstructs infrastructure state by querying the **Neo4j** attack graph and generating corresponding Kubernetes manifests and network policies.
+2. **Deterministic Sandboxing**: Provisions ephemeral environments in dedicated `sandbox-*` namespaces, ensuring every Digital Twin is a clean, isolated replica of the target.
+3. **Internal Orchestration**: Directed by the `Aegis-AI-Brain` via **Temporal**, ensuring that the provisioning of complex "Mission Zones" is resilient and reliable.
 
-- **`cmd/deployer/`**: Contains the main application entry point (`main.go`). It binds dependencies and starts the service.
-- **`internal/deployer/`**: Contains the private application and business logic. Code here is not importable by other repositories.
-- **`pkg/`**: (Optional) Library code that is safe to use by external applications.
-- **`docs/`**: Documentation and design specifications.
+---
+
+## 🔐 Security & Sandbox Bounding
+
+Since these workers deploy potentially vulnerable infrastructure, they implement extreme security boundaries.
+
+- **Kernel Isolation (gVisor)**: Every Digital Twin component is provisioned using the **gVisor** (`runsc`) runtime class, providing strong syscall-level isolation from the underlying host.
+- **Micro-segmentation (Cilium)**: Automatically applies strict **Cilium Cluster-wide Network Policies** to the sandbox, preventing any unintended lateral movement to the internal Aegis Core or other sandboxes.
+- **RBAC Segmentation**: The worker operates with a restricted **ServiceAccount**, authorized only to manage resources within the explicitly designated sandbox namespaces.
+
+---
+
+## 🌊 Dynamic Scaling (KEDA)
+
+The Deployer pool is managed by **KEDA** (Kubernetes Event-Driven Autoscaling) to handle parallel campaign deployments:
+
+- **Demand-Reactive Scaling**: Adjusts the worker count based on the number of "Deployment" tasks in the Temporal queue.
+- **Scale-to-Zero**: When no deployments are active, the pool scales down to **0 replicas**, optimizing resource usage.
+
+---
+
+## 🛰️ Deployment Logic
+
+The worker handles the translation of:
+
+- **Service Topologies**: Auto-scaling groups, deployments, and stateful sets.
+- **Network Metadata**: Ingress rules, load balancers, and internal DNS entries.
+- **Security Contexts**: Replicating the exact privilege level and runtime constraints of the real target.
+
+```mermaid
+graph TD
+    Neo4j[(Neo4j Graph)] -- "Topology Data" --> Deployer[Deployer Worker (Go)]
+    Deployer -- "Render" --> K8s[Target K8s Cluster]
+    K8s -- "Deploy" --> Sandbox[Isolated Digital Twin]
+    Sandbox -- "Ready" --> Brain[Brain Orchestrator]
+```
+
+---
+
+_Aegis AI Infrastructure & Digital Twins — 2026_

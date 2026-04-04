@@ -1,0 +1,68 @@
+---
+id: authenticate-and-establish-a-session
+title: "Authenticate and establish a session"
+description: "Authenticates a user via email/password."
+sidebar_label: "Authenticate and establish a session"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVl1v2zYU/SsX6sNaI7bTrA+Fn5qm2ZahQ43YzYA1RUtL1zIbitRIyolh5L/vXEp2lLrrgGEP80MiUpf349xzD7XNCg6513XUzmaT7LSJK7ZR5ypyIEVNYE9rrYgrpc24ViHcOl+M6Npecmy8FaOwcj4OjV5zQb/+PqfTPOcQaO5u2JKyBQWOsLP0y3w+HTprNvTZ89JzWH2KYvSZcuduNI+ubXaURVWGbPKhn4sk9/EoC5w3XscN3mLl+c+GQ3ztCmxs01J7LrJJ9A0fZbmzEcfllapr07kZfwlS6DYL+Qo1yVPc1IzS3eIL5zE76jn6kKWysbcrXLKovavZR81BTrcWD25C9NqWOLJ0vlIIv/fxGOn3QPaHgMJ97TzQbhEmVRTAJWT3vZjfc743+jv/hpUfRr6LtDe9Tz8pNNTOhraOk+Nj+ffYyaxJrVw2Bj1TPW5IvH8N8GMAVQrREuFbpT7O6IBfT3vseyaw8V2N7oVPuu9NI9WS/YG7K2V0AUYREtKuIG1BVhRWpA6knD61Lg4T4ztV1Ua2XgNjOBdMo45pS8h72eGbtXC/OH5+iPCFXUsKpAuBFok4TznIJytlwn8HM3vv/D/j+2a3WoORcoQqYK1KrO5qo7TFIQIPaAm2Np4fFX0uBx5VjZcVx5UrhKoupLRUXGE1FjqNjSu1zDzIumYvY7/NGo95ylYx1mEyHqtajxSXOoyUHq9PDhKeelc0uSzo3K61d7YCWvR0hvrySPO3M3o++pHYYmTyliL9EIhgXK7MCslNXh6/PP5WjLdiQb9dTekNr9m4OoXohcvue+o0k460oLfEEC70kJewUnIyw3rRsueoe/hpN9qgekJXOn35oHXnO9rttScTlX7V0XGUu6ovWPtOw5MGCCmRHUkFVzq9oJ8x0rdqQ6fTi4Pi52j2YLA3PQMdvTM0NcryYEBg2RrkDbTS5Wooc2ZDy2PUh9CJrekWkHfG6JJtDjbZonbYCYS+kFsu5Rg4l28W7AuWJZPwN50PuBmu7ZMnTxDeM52pWi200cLtaztAerMc18u7fsjBYEJzr0tMfYpeOaujDJcTlO4w8EgnRAJIN0vjbgMVHglYWmxozpWIshm1zq8aY5FIirihi14ZEqRTo4IjmoEb8OzqHAGV2QQd2sg6YIaXumw6MAoVFd3quKLI+cpqIRcLiPAYupiXrMww6ooJRGZVoYMSbIoh0UH0gGazc7A8zc1wlviI7GN4lgAVOaQQVWwCNXXR3ua5d0hUhrc0boGgQVBbGubYRf2DvQNqDXAR0qaI3i1RH/KWA+0TVSiw5DQFqQ5RZSn14YJvL/ThQgVA0l32lPQ0tLe8jHtLsJPRyei4EzqVJ6Gzqnrg56ybKwwcxIK5062vZKKTCNHlbip28/hq/w4jAP0UavWCoMDaa3TPb9K4iUyhvn4avYsvlQneqIXRqEjtIPl6bLYPuv3/+KhqtUc+BMZJxwWMBOG2U+QPmSgyTFtNhqCJJsr+dittfO/N/b1sQ4l89wm2Vl4DCZYV/K1YFVAyEfEbhkl21mIwnEt0MTeNZHFwj4kmtyekzDp+1/Zj706ZvpvNRTm7b8DKFXLGq1v5jsPfSYYHl3qSBDntbTNoV9mAwXjf+pTfXyVN4lg=
+sidebar_class_name: "post api-method"
+info_path: docs/Swagger-API/aegis-ai-gateway-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Authenticate and establish a session"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/auth/login"}
+  context={"endpoint"}
+>
+
+</MethodEndpoint>
+
+
+
+Authenticates a user via email/password.
+Returns a short-lived JWT Access Token and sets an HTTP-only `refresh_token` cookie.
+
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  parameters={undefined}
+>
+
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./authenticate-and-establish-a-session.RequestSchema.json")}
+>
+
+</RequestSchema>
+
+<StatusCodes
+  {...require("./authenticate-and-establish-a-session.StatusCodes.json")}
+>
+
+</StatusCodes>

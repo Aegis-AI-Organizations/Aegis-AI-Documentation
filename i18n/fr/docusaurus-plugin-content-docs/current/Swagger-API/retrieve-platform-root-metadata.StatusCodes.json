@@ -1,0 +1,21 @@
+{
+  "responses": {
+    "200": {
+      "description": "Metadata retrieved successfully",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "version": { "type": "string", "example": "2.2.0" },
+              "service": {
+                "type": "string",
+                "example": "Aegis AI Control Plane"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

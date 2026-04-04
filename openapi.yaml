@@ -1,31 +1,87 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: Aegis AI Gateway API
-  description: Control plane and orchestration endpoints for the Aegis AI Enterprise Platform.
-  version: 2.1.0
+  description: |
+    The **Aegis AI Control Plane** provides high-intensity orchestration and intelligence endpoints for offensive cyberdefense operations.
+
+    ### Core Capabilities
+    * **Scan Orchestration**: Trigger and monitor complex pentest workflows driven by Temporal.
+    * **Vulnerability Intelligence**: Access detailed CVE analysis and misconfiguration data with technical evidences.
+    * **Real-time Streaming**: Persistent SSE (Server-Sent Events) for live status updates across the global scan fleet.
+    * **Zero Trust Auth**: Professional session management with JWT and HTTP-only cookie-based refresh tokens.
+  version: 2.2.0
   contact:
-    name: Aegis Security Team
+    name: Aegis Security Engineering
     url: https://aegis.ai
+    email: security@aegis.ai
+  license:
+    name: Proprietary
 servers:
   - url: https://api.aegis.ai/v2
-    description: Production Cluster
+    description: Production Environment (Strict TLS 1.3 enforced)
   - url: http://localhost:8080/v2
-    description: Local Development Environment
+    description: Local MVP Development Environment
 tags:
-  - name: Pentest Operations
-    description: Launch and manage offensive security workflows
-  - name: Vulnerabilities
-    description: Retrieve intelligence on discovered CVEs and misconfigurations
-  - name: Remediation
-    description: Auto-generated patch manifests and Pull Requests
   - name: Authentication
-    description: Identity management and session control
+    description: Identity management and session lifecycle control
+  - name: Pentest Operations
+    description: Large-scale offensive security workflow management
+  - name: Vulnerabilities
+    description: Security intelligence on discovered threats and weaknesses
+  - name: Platform
+    description: Health monitoring and system status
 security:
   - BearerAuth: []
 paths:
+  /health:
+    get:
+      summary: Retrieve the platform's health status
+      tags:
+        - Platform
+      security: []
+      responses:
+        '200':
+          description: System is operational
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "UP"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /:
+    get:
+      summary: Retrieve platform root metadata
+      description: Returns high-level versioning and core service status for initial environment handshake.
+      tags:
+        - Platform
+      security: []
+      responses:
+        '200':
+          description: Metadata retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "2.2.0"
+                  service:
+                    type: string
+                    example: "Aegis AI Control Plane"
+
   /auth/login:
     post:
-      summary: Authenticate a User and retrieve an Access Token
+      summary: Authenticate and establish a session
+      description: |
+        Authenticates a user via email/password.
+        Returns a short-lived JWT Access Token and sets an HTTP-only `refresh_token` cookie.
       tags:
         - Authentication
       security: []
@@ -35,86 +91,100 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - email
-                - password
+              required: [email, password]
               properties:
                 email:
                   type: string
                   format: email
+                  description: User's corporate email address
                 password:
                   type: string
                   format: password
+                  description: User's clear-text password
       responses:
         '200':
-          description: Successful authentication
+          description: Successfully authenticated
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
-                  expires_in:
-                    type: integer
-                  token_type:
-                    type: string
-                    example: Bearer
+                $ref: '#/components/schemas/AuthResponse'
         '401':
-          description: Invalid credentials
-        '500':
-          description: Internal Server Error
+          description: Invalid identity or credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/me:
+    get:
+      summary: Retrieve the current user's profile
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/refresh:
     post:
-      summary: Refresh an expired Access Token
+      summary: Regenerate an Access Token
+      description: |
+        Automatically looks for the `refresh_token` in the secure HTTP-only cookie.
+        If valid, issues a new JWT Access Token.
       tags:
         - Authentication
-      description: Uses the refresh_token stored in the HTTP-only cookie.
       responses:
         '200':
-          description: New Access Token generated
+          description: New token generated
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
+                $ref: '#/components/schemas/AuthResponse'
         '401':
-          description: Invalid or expired refresh token
-        '500':
-          description: Internal Server Error
+          description: Refresh token expired or revoked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/logout:
     post:
-      summary: Revoke session and logout
+      summary: Terminate the current session
+      description: Revokes the refresh token and clears session cookies globally.
       tags:
         - Authentication
       responses:
         '204':
           description: Successfully logged out
-        '500':
-          description: Internal Server Error
 
   /scans:
     get:
-      summary: List all Pentest Scans
+      summary: List all orchestrated pentest scans
       tags:
         - Pentest Operations
       responses:
         '200':
-          description: A list of all scans ordered by start date
+          description: Paginated list of scans
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Scan'
-        '500':
-          description: Internal Server Error
     post:
-      summary: Initialize a new Pentest Scan Workflow
+      summary: Initialize a new pentest workflow
+      description: |
+        Dispatches a new security scan job to the Temporal orchestration cluster.
+        The system will automatically scale workers using KEDA if traffic peaks.
       tags:
         - Pentest Operations
       requestBody:
@@ -122,225 +192,134 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - target_image
-              properties:
-                target_image:
-                  type: string
-                  description: The Docker image to scan (e.g. nginx:latest)
+              $ref: '#/components/schemas/CreateScanRequest'
       responses:
         '201':
-          description: Scan Job successfully dispatched to Temporal
+          description: Scan successfully queued for execution
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  scan_id:
-                    type: string
-                    format: uuid
-                  temporal_workflow_id:
-                    type: string
-                  status:
-                    type: string
-                    example: PENDING
-        '400':
-          description: Invalid JSON or missing parameters
-        '500':
-          description: Internal Server Error (Database or Temporal unreachable)
+                $ref: '#/components/schemas/CreateScanResponse'
 
   /scans/{id}:
     get:
-      summary: Retrieve the Status of a Specific Scan
+      summary: Retrieve the status of a specific scan
       tags:
         - Pentest Operations
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique ID of the Scan
           schema:
             type: string
             format: uuid
       responses:
         '200':
-          description: Details and current status of the scan
+          description: Full scan details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Scan'
         '404':
-          description: Scan not found
-        '500':
-          description: Internal Server Error
+          description: Scan ID not found in database
 
-  /scans/{id}/vulnerabilities:
+  /scans/stream:
     get:
-      summary: Retrieve Vulnerabilities for a Specific Scan
+      summary: Establish a universal live update stream (SSE)
+      description: |
+        Provides real-time Push updates for all scans moving across the platform.
+        **Content-Type**: `text/event-stream`
       tags:
-        - Vulnerabilities
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: Unique ID of the Scan
-          schema:
-            type: string
-            format: uuid
+        - Pentest Operations
       responses:
         '200':
-          description: A list of discovered vulnerabilities for the given scan
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                    vuln_type:
-                      type: string
-                    severity:
-                      type: string
-                    target_endpoint:
-                      type: string
-                    description:
-                      type: string
-                    discovered_at:
-                      type: string
-                      format: date-time
-        '400':
-          description: Missing or invalid scan ID
-        '500':
-          description: Internal Server Error
+          description: SSE stream successfully established
 
-  /scans/{id}/report:
+  /scans/{id}/stream:
     get:
-      summary: Download the Pentest PDF Report for a given Scan
+      summary: Establish a scan-specific live update stream (SSE)
+      description: |
+        Focuses the real-time stream on a single mission. High-efficiency filtering for dashboard mission monitoring.
+        **Content-Type**: `text/event-stream`
       tags:
         - Pentest Operations
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique ID of the Scan
           schema:
             type: string
             format: uuid
       responses:
         '200':
-          description: The generated PDF report for the scan
+          description: SSE stream successfully established
+
+  /scans/{id}/report:
+    get:
+      summary: Download the finalized pentest PDF report
+      description: Generates or retrieves the professional PDF artifact for a completed scan.
+      tags:
+        - Pentest Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The binary PDF data
           content:
             application/pdf:
               schema:
                 type: string
                 format: binary
-        '400':
-          description: Missing or invalid scan ID
-        '404':
-          description: Scan not found or PDF not yet generated
-        '500':
-          description: Internal Server Error
 
-  /scans/stream:
+  /scans/{id}/vulnerabilities:
     get:
-      summary: Establish a global Server-Sent Events (SSE) stream for all scans
-      description: |
-        Provides real-time updates on scan statuses across the platform.
-        The client should maintain a persistent connection.
-      tags:
-        - Pentest Operations
-      responses:
-        '200':
-          description: SSE stream established
-          content:
-            text/event-stream:
-              schema:
-                type: object
-                properties:
-                  scan_id:
-                    type: string
-                    format: uuid
-                  status:
-                    type: string
-        '500':
-          description: Internal Server Error
-
-  /scans/{id}/stream:
-    get:
-      summary: Establish an SSE stream for a specific scan
-      tags:
-        - Pentest Operations
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: Unique ID of the Scan
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: SSE stream established for the specific scan
-          content:
-            text/event-stream:
-              schema:
-                type: object
-                properties:
-                  scan_id:
-                    type: string
-                    format: uuid
-                  status:
-                    type: string
-        '404':
-          description: Scan not found
-        '500':
-          description: Internal Server Error
-
-  /vulnerabilities/{id}/evidences:
-    get:
-      summary: Retrieve Evidences for a Specific Vulnerability
+      summary: Retrieve technical vulnerabilities found during a scan
       tags:
         - Vulnerabilities
       parameters:
         - name: id
           in: path
           required: true
-          description: Unique ID of the Vulnerability
           schema:
             type: string
             format: uuid
       responses:
         '200':
-          description: A list of payloads and loot blocks successfully extracted by the pentest worker
+          description: List of discovered CVEs and misconfigurations
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                    vulnerability_id:
-                      type: string
-                      format: uuid
-                    payload_used:
-                      type: string
-                    loot_data:
-                      type: object
-                      description: Raw JSON blob of the fetched evidence (e.g. database dump, auth bypass tokens, XSS reflections)
-                    captured_at:
-                      type: string
-                      format: date-time
-        '400':
-          description: Missing or invalid vulnerability ID
-        '500':
-          description: Internal Server Error
+                  $ref: '#/components/schemas/Vulnerability'
+
+  /vulnerabilities/{id}/evidences:
+    get:
+      summary: Retrieve security evidence for a specific vulnerability
+      description: Includes raw payloads, loot data, and proof-of-exploitation extracted by workers.
+      tags:
+        - Vulnerabilities
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Evidence payload list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evidence'
 
 components:
   securitySchemes:
@@ -349,23 +328,126 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: JWT Access Token (short-lived)
+        expires_in:
+          type: integer
+          description: Validity period in seconds
+        token_type:
+          type: string
+          example: Bearer
+
     Scan:
+      type: object
+      required: [id, status, target_image]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique platform scan identifier
+        temporal_workflow_id:
+          type: string
+          description: Internal Temporal orchestration ID
+        target_image:
+          type: string
+          description: The target Docker image/endpoint (e.g. nginx:latest)
+        status:
+          type: string
+          enum: [PENDING, PROVISIONING, SCANNING, ANALYZING, FINISHED, FAILED]
+        started_at:
+          type: string
+          format: date-time
+          description: ISO timestamp of scan initialization
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp of scan completion
+
+    CreateScanRequest:
+      type: object
+      required: [target_image]
+      properties:
+        target_image:
+          type: string
+          example: "ghcr.io/aegis/vulnerable-app:latest"
+
+    CreateScanResponse:
+      type: object
+      properties:
+        scan_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          example: "PENDING"
+
+    Vulnerability:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        temporal_workflow_id:
+        vuln_type:
           type: string
-        target_image:
+          description: CVE ID or CWE category (e.g. SQLi, XSS)
+        severity:
           type: string
-        status:
+          enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
+        target_endpoint:
           type: string
-          example: PENDING
-        started_at:
+          description: The specific path or port where the vuln was found
+        description:
+          type: string
+          description: Detailed technical summary of the weakness
+        discovered_at:
           type: string
           format: date-time
-        completed_at:
+
+    Evidence:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        vulnerability_id:
+          type: string
+          format: uuid
+        payload_used:
+          type: string
+          description: The offensive payload string injected by the worker
+        loot_data:
+          type: object
+          description: Raw evidence blob (e.g. database content, shadow file excerpt)
+        captured_at:
           type: string
           format: date-time
-          nullable: true
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [PLATFORM_ADMIN, COMPANY_OWNER, ANALYST]
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Descriptive error message explaining the failure

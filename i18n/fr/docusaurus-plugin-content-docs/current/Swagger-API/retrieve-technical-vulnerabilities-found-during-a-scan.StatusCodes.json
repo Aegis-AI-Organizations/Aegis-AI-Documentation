@@ -1,0 +1,38 @@
+{
+  "responses": {
+    "200": {
+      "description": "List of discovered CVEs and misconfigurations",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string", "format": "uuid" },
+                "vuln_type": {
+                  "type": "string",
+                  "description": "CVE ID or CWE category (e.g. SQLi, XSS)"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
+                },
+                "target_endpoint": {
+                  "type": "string",
+                  "description": "The specific path or port where the vuln was found"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed technical summary of the weakness"
+                },
+                "discovered_at": { "type": "string", "format": "date-time" }
+              },
+              "title": "Vulnerability"
+            }
+          }
+        }
+      }
+    }
+  }
+}

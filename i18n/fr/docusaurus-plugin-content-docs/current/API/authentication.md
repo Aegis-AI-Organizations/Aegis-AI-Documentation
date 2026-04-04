@@ -1,34 +1,34 @@
-# Authentification
+# Authentication
 
-Aegis AI implémente un modèle de sécurité **Zero-Trust** basé sur les JSON Web Tokens (JWT). Toutes les requêtes vers l'API Gateway (à l'exception du Login) doivent inclure un jeton d'identité valide.
+Aegis AI implements a **Zero-Trust Security Model** based on JSON Web Tokens (JWT). All requests to the API Gateway (with the exception of Login) must include a valid identity token.
 
-## Architecture JWT Interne
+## Internal JWT Architecture
 
-Contrairement aux versions précédentes qui dépendaient de fournisseurs externes comme Keycloak, Aegis AI utilise désormais un **Service d'Authentification Interne** découplé.
+Unlike legacy versions that relied on external providers like Keycloak, Aegis AI now uses a decoupled **Internal Authentication Service**.
 
-1.  **Fournisseur d'Identité** : Les utilisateurs s'authentifient via le point d'entrée `/auth/login`.
-2.  **Émission de JWT** : Le service Brain vérifie les identifiants et émet un JWT signé contenant l'id utilisateur (`user_id`), l'id entreprise (`company_id`) et le rôle.
-3.  **Session Sans État** : La plateforme ne stocke pas d'état de session. Chaque requête est vérifiée cryptographiquement à l'aide d'un secret partagé (`JWT_SECRET`).
+1.  **Identity Provider**: Users authenticate against the `/auth/login` endpoint.
+2.  **JWT Issuance**: The Brain service verifies credentials and issues a signed JWT containing the `user_id`, `company_id`, and `role`.
+3.  **Stateless Session**: The platform does not store session state. Every request is verified cryptographically using a shared `JWT_SECRET`.
 
-## Propagation Zero-Trust
+## Zero-Trust Propagation
 
-Pour garantir une sécurité maximale et l'isolation des services, l'identité est propagée selon un modèle **"Forward-and-Verify"** :
+To ensure maximum security and service isolation, identity is propagated using a **forward-and-verify** pattern:
 
-- **API Gateway** : Valide le jeton entrant de l'utilisateur. S'il est valide, elle extrait les informations et transfère le **jeton brut** aux microservices aval (comme le Brain) via les métadonnées gRPC.
-- **Microservices (Brain)** : Re-vérifient indépendamment la signature du jeton. Cela garantit que même si le réseau interne est compromis, un service n'exécutera jamais une commande non authentifiée.
+- **API Gateway**: Validates the incoming token from the user. If valid, it extracts the claims and forwards the **raw token** to downstream microservices (like the Brain) via gRPC metadata.
+- **Microservices (Brain)**: Independently re-verify the token signature. This ensures that even if the internal network is compromised, a service will never execute an unauthenticated command.
 
-## Utilisation
+## Usage
 
-Incluez le jeton dans l'en-tête `Authorization` de chaque requête :
+Include the token in the `Authorization` header of every request:
 
 ```bash
-Authorization: Bearer <votre_token_acces>
+Authorization: Bearer <your_access_token>
 ```
 
-### Contenu du Jeton (Claims)
+### Token Claims
 
-Vos jetons incluent les informations standard suivantes :
+Your tokens include the following standard claims:
 
-- `sub` : Votre identifiant utilisateur unique.
-- `company_id` : L'identifiant unique de votre organisation (utilisé pour l'isolation multi-tenant).
-- `role` : Votre niveau d'accès (ex: `admin`, `user`).
+- `sub`: Your unique User ID.
+- `company_id`: Your organization's unique ID (used for tenant isolation).
+- `role`: Your access level (e.g., `admin`, `user`).

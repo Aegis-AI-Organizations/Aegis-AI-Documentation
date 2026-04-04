@@ -1,27 +1,42 @@
-# Endpoints | Aegis-AI-Api-Gateway
+# Aegis AI API Gateway
 
-All endpoints (except `/auth/login`) require a valid JWT token passed in the `Authorization` header.
+The API Gateway is the central entry point for all HTTP clients (Dashboard, CLI, etc.) into the Aegis AI ecosystem. As of the MVP v2 architecture, it operates as a **Pure Microservice Proxy**, meaning it contains zero business logic, does not connect to the database, and does not orchestrate Temporal workflows.
 
-## Security
+## Endpoints mapped to gRPC
 
-- **Header**: `Authorization: Bearer <access_token>`
+All REST HTTP traffic is securely mapped and forwarded via `aegis.v2` gRPC protocols directly to the **Brain** backend.
 
-## Authentication
+### `POST /scans`
 
-- `POST /auth/login`: Authenticate and retrieve a token.
-- `POST /auth/refresh`: Refresh an expired access token using a cookie.
-- `POST /auth/logout`: Revoke session and logout.
+- **Description:** Initiates a new security scan against target infrastructure.
+- **Payload:** `{"target_image": "nginx:latest"}`
+- **Proxied to:** `aegis.v2.ScanService.StartScan`
 
-## Scans (Real-time SSE)
+### `GET /scans/{id}`
 
-- `GET /scans/stream`: Start a global SSE stream for all scan updates.
-- `GET /scans/{id}/stream`: Start an SSE stream for a specific scan.
+- **Description:** Retrieves the live status of an ongoing or completed scan.
+- **Proxied to:** `aegis.v2.ScanService.GetScanStatus`
 
-## Scans (Standard)
+### `GET /scans`
 
-- `POST /scans`: Create a new scan.
-- `GET /scans`: List all scans for the current company.
-- `GET /scans/{id}`: Get a specific scan status.
-- `GET /scans/{id}/report`: Download a PDF report.
-- `GET /scans/{id}/vulnerabilities`: List vulnerabilities for a scan.
-- `GET /vulnerabilities/{id}/evidences`: Get loot and evidence blocks.
+- **Description:** Lists all historical and active scans.
+- **Proxied to:** `aegis.v2.ScanService.ListScans`
+
+### `GET /scans/{id}/vulnerabilities`
+
+- **Description:** Fetches discovered vulnerabilities for a given scan ID.
+- **Proxied to:** `aegis.v2.VulnerabilityService.GetVulnerabilities`
+
+### `GET /vulnerabilities/{id}/evidences`
+
+- **Description:** Fetches cryptographic proofs and raw payloads used to exploit a specific vulnerability.
+- **Proxied to:** `aegis.v2.VulnerabilityService.GetEvidences`
+
+### `GET /scans/{id}/report`
+
+- **Description:** Downloads a comprehensive generated PDF report summarizing the pentest execution.
+- **Proxied to:** `aegis.v2.ScanService.GetScanReport`
+
+## Security configuration
+
+As part of the Zero Trust infrastructure, the API Gateway runs under a strict **Cilium Network Policy** and is restricted from executing egress traffic to anything other than the **Aegis Brain** (Port 50051).

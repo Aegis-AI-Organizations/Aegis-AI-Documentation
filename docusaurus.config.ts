@@ -60,8 +60,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "agent-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Agent/docs/en/",
         outDir: "docs/Agent",
         documents: ["architecture.md"],
       },
@@ -70,8 +69,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "agent-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Agent/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Agent",
         documents: ["architecture.md"],
       },
@@ -81,8 +79,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "api-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Api-Gateway/docs/en/",
         outDir: "docs/API",
         documents: ["endpoints.md"],
       },
@@ -91,8 +88,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "api-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Api-Gateway/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Api-Gateway/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/API",
         documents: ["endpoints.md"],
       },
@@ -102,8 +98,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "brain-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Brain/docs/en/",
         outDir: "docs/Brain",
         documents: ["workflows.md"],
       },
@@ -112,8 +107,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "brain-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Brain/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Brain/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Brain",
         documents: ["workflows.md"],
       },
@@ -123,8 +117,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "dashboard-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Dashboard/docs/en/",
         outDir: "docs/Dashboard",
         documents: ["architecture.md"],
       },
@@ -133,8 +126,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "dashboard-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Dashboard/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Dashboard/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Dashboard",
         documents: ["architecture.md"],
       },
@@ -144,20 +136,26 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "infra-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Infra/docs/en/",
         outDir: "docs/Infra",
-        documents: ["architecture.md"],
+        documents: [
+          "architecture.md",
+          "security-mtls.md",
+          "infrastructure-keda.md",
+        ],
       },
     ],
     [
       "docusaurus-plugin-remote-content",
       {
         name: "infra-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Infra/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Infra/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Infra",
-        documents: ["architecture.md"],
+        documents: [
+          "architecture.md",
+          "security-mtls.md",
+          "infrastructure-keda.md",
+        ],
       },
     ],
     // 6. Aegis Landing Page
@@ -165,8 +163,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "landing-page-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Landing/docs/en/",
         outDir: "docs/Landing-Page",
         documents: ["architecture.md"],
       },
@@ -175,8 +172,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "landing-page-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Landing/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Landing/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Landing-Page",
         documents: ["architecture.md"],
       },
@@ -186,8 +182,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "proto-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Proto/docs/en/",
         outDir: "docs/Proto",
         documents: ["architecture.md"],
       },
@@ -196,8 +191,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "proto-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Proto/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Proto/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Proto",
         documents: ["architecture.md"],
       },
@@ -208,7 +202,7 @@ const config: Config = {
       {
         name: "worker-deployer-docs-en",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/en/",
+          "http://localhost:8080/Aegis-AI-Worker-Deployer/docs/en/",
         outDir: "docs/Worker-Deployer",
         documents: ["architecture.md"],
       },
@@ -218,7 +212,7 @@ const config: Config = {
       {
         name: "worker-deployer-docs-fr",
         sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Deployer/main/docs/fr/",
+          "http://localhost:8080/Aegis-AI-Worker-Deployer/docs/fr/",
         outDir:
           "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Deployer",
         documents: ["architecture.md"],
@@ -229,8 +223,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "worker-fixer-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Worker-Fixer/docs/en/",
         outDir: "docs/Worker-Fixer",
         documents: ["architecture.md"],
       },
@@ -239,8 +232,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "worker-fixer-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Fixer/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Worker-Fixer/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Fixer",
         documents: ["architecture.md"],
       },
@@ -250,8 +242,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "worker-ingest-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Worker-Ingest/docs/en/",
         outDir: "docs/Worker-Ingest",
         documents: ["architecture.md"],
       },
@@ -260,8 +251,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "worker-ingest-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Ingest/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Worker-Ingest/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Ingest",
         documents: ["architecture.md"],
       },
@@ -271,8 +261,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "worker-pentest-docs-en",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/en/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Worker-Pentest/docs/en/",
         outDir: "docs/Worker-Pentest",
         documents: ["architecture.md"],
       },
@@ -281,8 +270,7 @@ const config: Config = {
       "docusaurus-plugin-remote-content",
       {
         name: "worker-pentest-docs-fr",
-        sourceBaseUrl:
-          "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Worker-Pentest/main/docs/fr/",
+        sourceBaseUrl: "http://localhost:8080/Aegis-AI-Worker-Pentest/docs/fr/",
         outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Worker-Pentest",
         documents: ["architecture.md"],
       },

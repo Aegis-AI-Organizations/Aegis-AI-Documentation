@@ -1,0 +1,43 @@
+{
+  "responses": {
+    "200": {
+      "description": "New token generated",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "access_token": {
+                "type": "string",
+                "description": "JWT Access Token (short-lived)"
+              },
+              "expires_in": {
+                "type": "integer",
+                "description": "Validity period in seconds"
+              },
+              "token_type": { "type": "string", "example": "Bearer" }
+            },
+            "title": "AuthResponse"
+          }
+        }
+      }
+    },
+    "401": {
+      "description": "Refresh token expired or revoked",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string",
+                "description": "Descriptive error message explaining the failure"
+              }
+            },
+            "title": "ErrorResponse"
+          }
+        }
+      }
+    }
+  }
+}

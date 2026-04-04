@@ -1,25 +1,25 @@
-# Workflows | Aegis-AI-Brain
+# The Aegis AI Brain (Orchestrator)
 
-## PentestWorkflow sequence
+The Brain is the monolithic, asynchronous orchestrator in the Aegis ecosystem. Designed around Python, `psycopg`, and `temporalio`, it ingests scanning orders via gRPC and commands the worker fleet through complex Temporal Workflows.
 
-1. Update scan status to `PROVISIONING`
-2. Deploy target sandbox in Kubernetes
-3. Update scan status to `IN_PROGRESS`
-4. Run pentest activity (`run_pentest`) on `PENTEST_TASK_QUEUE`
-5. Save discovered vulnerabilities in PostgreSQL
-6. Generate a structured PDF report and store it in `scans.report_pdf`
-7. Cleanup sandbox resources
-8. Update scan status to `COMPLETED`
+## Architecture (MVP v2)
 
-## PDF report storage
+In version 2 of the framework, the Brain assumes the exclusive role of system orchestrator:
 
-The Brain worker now runs `generate_and_store_pdf_report(scan_id, vulnerabilities)`
-after `save_vulnerabilities` succeeds.
+1. **gRPC Server Layer (`aegis.v2`)**: Listens continuously for requests originating from the API Gateway.
+2. **PostgreSQL Client**: Persists scan states, handles UUID generation, logs incoming vulnerabilities, and archives evidence blobs via `psycopg`.
+3. **Temporal Client**: Launches asynchronous, distributed workflows across the worker cluster (`pentest-worker`, `ingest-worker`, etc.).
 
-- The report is generated in memory with `fpdf2`
-- Vulnerability details and evidences are included
-- PDF bytes are persisted with:
+## Temporal Workflows Overview
 
-```sql
-UPDATE scans SET report_pdf = %s WHERE id = %s
-```
+### 1. `PentestWorkflow`
+
+The most critical workflow in Aegis AI. When triggered through the gRPC `StartScan`, the Brain begins stepping through activities:
+
+- **`deploy_sandbox_target` (Kubernetes Activity):** Dynamically spins up a sterile target namespace (`aegis-war-room-{scan_id}`) where the vulnerable image is exposed under strict network isolation.
+- **`run_pentest` (Pentest Worker):** In parallel, commands the remote pentest-worker node to blast payloads into the target within the sandbox. The worker generates `Evidences` and `Vulnerabilities` streams sent back to the temporal history.
+- **`cleanup_sandbox` (Kubernetes Activity):** Dismantles the target namespace to restore cluster equilibrium once the scan is successfully concluded.
+
+## Zero Trust Security Scope
+
+The Brain is securely locked away within `aegis-system`. By Cilium Network Policies, it is the solitary component explicitly permitted inward ingress traffic to the `aegis-postgres-mvp` namespace.

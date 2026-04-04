@@ -1,27 +1,42 @@
-# Points d'Entrée | Aegis-AI-Api-Gateway
+# Passerelle API Aegis AI
 
-Tous les points d'entrée (à l'exception de `/auth/login`) nécessitent un jeton JWT valide transmis dans l'en-tête `Authorization`.
+L'API Gateway est le point d'entrée central pour les clients HTTP externes (Dashboard, CLI) vers l'écosystème Aegis AI. Depuis l'architecture MVP v2, il opère comme un **Proxy gRPC**, ce qui implique qu'il ne contient aucune logique métier, il n'est connecté à aucune base de données et il n'orchestre plus les flux Temporal.
 
-## Sécurité
+## Routes mappées sur gRPC
 
-- **En-tête** : `Authorization: Bearer <votre_token_acces>`
+L'intégralité du trafic REST HTTP est converti et retransmis en toute sécurité via le protocole gRPC `aegis.v2` directement au **Brain** backend.
 
-## Authentification
+### `POST /scans`
 
-- `POST /auth/login` : S'authentifier et récupérer un jeton.
-- `POST /auth/refresh` : Rafraîchir un jeton d'accès expiré via un cookie.
-- `POST /auth/logout` : Révoquer la session et se déconnecter.
+- **Description :** Initie un nouveau scan de sécurité ciblant une infrastructure.
+- **Payload :** `{"target_image": "nginx:latest"}`
+- **Routé vers :** `aegis.v2.ScanService.StartScan`
 
-## Scans (Temps Réel SSE)
+### `GET /scans/{id}`
 
-- `GET /scans/stream` : Démarrer un flux SSE global pour toutes les mises à jour des scans.
-- `GET /scans/{id}/stream` : Démarrer un flux SSE pour un scan spécifique.
+- **Description :** Récupère le statut en direct d'un scan en cours ou terminé.
+- **Routé vers :** `aegis.v2.ScanService.GetScanStatus`
 
-## Scans (Standard)
+### `GET /scans`
 
-- `POST /scans` : Créer un nouveau scan.
-- `GET /scans` : Lister tous les scans pour l'entreprise actuelle.
-- `GET /scans/{id}` : Récupérer le statut d'un scan spécifique.
-- `GET /scans/{id}/report` : Télécharger un rapport PDF.
-- `GET /scans/{id}/vulnerabilities` : Lister les vulnérabilités pour un scan.
-- `GET /vulnerabilities/{id}/evidences` : Récupérer les preuves et blocs de données (loot).
+- **Description :** Liste tous les scans historiques et actifs.
+- **Routé vers :** `aegis.v2.ScanService.ListScans`
+
+### `GET /scans/{id}/vulnerabilities`
+
+- **Description :** Récupère la liste des vulnérabilités découvertes.
+- **Routé vers :** `aegis.v2.VulnerabilityService.GetVulnerabilities`
+
+### `GET /vulnerabilities/{id}/evidences`
+
+- **Description :** Récupère les preuves cryptographiques et historiques de frappe associés aux vulnérabilités exploitées.
+- **Routé vers :** `aegis.v2.VulnerabilityService.GetEvidences`
+
+### `GET /scans/{id}/report`
+
+- **Description :** Télécharge le rapport PDF complet résumant l'audit de sécurité effectué.
+- **Routé vers :** `aegis.v2.ScanService.GetScanReport`
+
+## Configuration de Sécurité
+
+En tant que pilier de l'infrastructure Zero Trust, l'API Gateway est confinée par une stricte **Cilium Network Policy**, l'empêchant d'effectuer la moindre requête sortante hormis vers le **Brain Aegis** (Port 50051).

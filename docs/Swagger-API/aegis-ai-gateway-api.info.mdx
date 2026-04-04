@@ -1,7 +1,7 @@
 ---
 id: aegis-ai-gateway-api
 title: "Aegis AI Gateway API"
-description: "Control plane and orchestration endpoints for the Aegis AI Enterprise Platform."
+description: "The **Aegis AI Control Plane** provides high-intensity orchestration and intelligence endpoints for offensive cyberdefense operations."
 sidebar_label: Introduction
 sidebar_position: 0
 hide_title: true
@@ -16,7 +16,7 @@ import Export from "@theme/ApiExplorer/Export";
 
 <span
   className={"theme-doc-version-badge badge badge--secondary"}
-  children={"Version: 2.1.0"}
+  children={"Version: 2.2.0"}
 >
 </span>
 
@@ -29,9 +29,63 @@ import Export from "@theme/ApiExplorer/Export";
 
 
 
-Control plane and orchestration endpoints for the Aegis AI Enterprise Platform.
+The **Aegis AI Control Plane** provides high-intensity orchestration and intelligence endpoints for offensive cyberdefense operations.
+
+### Core Capabilities
+* **Scan Orchestration**: Trigger and monitor complex pentest workflows driven by Temporal.
+* **Vulnerability Intelligence**: Access detailed CVE analysis and misconfiguration data with technical evidences.
+* **Real-time Streaming**: Persistent SSE (Server-Sent Events) for live status updates across the global scan fleet.
+* **Zero Trust Auth**: Professional session management with JWT and HTTP-only cookie-based refresh tokens.
+
 
 <div
+  style={{"marginBottom":"2rem"}}
+>
+  <Heading
+    id={"authentication"}
+    as={"h2"}
+    className={"openapi-tabs__heading"}
+    children={"Authentication"}
+  >
+  </Heading><SchemaTabs
+    className={"openapi-tabs__security-schemes"}
+  >
+    <TabItem
+      label={"HTTP: Bearer Auth"}
+      value={"BearerAuth"}
+    >
+
+
+
+
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <th>
+                Security Scheme Type:
+              </th><td>
+                http
+              </td>
+            </tr><tr>
+              <th>
+                HTTP Authorization Scheme:
+              </th><td>
+                bearer
+              </td>
+            </tr><tr>
+              <th>
+                Bearer format:
+              </th><td>
+                JWT
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </TabItem>
+  </SchemaTabs>
+</div><div
   style={{"display":"flex","flexDirection":"column","marginBottom":"var(--ifm-paragraph-margin-bottom)"}}
 >
   <h3
@@ -39,8 +93,16 @@ Control plane and orchestration endpoints for the Aegis AI Enterprise Platform.
   >
     Contact
   </h3><span>
-    Aegis Security Team:
+    Aegis Security Engineering: [security@aegis.ai](mailto:security@aegis.ai)
   </span><span>
     URL: [https://aegis.ai](https://aegis.ai)
   </span>
+</div><div
+  style={{"marginBottom":"var(--ifm-paragraph-margin-bottom)"}}
+>
+  <h3
+    style={{"marginBottom":"0.25rem"}}
+  >
+    License
+  </h3>
 </div>

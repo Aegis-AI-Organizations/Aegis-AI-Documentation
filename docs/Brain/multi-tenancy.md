@@ -1,27 +1,43 @@
-# Multi-Tenancy & Data Isolation
+# Multi-Tenancy Architecture
 
-Aegis AI supports multiple organizations on a single shared infrastructure. Each organization's data is isolated to prevent unauthorized access or leakage between customers.
+Aegis AI is built from the ground up as a native multi-tenant platform. It ensures strict logical isolation between different organizations while sharing the same underlying infrastructure and orchestration engine.
 
-## Partitioning by Company ID
+## Core Isolation Mechanism
 
-Every database table in the Aegis AI ecosystem is partitioned using a `company_id` column. This applies to:
+The platform uses a **Shared Schema, Scoped Access** model. Instead of separate databases per company, isolation is enforced at the application and query levels using a mandatory `company_id` filter.
 
-- `scans`
-- `vulnerabilities`
-- `users`
-- `refresh_tokens`
+### 1. Identity Propagation
 
-### Verification Flow
+The isolation lifecycle begins at authentication:
 
-When a request reaches a microservice (like the Brain), the following isolation logic is applied:
+- **JWT Claims**: Every issued Access Token contains a `company_id` claim in its payload.
+- **gRPC Metadata**: The API Gateway extracts this claim and injects it into the gRPC metadata (`x-company-id`) for all downstream calls to the Brain.
+- **Handler Context**: The Brain service uses a Python decorator (`@with_identity`) to extract this ID and make it available to the internal logic.
 
-1.  **Identity Resolution**: The `AuthInterceptor` extracts the `company_id` claim from the user's JWT.
-2.  **Context Injection**: This ID is securely injected into the service's internal context.
-3.  **Strict Filtering**: Every SQL query automatically appends a `WHERE company_id = ?` clause based on the verified identity.
+### 2. SQL-Level Enforcement
 
-## Enterprise Security
+Every database query that interacts with tenant-owned data (Scans, Vulnerabilities, Evidences) must include a `WHERE company_id = %s` clause.
 
-A user from **Company A** cannot access, modify, or even know about the existence of a scan belonging to **Company B**, even if they guess the UUID. This is enforced at the core logic level and not just the API layer.
+```python
+# Example of row-level isolation in the Brain service
+cur.execute(
+    """
+    SELECT id, status FROM scans
+    WHERE id = %s AND company_id = %s
+    """,
+    (scan_id, company_id),
+)
+```
 
-- **Database**: Foreign key constraints ensure that all relational data (e.g., vulnerabilities) inherently belong to the same tenant as the parent resource (e.g., scan).
-- **Storage**: PDF reports and other artifacts are stored in tenant-isolated paths.
+### 3. Resource Orchestration
+
+When a scan is dispatched to **Temporal**, the `company_id` is included in the workflow input. This ensures that:
+
+- **Worker Isolation**: Reports and logs are tagged with the correct owner.
+- **KEDA Scaling**: Future iterations will allow scaling worker pools based on specific tenant load.
+
+## Security Guarantees
+
+- **No Cross-Tenant Leaks**: A user from Company A can never view or modify resources belonging to Company B.
+- **Zero-Trust Validation**: Every microservice independently re-verifies the JWT signature to prevent internal identity spoofing.
+- **Relational Integrity**: Foreign key constraints ensure that all relational data (e.g., vulnerabilities) inherently belong to the same tenant as the parent resource (e.g., scan).
