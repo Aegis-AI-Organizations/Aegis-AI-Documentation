@@ -1,34 +1,49 @@
-# Authentication
+# Authentification
 
-Aegis AI implements a **Zero-Trust Security Model** based on JSON Web Tokens (JWT). All requests to the API Gateway (with the exception of Login) must include a valid identity token.
+Aegis AI implémente un **Modèle de Sécurité Zero-Trust** basé sur les JSON Web Tokens (JWT). Toutes les requêtes vers l'API Gateway (à l'exception du Login) doivent inclure un jeton d'identité valide.
 
-## Internal JWT Architecture
+## Architecture JWT Interne
 
-Unlike legacy versions that relied on external providers like Keycloak, Aegis AI now uses a decoupled **Internal Authentication Service**.
+Contrairement aux versions précédentes qui reposaient sur des fournisseurs externes comme Keycloak, Aegis AI utilise désormais un **Service d'Authentification Interne** découplé.
 
-1.  **Identity Provider**: Users authenticate against the `/auth/login` endpoint.
-2.  **JWT Issuance**: The Brain service verifies credentials and issues a signed JWT containing the `user_id`, `company_id`, and `role`.
-3.  **Stateless Session**: The platform does not store session state. Every request is verified cryptographically using a shared `JWT_SECRET`.
+1.  **Fournisseur d'Identité** : Les utilisateurs s'authentifient via l'endpoint `/auth/login`.
+2.  **Émission du JWT** : Le service Brain vérifie les informations d'identification et émet un JWT signé contenant le `user_id`, le `company_id` et le `role`.
+3.  **Session Sans État** : La plateforme ne stocke pas l'état de la session. Chaque requête est vérifiée cryptographiquement à l'aide d'un `JWT_SECRET` partagé.
 
-## Zero-Trust Propagation
+## Propagation Zero-Trust
 
-To ensure maximum security and service isolation, identity is propagated using a **forward-and-verify** pattern:
+Pour garantir une sécurité maximale et l'isolation des services, l'identité est propagée selon un modèle **forward-and-verify** :
 
-- **API Gateway**: Validates the incoming token from the user. If valid, it extracts the claims and forwards the **raw token** to downstream microservices (like the Brain) via gRPC metadata.
-- **Microservices (Brain)**: Independently re-verify the token signature. This ensures that even if the internal network is compromised, a service will never execute an unauthenticated command.
+- **API Gateway** : Valide le jeton entrant de l'utilisateur. S'il est valide, il extrait les revendications (claims) et transmet le **jeton brut** aux microservices en aval (comme le Brain) via les métadonnées gRPC.
+- **Microservices (Brain)** : Re-vérifient indépendamment la signature du jeton. Cela garantit que même si le réseau interne est compromis, un service n'exécutera jamais une commande non authentifiée.
 
-## Usage
+## Utilisation
 
-Include the token in the `Authorization` header of every request:
+Incluez le jeton dans l'en-tête `Authorization` de chaque requête :
 
 ```bash
-Authorization: Bearer <your_access_token>
+Authorization: Bearer <votre_access_token>
 ```
 
-### Token Claims
+### Revendications du Jeton (Claims)
 
-Your tokens include the following standard claims:
+Vos jetons incluent les revendications standard suivantes :
 
-- `sub`: Your unique User ID.
-- `company_id`: Your organization's unique ID (used for tenant isolation).
-- `role`: Your access level (e.g., `admin`, `user`).
+- `sub` : Votre identifiant utilisateur unique.
+- `company_id` : L'identifiant unique de votre organisation (utilisé pour l'isolation des locataires).
+- `role` : Votre niveau d'accès. Les rôles disponibles incluent :
+  - **`superadmin`** : Contrôle global de la plateforme.
+  - **`admin`** : Contrôle total sur une organisation spécifique.
+  - **`commercial`** : Peut gérer les entreprises et l'onboarding.
+  - **`operateur`** : Analyste technique standard.
+  - **`viewer`** : Accès en lecture seule.
+- `exp` : Date d'expiration du jeton.
+
+## Cycle de vie de la session
+
+Aegis AI utilise une stratégie à deux jetons pour équilibrer sécurité et expérience utilisateur :
+
+1.  **Access Token** : Durée de vie courte (généralement 15 minutes). Utilisé pour toutes les requêtes API. Conservez ce jeton uniquement en mémoire.
+2.  **Refresh Token** : Durée de vie longue (généralement 7 jours). Stocké dans un **cookie sécurisé HTTP-only** défini par l'endpoint `/auth/login`.
+
+Pour régénérer un jeton d'accès sans se ré-authentifier, utilisez l'endpoint `/auth/refresh`. Le serveur cherchera automatiquement le cookie de jeton de rafraîchissement valide.

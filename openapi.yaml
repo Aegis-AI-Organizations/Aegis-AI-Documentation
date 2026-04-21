@@ -166,6 +166,142 @@ paths:
         '204':
           description: Successfully logged out
 
+  /users/me/profile:
+    put:
+      summary: Update the current user's profile information
+      description: Allows modification of public profile fields like name.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/me/profile/avatar:
+    delete:
+      summary: Remove the current user's profile picture
+      description: Resets the avatar_url to null.
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Avatar removed successfully
+
+  /users/me/email:
+    put:
+      summary: Update the current user's email address
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Email updated successfully
+
+  /users/me/password:
+    put:
+      summary: Update the current user's password
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [old_password, new_password]
+              properties:
+                old_password:
+                  type: string
+                  format: password
+                new_password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Password updated successfully
+
+  /companies:
+    get:
+      summary: List all companies
+      description: |
+        Retrieves a list of all registered companies.
+        Access restricted to administrative roles.
+      tags:
+        - Platform
+      responses:
+        '200':
+          description: List of companies retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+    post:
+      summary: Create a new company
+      description: Registers a new organization in the system.
+      tags:
+        - Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompanyRequest'
+      responses:
+        '201':
+          description: Company created
+
+  /companies/onboard:
+    post:
+      summary: Manual onboarding for new clients
+      description: |
+        Performs an atomic onboarding operation:
+        1. Creates the Company.
+        2. Generates a unique Deployment Token (`ag_` prefix).
+        3. Creates the the initial Owner user account with the provided password.
+      tags:
+        - Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardCompanyRequest'
+      responses:
+        '201':
+          description: Onboarding successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardCompanyResponse'
+
   /scans:
     get:
       summary: List all orchestrated pentest scans
@@ -436,14 +572,80 @@ components:
         email:
           type: string
           format: email
+        name:
+          type: string
+          nullable: true
+        avatar_url:
+          type: string
+          nullable: true
         role:
           type: string
-          enum: [PLATFORM_ADMIN, COMPANY_OWNER, ANALYST]
+          enum: [superadmin, admin, billing_aegis, technicien, support, commercial, billing_client, operateur, viewer]
+        company_id:
+          type: string
+          format: uuid
+          nullable: true
         is_active:
           type: boolean
         created_at:
           type: string
           format: date-time
+
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        logo_url:
+          type: string
+          nullable: true
+        deployment_token:
+          type: string
+          description: Unique token for probe deployment (ag_ prefix)
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    CreateCompanyRequest:
+      type: object
+      required: [name, owner_email]
+      properties:
+        name:
+          type: string
+        owner_email:
+          type: string
+          format: email
+
+    OnboardCompanyRequest:
+      type: object
+      required: [company_name, owner_email, owner_password]
+      properties:
+        company_name:
+          type: string
+        owner_email:
+          type: string
+          format: email
+        owner_password:
+          type: string
+          format: password
+
+    OnboardCompanyResponse:
+      type: object
+      properties:
+        company_id:
+          type: string
+          format: uuid
+        owner_id:
+          type: string
+          format: uuid
+        deployment_token:
+          type: string
+          description: The generated deployment token for the Aegis Agent
 
     ErrorResponse:
       type: object

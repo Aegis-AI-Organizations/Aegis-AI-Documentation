@@ -41,3 +41,12 @@ When a scan is dispatched to **Temporal**, the `company_id` is included in the w
 - **No Cross-Tenant Leaks**: A user from Company A can never view or modify resources belonging to Company B.
 - **Zero-Trust Validation**: Every microservice independently re-verifies the JWT signature to prevent internal identity spoofing.
 - **Relational Integrity**: Foreign key constraints ensure that all relational data (e.g., vulnerabilities) inherently belong to the same tenant as the parent resource (e.g., scan).
+
+## Probe Isolation (Deployment Tokens)
+
+To allow external probes (Aegis Agents) to push security telemetry back to the platform without requiring full user credentials, the platform issues **Deployment Tokens**.
+
+- **Structure**: Tokens are 32-character hex strings prefixed with `ag_` (e.g., `ag_8f3d...`).
+- **Organization Bound**: Each token is uniquely bound to one `company_id`.
+- **Stateless Verification**: When an Agent pushes data, the Brain verifies the token against the database to identify the correct tenant.
+- **Revocation**: If a token is compromised, it can be regenerated, immediately invalidating the old one and cutting off access for that specific probe deployment.

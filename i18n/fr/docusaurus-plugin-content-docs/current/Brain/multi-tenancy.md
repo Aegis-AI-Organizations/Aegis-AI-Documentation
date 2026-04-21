@@ -1,25 +1,25 @@
-# Multi-Tenancy Architecture
+# Architecture Multi-Tenancy
 
-Aegis AI is built from the ground up as a native multi-tenant platform. It ensures strict logical isolation between different organizations while sharing the same underlying infrastructure and orchestration engine.
+Aegis AI a été conçu dès le départ comme une plateforme nativement multi-tenants. Elle assure une isolation logique stricte entre les différentes organisations tout en partageant la même infrastructure sous-jacente et le même moteur d'orchestration.
 
-## Core Isolation Mechanism
+## Mécanisme de l'Isolation Principale
 
-The platform uses a **Shared Schema, Scoped Access** model. Instead of separate databases per company, isolation is enforced at the application and query levels using a mandatory `company_id` filter.
+La plateforme utilise un modèle de **Schéma Partagé, Accès Restreint** (Shared Schema, Scoped Access). Au lieu de bases de données séparées par entreprise, l'isolation est imposée aux niveaux applicatif et des requêtes grâce à un filtre obligatoire `company_id`.
 
-### 1. Identity Propagation
+### 1. Propagation de l'Identité
 
-The isolation lifecycle begins at authentication:
+Le cycle de vie de l'isolation commence dès l'authentification :
 
-- **JWT Claims**: Every issued Access Token contains a `company_id` claim in its payload.
-- **gRPC Metadata**: The API Gateway extracts this claim and injects it into the gRPC metadata (`x-company-id`) for all downstream calls to the Brain.
-- **Handler Context**: The Brain service uses a Python decorator (`@with_identity`) to extract this ID and make it available to the internal logic.
+- **Revendications JWT (Claims)** : Chaque jeton d'accès émis contient une revendication `company_id` dans son payload.
+- **Métadonnées gRPC** : L'API Gateway extrait cette revendication et l'injecte dans les métadonnées gRPC (`x-company-id`) pour tous les appels vers le Brain.
+- **Contexte des Handlers** : Le service Brain utilise un décorateur Python (`@with_identity`) pour extraire cet identifiant et le rendre disponible pour la logique interne.
 
-### 2. SQL-Level Enforcement
+### 2. Application au niveau SQL
 
-Every database query that interacts with tenant-owned data (Scans, Vulnerabilities, Evidences) must include a `WHERE company_id = %s` clause.
+Chaque requête de base de données interférant avec des données appartenant à un locataire (Scans, Vulnérabilités, Preuves) doit inclure une clause `WHERE company_id = %s`.
 
 ```python
-# Example of row-level isolation in the Brain service
+# Exemple d'isolation au niveau de la ligne dans le service Brain
 cur.execute(
     """
     SELECT id, status FROM scans
@@ -29,15 +29,24 @@ cur.execute(
 )
 ```
 
-### 3. Resource Orchestration
+### 3. Orchestration des Ressources
 
-When a scan is dispatched to **Temporal**, the `company_id` is included in the workflow input. This ensures that:
+Lorsqu'un scan est envoyé à **Temporal**, le `company_id` est inclus dans les entrées du workflow. Cela garantit que :
 
-- **Worker Isolation**: Reports and logs are tagged with the correct owner.
-- **KEDA Scaling**: Future iterations will allow scaling worker pools based on specific tenant load.
+- **Isolation des Workers** : Les rapports et les journaux sont marqués avec le propriétaire correct.
+- **Scaling KEDA** : Les futures itérations permettront de dimensionner les pools de workers en fonction de la charge spécifique d'un locataire.
 
-## Security Guarantees
+## Garanties de Sécurité
 
-- **No Cross-Tenant Leaks**: A user from Company A can never view or modify resources belonging to Company B.
-- **Zero-Trust Validation**: Every microservice independently re-verifies the JWT signature to prevent internal identity spoofing.
-- **Relational Integrity**: Foreign key constraints ensure that all relational data (e.g., vulnerabilities) inherently belong to the same tenant as the parent resource (e.g., scan).
+- **Aucune Fuite entre Locataires** : Un utilisateur de l'Entreprise A ne peut jamais consulter ou modifier des ressources appartenant à l'Entreprise B.
+- **Validation Zero-Trust** : Chaque microservice vérifie indépendamment la signature du JWT pour empêcher l'usurpation d'identité interne.
+- **Intégrité Relationnelle** : Les contraintes de clé étrangère garantissent que toutes les données relationnelles (ex: vulnérabilités) appartiennent intrinsèquement au même locataire que la ressource parente (ex: scan).
+
+## Isolation des Sondes (Tokens de Déploiement)
+
+Pour permettre aux sondes externes (Agents Aegis) de renvoyer de la télémétrie de sécurité à la plateforme sans nécessiter d'identifiants utilisateur complets, la plateforme émet des **Tokens de Déploiement**.
+
+- **Structure** : Les tokens sont des chaînes hexadécimales de 32 caractères préfixées par `ag_` (ex: `ag_8f3d...`).
+- **Lien avec l'Organisation** : Chaque token est lié de manière unique à un `company_id`.
+- **Vérification Sans État** : Lorsqu'un Agent pousse des données, le Brain vérifie le token par rapport à la base de données pour identifier le locataire correct.
+- **Révocation** : Si un token est compromis, il peut être régénéré, ce qui invalide immédiatement l'ancien et coupe l'accès pour ce déploiement de sonde spécifique.
