@@ -1,0 +1,6 @@
+{
+  "parameters": [
+    { "name": "search", "in": "query", "schema": { "type": "string" } },
+    { "name": "company_id", "in": "query", "schema": { "type": "string" } }
+  ]
+}

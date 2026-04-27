@@ -1,0 +1,22 @@
+{
+  "responses": {
+    "200": {
+      "description": "Metadata retrieved",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "version": { "type": "string" },
+              "service": {
+                "type": "string",
+                "example": "Aegis AI Control Plane"
+              }
+            },
+            "title": "RootMetadata"
+          }
+        }
+      }
+    }
+  }
+}

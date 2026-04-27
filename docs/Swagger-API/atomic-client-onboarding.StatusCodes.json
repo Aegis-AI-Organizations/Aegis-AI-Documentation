@@ -1,0 +1,20 @@
+{
+  "responses": {
+    "201": {
+      "description": "Onboarding successful",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "company_id": { "type": "string" },
+              "owner_id": { "type": "string" },
+              "deployment_token": { "type": "string" }
+            },
+            "title": "OnboardCompanyResponse"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "parameters": [
+    { "name": "company_id", "in": "query", "schema": { "type": "string" } },
+    {
+      "name": "limit",
+      "in": "query",
+      "schema": { "type": "integer", "default": 50 }
+    },
+    {
+      "name": "offset",
+      "in": "query",
+      "schema": { "type": "integer", "default": 0 }
+    }
+  ]
+}

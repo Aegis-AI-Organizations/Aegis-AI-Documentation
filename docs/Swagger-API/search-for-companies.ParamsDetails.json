@@ -1,0 +1,10 @@
+{
+  "parameters": [
+    {
+      "name": "search",
+      "in": "query",
+      "schema": { "type": "string" },
+      "description": "Partial name match or exact ID"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "parameters": [
+    {
+      "name": "days",
+      "in": "query",
+      "schema": { "type": "integer", "default": 30 }
+    }
+  ]
+}

@@ -8,17 +8,10 @@
           "type": "object",
           "required": ["email", "password"],
           "properties": {
-            "email": {
-              "type": "string",
-              "format": "email",
-              "description": "User's corporate email address"
-            },
-            "password": {
-              "type": "string",
-              "format": "password",
-              "description": "User's clear-text password"
-            }
-          }
+            "email": { "type": "string", "format": "email" },
+            "password": { "type": "string", "format": "password" }
+          },
+          "title": "LoginRequest"
         }
       }
     }

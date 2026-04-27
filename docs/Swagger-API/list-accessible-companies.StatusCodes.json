@@ -1,0 +1,33 @@
+{
+  "responses": {
+    "200": {
+      "description": "Companies list",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "companies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "format": "uuid" },
+                    "name": { "type": "string" },
+                    "owner_id": { "type": "string", "format": "uuid" },
+                    "owner_email": { "type": "string" },
+                    "member_count": { "type": "integer" },
+                    "deployment_token": { "type": "string" },
+                    "avatar_url": { "type": "string" },
+                    "token_balance": { "type": "integer" }
+                  },
+                  "title": "CompanySummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

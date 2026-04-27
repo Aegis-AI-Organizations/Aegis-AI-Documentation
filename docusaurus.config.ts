@@ -8,15 +8,15 @@ const config: Config = {
   markdown: {
     mermaid: true,
   },
-  title: "Aegis AI Docs",
-  tagline: "Enterprise-Grade Offensive Cyberdefense Platform",
+  title: "Aegis AI | Intelligence & Orchestration",
+  tagline: "The offensive control plane for modern security operations.",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
   url: "https://aegis-ai-organizations.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/Aegis-AI-Documentation/",
+  baseUrl: "/Aegis-Documentation/",
 
   // GitHub pages deployment config.
   organizationName: "Aegis-AI-Organizations", // Usually your GitHub org/user name.

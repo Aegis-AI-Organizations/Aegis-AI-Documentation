@@ -1,0 +1,25 @@
+{
+  "responses": {
+    "200": {
+      "description": "Evidences list",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "vulnerability_id": { "type": "string" },
+                "payload_used": { "type": "string" },
+                "loot_data": { "type": "object" },
+                "captured_at": { "type": "string", "format": "date-time" }
+              },
+              "title": "Evidence"
+            }
+          }
+        }
+      }
+    }
+  }
+}

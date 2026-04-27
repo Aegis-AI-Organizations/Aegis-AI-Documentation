@@ -2,14 +2,26 @@ openapi: 3.1.0
 info:
   title: Aegis AI Gateway API
   description: |
-    The **Aegis AI Control Plane** provides high-intensity orchestration and intelligence endpoints for offensive cyberdefense operations.
+    # 🛡️ Aegis AI Control Plane API
 
-    ### Core Capabilities
-    * **Scan Orchestration**: Trigger and monitor complex pentest workflows driven by Temporal.
-    * **Vulnerability Intelligence**: Access detailed CVE analysis and misconfiguration data with technical evidences.
-    * **Real-time Streaming**: Persistent SSE (Server-Sent Events) for live status updates across the global scan fleet.
-    * **Zero Trust Auth**: Professional session management with JWT and HTTP-only cookie-based refresh tokens.
-  version: 2.2.0
+    The **Aegis AI Gateway** is the high-performance orchestration layer for the Aegis offensive cyberdefense platform.
+    It provides secure, unified access to scan orchestration, vulnerability intelligence, team management, and billing operations.
+
+    ### 🚀 Core Missions
+    * **Automated Pentesting**: Trigger and monitor large-scale security scans powered by Temporal workflows.
+    * **Threat Intelligence**: Access technical proofs and CVE data extracted by specialized worker fleets.
+    * **Enterprise RBAC**: Manage multi-tenant organizations with granular roles (SuperAdmin, Admin, Billing, etc.).
+    * **Financial Governance**: Monitor token consumption, manage licenses, and track audit trails.
+
+    ### 🔒 Security & Authentication
+    Aegis AI enforces a Zero-Trust architecture:
+    1. **Primary Auth**: JWT Bearer Token (short-lived).
+    2. **Session Persistence**: HTTP-only Secure Refresh Token (Rotation enforced).
+    3. **Permission Scopes**: Every endpoint is gated by specific RBAC scopes.
+
+    ---
+    *Internal Version: 3.0.0 (Refined Role Structure)*
+  version: 3.0.0
   contact:
     name: Aegis Security Engineering
     url: https://aegis.ai
@@ -18,24 +30,30 @@ info:
     name: Proprietary
 servers:
   - url: https://api.aegis.ai/v2
-    description: Production Environment (Strict TLS 1.3 enforced)
-  - url: http://localhost:8080/v2
-    description: Local MVP Development Environment
+    description: Production Environment (TLS 1.3 enforced)
+  - url: http://localhost:8080
+    description: Local Development Environment
 tags:
   - name: Authentication
-    description: Identity management and session lifecycle control
+    description: Identity management, session lifecycle, and profile control
   - name: Pentest Operations
-    description: Large-scale offensive security workflow management
+    description: Large-scale offensive security workflow orchestration
   - name: Vulnerabilities
-    description: Security intelligence on discovered threats and weaknesses
+    description: Security intelligence on discovered threats and technical evidences
+  - name: Administration
+    description: High-privilege management of companies, users, and audit logs
+  - name: Billing & Finance
+    description: Token management, ledger tracking, and usage analytics
   - name: Platform
-    description: Health monitoring and system status
+    description: Health monitoring and environment status
 security:
   - BearerAuth: []
 paths:
+  # --- Platform ---
   /health:
     get:
-      summary: Retrieve the platform's health status
+      summary: Retrieve platform health status
+      description: Performs a shallow check of the API Gateway and its connection to gRPC services.
       tags:
         - Platform
       security: []
@@ -45,43 +63,30 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "UP"
-                  timestamp:
-                    type: string
-                    format: date-time
+                $ref: '#/components/schemas/HealthStatus'
 
   /:
     get:
-      summary: Retrieve platform root metadata
-      description: Returns high-level versioning and core service status for initial environment handshake.
+      summary: Retrieve root metadata
+      description: Returns versioning and service identification for initial environment handshake.
       tags:
         - Platform
       security: []
       responses:
         '200':
-          description: Metadata retrieved successfully
+          description: Metadata retrieved
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  version:
-                    type: string
-                    example: "2.2.0"
-                  service:
-                    type: string
-                    example: "Aegis AI Control Plane"
+                $ref: '#/components/schemas/RootMetadata'
 
+  # --- Authentication ---
   /auth/login:
     post:
       summary: Authenticate and establish a session
       description: |
-        Authenticates a user via email/password.
-        Returns a short-lived JWT Access Token and sets an HTTP-only `refresh_token` cookie.
+        Validates credentials and returns a short-lived Access Token.
+        Sets an `refresh_token` cookie (HTTP-only, Secure, SameSite=Lax).
       tags:
         - Authentication
       security: []
@@ -90,17 +95,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [email, password]
-              properties:
-                email:
-                  type: string
-                  format: email
-                  description: User's corporate email address
-                password:
-                  type: string
-                  format: password
-                  description: User's clear-text password
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
           description: Successfully authenticated
@@ -109,7 +104,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
         '401':
-          description: Invalid identity or credentials
+          description: Invalid credentials
           content:
             application/json:
               schema:
@@ -117,59 +112,46 @@ paths:
 
   /auth/me:
     get:
-      summary: Retrieve the current user's profile
+      summary: Retrieve current session profile
+      description: Returns the full identity of the authenticated user.
       tags:
         - Authentication
       responses:
         '200':
-          description: User profile retrieved successfully
+          description: Profile retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '401':
-          description: Unauthorized session
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/refresh:
     post:
-      summary: Regenerate an Access Token
-      description: |
-        Automatically looks for the `refresh_token` in the secure HTTP-only cookie.
-        If valid, issues a new JWT Access Token.
+      summary: Rotate session tokens
+      description: Uses the secure refresh cookie to issue a new Access Token.
       tags:
         - Authentication
       responses:
         '200':
-          description: New token generated
+          description: Token rotated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
-        '401':
-          description: Refresh token expired or revoked
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/logout:
     post:
-      summary: Terminate the current session
-      description: Revokes the refresh token and clears session cookies globally.
+      summary: Terminate current session
+      description: Revokes the refresh token and clears session cookies.
       tags:
         - Authentication
       responses:
         '204':
-          description: Successfully logged out
+          description: Logged out successfully
 
+  # --- User Profile Management ---
   /users/me/profile:
     put:
-      summary: Update the current user's profile information
-      description: Allows modification of public profile fields like name.
+      summary: Update personal profile
       tags:
         - Authentication
       requestBody:
@@ -181,10 +163,10 @@ paths:
               properties:
                 name:
                   type: string
-                  example: "John Doe"
+                  example: "Jane Doe"
       responses:
         '200':
-          description: Profile updated successfully
+          description: Profile updated
           content:
             application/json:
               schema:
@@ -192,17 +174,17 @@ paths:
 
   /users/me/profile/avatar:
     delete:
-      summary: Remove the current user's profile picture
-      description: Resets the avatar_url to null.
+      summary: Remove profile avatar
       tags:
         - Authentication
       responses:
         '200':
-          description: Avatar removed successfully
+          description: Avatar removed
 
   /users/me/email:
     put:
-      summary: Update the current user's email address
+      summary: Change account email
+      description: Requires current password for confirmation.
       tags:
         - Authentication
       requestBody:
@@ -218,14 +200,13 @@ paths:
                   format: email
                 password:
                   type: string
-                  format: password
       responses:
         '200':
-          description: Email updated successfully
+          description: Email updated
 
   /users/me/password:
     put:
-      summary: Update the current user's password
+      summary: Change account password
       tags:
         - Authentication
       requestBody:
@@ -238,36 +219,35 @@ paths:
               properties:
                 old_password:
                   type: string
-                  format: password
                 new_password:
                   type: string
-                  format: password
       responses:
         '200':
-          description: Password updated successfully
+          description: Password updated
 
+  # --- Companies ---
   /companies:
     get:
-      summary: List all companies
-      description: |
-        Retrieves a list of all registered companies.
-        Access restricted to administrative roles.
+      summary: List accessible companies
+      description: Retrieves companies associated with the user. SuperAdmins see all.
       tags:
-        - Platform
+        - Administration
       responses:
         '200':
-          description: List of companies retrieved
+          description: Companies list
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Company'
+                type: object
+                properties:
+                  companies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanySummary'
     post:
-      summary: Create a new company
-      description: Registers a new organization in the system.
+      summary: Register a new company
       tags:
-        - Platform
+        - Administration
       requestBody:
         required: true
         content:
@@ -276,18 +256,14 @@ paths:
               $ref: '#/components/schemas/CreateCompanyRequest'
       responses:
         '201':
-          description: Company created
+          description: Company registered
 
   /companies/onboard:
     post:
-      summary: Manual onboarding for new clients
-      description: |
-        Performs an atomic onboarding operation:
-        1. Creates the Company.
-        2. Generates a unique Deployment Token (`ag_` prefix).
-        3. Creates the the initial Owner user account with the provided password.
+      summary: Atomic client onboarding
+      description: Creates company, owner, and initial deployment token in a single operation.
       tags:
-        - Platform
+        - Administration
       requestBody:
         required: true
         content:
@@ -302,14 +278,115 @@ paths:
               schema:
                 $ref: '#/components/schemas/OnboardCompanyResponse'
 
+  # --- Admin & Search ---
+  /admin/companies:
+    get:
+      summary: Search for companies
+      description: Advanced search with filters for administrative oversight.
+      tags:
+        - Administration
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Partial name match or exact ID
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanySearchResult'
+
+  /admin/users:
+    get:
+      summary: Search for users
+      tags:
+        - Administration
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: company_id
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchResult'
+    post:
+      summary: Administrative user creation
+      description: Directly create a user with specific roles for any company.
+      tags:
+        - Administration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCreateUserRequest'
+      responses:
+        '201':
+          description: User created
+
+  /admin/audit-logs:
+    get:
+      summary: Retrieve system audit trails
+      description: Logs of every security-sensitive action across the platform.
+      tags:
+        - Administration
+      parameters:
+        - name: company_id
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Audit logs list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogResponse'
+
+  /admin/teams/stream:
+    get:
+      summary: Real-time team updates (SSE)
+      description: Stream of events related to user and company lifecycle.
+      tags:
+        - Administration
+      responses:
+        '200':
+          description: SSE stream established
+
+  # --- Scans ---
   /scans:
     get:
-      summary: List all orchestrated pentest scans
+      summary: List pentest operations
       tags:
         - Pentest Operations
       responses:
         '200':
-          description: Paginated list of scans
+          description: List of scans
           content:
             application/json:
               schema:
@@ -317,10 +394,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Scan'
     post:
-      summary: Initialize a new pentest workflow
-      description: |
-        Dispatches a new security scan job to the Temporal orchestration cluster.
-        The system will automatically scale workers using KEDA if traffic peaks.
+      summary: Initialize a pentest workflow
+      description: Dispatches a new mission to the worker fleet via Temporal.
       tags:
         - Pentest Operations
       requestBody:
@@ -331,7 +406,7 @@ paths:
               $ref: '#/components/schemas/CreateScanRequest'
       responses:
         '201':
-          description: Scan successfully queued for execution
+          description: Scan queued
           content:
             application/json:
               schema:
@@ -339,7 +414,7 @@ paths:
 
   /scans/{id}:
     get:
-      summary: Retrieve the status of a specific scan
+      summary: Retrieve specific scan status
       tags:
         - Pentest Operations
       parameters:
@@ -348,73 +423,17 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
-          description: Full scan details retrieved
+          description: Scan details
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Scan'
-        '404':
-          description: Scan ID not found in database
-
-  /scans/stream:
-    get:
-      summary: Establish a universal live update stream (SSE)
-      description: |
-        Provides real-time Push updates for all scans moving across the platform.
-        **Content-Type**: `text/event-stream`
-      tags:
-        - Pentest Operations
-      responses:
-        '200':
-          description: SSE stream successfully established
-
-  /scans/{id}/stream:
-    get:
-      summary: Establish a scan-specific live update stream (SSE)
-      description: |
-        Focuses the real-time stream on a single mission. High-efficiency filtering for dashboard mission monitoring.
-        **Content-Type**: `text/event-stream`
-      tags:
-        - Pentest Operations
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: SSE stream successfully established
-
-  /scans/{id}/report:
-    get:
-      summary: Download the finalized pentest PDF report
-      description: Generates or retrieves the professional PDF artifact for a completed scan.
-      tags:
-        - Pentest Operations
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: The binary PDF data
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
 
   /scans/{id}/vulnerabilities:
     get:
-      summary: Retrieve technical vulnerabilities found during a scan
+      summary: Retrieve discoveries for a scan
       tags:
         - Vulnerabilities
       parameters:
@@ -423,10 +442,9 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
-          description: List of discovered CVEs and misconfigurations
+          description: Vulnerabilities list
           content:
             application/json:
               schema:
@@ -434,10 +452,55 @@ paths:
                 items:
                   $ref: '#/components/schemas/Vulnerability'
 
+  /scans/{id}/report:
+    get:
+      summary: Download PDF pentest report
+      tags:
+        - Pentest Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PDF Binary data
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /scans/stream:
+    get:
+      summary: Universal scan status stream (SSE)
+      tags:
+        - Pentest Operations
+      responses:
+        '200':
+          description: SSE established
+
+  /scans/{id}/stream:
+    get:
+      summary: Mission-specific status stream (SSE)
+      tags:
+        - Pentest Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SSE established
+
+  # --- Vulnerabilities ---
   /vulnerabilities/{id}/evidences:
     get:
-      summary: Retrieve security evidence for a specific vulnerability
-      description: Includes raw payloads, loot data, and proof-of-exploitation extracted by workers.
+      summary: Retrieve technical evidences
+      description: Detailed proofs (payloads, loot) for a specific vulnerability.
       tags:
         - Vulnerabilities
       parameters:
@@ -446,10 +509,9 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
-          description: Evidence payload list
+          description: Evidences list
           content:
             application/json:
               schema:
@@ -457,111 +519,177 @@ paths:
                 items:
                   $ref: '#/components/schemas/Evidence'
 
+  # --- Billing ---
+  /billing/balance:
+    get:
+      summary: Get current token balance
+      tags:
+        - Billing & Finance
+      responses:
+        '200':
+          description: Balance details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+
+  /billing/ledger:
+    get:
+      summary: Retrieve transaction history
+      tags:
+        - Billing & Finance
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ledger entries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerResponse'
+
+  /billing/stats:
+    get:
+      summary: Usage analytics
+      tags:
+        - Billing & Finance
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        '200':
+          description: Consumption stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageStatsResponse'
+
+  # --- Admin Billing ---
+  /admin/companies/{id}/tokens/adjust:
+    post:
+      summary: Adjust company balance
+      description: Add or remove tokens with a mandatory reason.
+      tags:
+        - Billing & Finance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustTokensRequest'
+      responses:
+        '200':
+          description: Tokens adjusted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+
+  /admin/companies/{id}/billing/balance:
+    get:
+      summary: Admin view of company balance
+      tags:
+        - Billing & Finance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Balance details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+
+  /admin/companies/{id}/billing/ledger:
+    get:
+      summary: Admin view of company ledger
+      tags:
+        - Billing & Finance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ledger entries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerResponse'
+
+  /admin/companies/{id}/billing/stats:
+    get:
+      summary: Admin view of company usage
+      tags:
+        - Billing & Finance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Consumption stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageStatsResponse'
+
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: Access Token returned by /auth/login
+
   schemas:
+    # --- Auth & User ---
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
     AuthResponse:
       type: object
       properties:
         access_token:
           type: string
-          description: JWT Access Token (short-lived)
         expires_in:
           type: integer
-          description: Validity period in seconds
+          description: Seconds until expiration
         token_type:
           type: string
           example: Bearer
-
-    Scan:
-      type: object
-      required: [id, status, target_image]
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique platform scan identifier
-        temporal_workflow_id:
-          type: string
-          description: Internal Temporal orchestration ID
-        target_image:
-          type: string
-          description: The target Docker image/endpoint (e.g. nginx:latest)
-        status:
-          type: string
-          enum: [PENDING, PROVISIONING, SCANNING, ANALYZING, FINISHED, FAILED]
-        started_at:
-          type: string
-          format: date-time
-          description: ISO timestamp of scan initialization
-        completed_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: ISO timestamp of scan completion
-
-    CreateScanRequest:
-      type: object
-      required: [target_image]
-      properties:
-        target_image:
-          type: string
-          example: "ghcr.io/aegis/vulnerable-app:latest"
-
-    CreateScanResponse:
-      type: object
-      properties:
-        scan_id:
-          type: string
-          format: uuid
-        status:
-          type: string
-          example: "PENDING"
-
-    Vulnerability:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        vuln_type:
-          type: string
-          description: CVE ID or CWE category (e.g. SQLi, XSS)
-        severity:
-          type: string
-          enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
-        target_endpoint:
-          type: string
-          description: The specific path or port where the vuln was found
-        description:
-          type: string
-          description: Detailed technical summary of the weakness
-        discovered_at:
-          type: string
-          format: date-time
-
-    Evidence:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        vulnerability_id:
-          type: string
-          format: uuid
-        payload_used:
-          type: string
-          description: The offensive payload string injected by the worker
-        loot_data:
-          type: object
-          description: Raw evidence blob (e.g. database content, shadow file excerpt)
-        captured_at:
-          type: string
-          format: date-time
 
     User:
       type: object
@@ -574,24 +702,21 @@ components:
           format: email
         name:
           type: string
-          nullable: true
-        avatar_url:
-          type: string
-          nullable: true
         role:
-          type: string
-          enum: [superadmin, admin, billing_aegis, technicien, support, commercial, billing_client, operateur, viewer]
+          $ref: '#/components/schemas/UserRole'
         company_id:
           type: string
           format: uuid
-          nullable: true
-        is_active:
-          type: boolean
-        created_at:
+        avatar_url:
           type: string
-          format: date-time
+          nullable: true
 
-    Company:
+    UserRole:
+      type: string
+      enum: [superadmin, admin, billing_aegis, technicien, support, owner, billing_client, operateur, viewer]
+
+    # --- Companies ---
+    CompanySummary:
       type: object
       properties:
         id:
@@ -599,17 +724,19 @@ components:
           format: uuid
         name:
           type: string
-        logo_url:
+        owner_id:
           type: string
-          nullable: true
+          format: uuid
+        owner_email:
+          type: string
+        member_count:
+          type: integer
         deployment_token:
           type: string
-          description: Unique token for probe deployment (ag_ prefix)
-        is_active:
-          type: boolean
-        created_at:
+        avatar_url:
           type: string
-          format: date-time
+        token_balance:
+          type: integer
 
     CreateCompanyRequest:
       type: object
@@ -619,37 +746,265 @@ components:
           type: string
         owner_email:
           type: string
-          format: email
 
     OnboardCompanyRequest:
       type: object
-      required: [company_name, owner_email, owner_password]
+      required: [company_name, owner_name, owner_email, owner_password]
       properties:
         company_name:
           type: string
+        owner_name:
+          type: string
         owner_email:
           type: string
-          format: email
         owner_password:
           type: string
-          format: password
+        plan_id:
+          type: string
+          enum: [starter, pro, scale]
 
     OnboardCompanyResponse:
       type: object
       properties:
         company_id:
           type: string
-          format: uuid
         owner_id:
           type: string
-          format: uuid
         deployment_token:
           type: string
-          description: The generated deployment token for the Aegis Agent
+
+    CompanySearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        deployment_token:
+          type: string
+        owner_email:
+          type: string
+        avatar_url:
+          type: string
+
+    UserSearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        company_id:
+          type: string
+        avatar_url:
+          type: string
+
+    AdminCreateUserRequest:
+      type: object
+      required: [name, email, password, role, company_id]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        role:
+          $ref: '#/components/schemas/UserRole'
+        company_id:
+          type: string
+
+    # --- Scans ---
+    Scan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [PENDING, PROVISIONING, SCANNING, ANALYZING, FINISHED, FAILED]
+        target_image:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    CreateScanRequest:
+      type: object
+      required: [target_image]
+      properties:
+        target_image:
+          type: string
+          example: "nginx:latest"
+
+    CreateScanResponse:
+      type: object
+      properties:
+        scan_id:
+          type: string
+        status:
+          type: string
+
+    # --- Vulnerabilities ---
+    Vulnerability:
+      type: object
+      properties:
+        id:
+          type: string
+        vuln_type:
+          type: string
+        severity:
+          type: string
+          enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
+        target_endpoint:
+          type: string
+        description:
+          type: string
+        discovered_at:
+          type: string
+          format: date-time
+
+    Evidence:
+      type: object
+      properties:
+        id:
+          type: string
+        vulnerability_id:
+          type: string
+        payload_used:
+          type: string
+        loot_data:
+          type: object
+        captured_at:
+          type: string
+          format: date-time
+
+    # --- Billing ---
+    BalanceResponse:
+      type: object
+      properties:
+        company_id:
+          type: string
+        balance:
+          type: integer
+
+    LedgerResponse:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LedgerEntry'
+        total:
+          type: integer
+
+    LedgerEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: integer
+          description: Positive for addition, negative for consumption
+        reason:
+          type: string
+        scan_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    UsageStatsResponse:
+      type: object
+      properties:
+        days:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+              total_consumed:
+                type: integer
+        total_period:
+          type: integer
+
+    AdjustTokensRequest:
+      type: object
+      required: [amount, reason]
+      properties:
+        amount:
+          type: integer
+        reason:
+          type: string
+
+    # --- Platform ---
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "UP"
+        timestamp:
+          type: string
+          format: date-time
+
+    RootMetadata:
+      type: object
+      properties:
+        version:
+          type: string
+        service:
+          type: string
+          example: "Aegis AI Control Plane"
+
+    AuditLogResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEntry'
+        total:
+          type: integer
+
+    AuditLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        company_id:
+          type: string
+        action:
+          type: string
+        target_type:
+          type: string
+        target_id:
+          type: string
+        details:
+          type: string
+          description: JSON encoded details
+        ip_address:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
 
     ErrorResponse:
       type: object
       properties:
         error:
           type: string
-          description: Descriptive error message explaining the failure

@@ -1,0 +1,19 @@
+{
+  "responses": {
+    "200": {
+      "description": "Tokens adjusted",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "company_id": { "type": "string" },
+              "balance": { "type": "integer" }
+            },
+            "title": "BalanceResponse"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Body",
+  "body": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "required": ["amount", "reason"],
+          "properties": {
+            "amount": { "type": "integer" },
+            "reason": { "type": "string" }
+          },
+          "title": "AdjustTokensRequest"
+        }
+      }
+    }
+  }
+}

@@ -7,13 +7,10 @@
           "schema": {
             "type": "object",
             "properties": {
-              "access_token": {
-                "type": "string",
-                "description": "JWT Access Token (short-lived)"
-              },
+              "access_token": { "type": "string" },
               "expires_in": {
                 "type": "integer",
-                "description": "Validity period in seconds"
+                "description": "Seconds until expiration"
               },
               "token_type": { "type": "string", "example": "Bearer" }
             },
@@ -23,17 +20,12 @@
       }
     },
     "401": {
-      "description": "Invalid identity or credentials",
+      "description": "Invalid credentials",
       "content": {
         "application/json": {
           "schema": {
             "type": "object",
-            "properties": {
-              "error": {
-                "type": "string",
-                "description": "Descriptive error message explaining the failure"
-              }
-            },
+            "properties": { "error": { "type": "string" } },
             "title": "ErrorResponse"
           }
         }

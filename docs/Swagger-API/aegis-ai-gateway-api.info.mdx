@@ -1,7 +1,7 @@
 ---
 id: aegis-ai-gateway-api
 title: "Aegis AI Gateway API"
-description: "The **Aegis AI Control Plane** provides high-intensity orchestration and intelligence endpoints for offensive cyberdefense operations."
+description: "# 🛡️ Aegis AI Control Plane API"
 sidebar_label: Introduction
 sidebar_position: 0
 hide_title: true
@@ -16,7 +16,7 @@ import Export from "@theme/ApiExplorer/Export";
 
 <span
   className={"theme-doc-version-badge badge badge--secondary"}
-  children={"Version: 2.2.0"}
+  children={"Version: 3.0.0"}
 >
 </span>
 
@@ -29,13 +29,25 @@ import Export from "@theme/ApiExplorer/Export";
 
 
 
-The **Aegis AI Control Plane** provides high-intensity orchestration and intelligence endpoints for offensive cyberdefense operations.
+# 🛡️ Aegis AI Control Plane API
 
-### Core Capabilities
-* **Scan Orchestration**: Trigger and monitor complex pentest workflows driven by Temporal.
-* **Vulnerability Intelligence**: Access detailed CVE analysis and misconfiguration data with technical evidences.
-* **Real-time Streaming**: Persistent SSE (Server-Sent Events) for live status updates across the global scan fleet.
-* **Zero Trust Auth**: Professional session management with JWT and HTTP-only cookie-based refresh tokens.
+The **Aegis AI Gateway** is the high-performance orchestration layer for the Aegis offensive cyberdefense platform.
+It provides secure, unified access to scan orchestration, vulnerability intelligence, team management, and billing operations.
+
+### 🚀 Core Missions
+* **Automated Pentesting**: Trigger and monitor large-scale security scans powered by Temporal workflows.
+* **Threat Intelligence**: Access technical proofs and CVE data extracted by specialized worker fleets.
+* **Enterprise RBAC**: Manage multi-tenant organizations with granular roles (SuperAdmin, Admin, Billing, etc.).
+* **Financial Governance**: Monitor token consumption, manage licenses, and track audit trails.
+
+### 🔒 Security & Authentication
+Aegis AI enforces a Zero-Trust architecture:
+1. **Primary Auth**: JWT Bearer Token (short-lived).
+2. **Session Persistence**: HTTP-only Secure Refresh Token (Rotation enforced).
+3. **Permission Scopes**: Every endpoint is gated by specific RBAC scopes.
+
+---
+*Internal Version: 3.0.0 (Refined Role Structure)*
 
 
 <div
@@ -56,7 +68,7 @@ The **Aegis AI Control Plane** provides high-intensity orchestration and intelli
     >
 
 
-
+      Access Token returned by /auth/login
 
       <div>
         <table>

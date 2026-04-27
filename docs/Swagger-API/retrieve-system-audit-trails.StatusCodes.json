@@ -1,0 +1,39 @@
+{
+  "responses": {
+    "200": {
+      "description": "Audit logs list",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "logs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "user_id": { "type": "string" },
+                    "company_id": { "type": "string" },
+                    "action": { "type": "string" },
+                    "target_type": { "type": "string" },
+                    "target_id": { "type": "string" },
+                    "details": {
+                      "type": "string",
+                      "description": "JSON encoded details"
+                    },
+                    "ip_address": { "type": "string" },
+                    "timestamp": { "type": "string", "format": "date-time" }
+                  },
+                  "title": "AuditLogEntry"
+                }
+              },
+              "total": { "type": "integer" }
+            },
+            "title": "AuditLogResponse"
+          }
+        }
+      }
+    }
+  }
+}

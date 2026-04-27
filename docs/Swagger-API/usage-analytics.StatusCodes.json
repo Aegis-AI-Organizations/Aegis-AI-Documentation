@@ -1,0 +1,28 @@
+{
+  "responses": {
+    "200": {
+      "description": "Consumption stats",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "days": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "date": { "type": "string" },
+                    "total_consumed": { "type": "integer" }
+                  }
+                }
+              },
+              "total_period": { "type": "integer" }
+            },
+            "title": "UsageStatsResponse"
+          }
+        }
+      }
+    }
+  }
+}

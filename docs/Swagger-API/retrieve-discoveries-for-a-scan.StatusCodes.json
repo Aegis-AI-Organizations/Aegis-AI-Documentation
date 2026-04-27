@@ -1,0 +1,29 @@
+{
+  "responses": {
+    "200": {
+      "description": "Vulnerabilities list",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "vuln_type": { "type": "string" },
+                "severity": {
+                  "type": "string",
+                  "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
+                },
+                "target_endpoint": { "type": "string" },
+                "description": { "type": "string" },
+                "discovered_at": { "type": "string", "format": "date-time" }
+              },
+              "title": "Vulnerability"
+            }
+          }
+        }
+      }
+    }
+  }
+}

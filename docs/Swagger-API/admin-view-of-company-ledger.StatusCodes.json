@@ -1,0 +1,35 @@
+{
+  "responses": {
+    "200": {
+      "description": "Ledger entries",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "amount": {
+                      "type": "integer",
+                      "description": "Positive for addition, negative for consumption"
+                    },
+                    "reason": { "type": "string" },
+                    "scan_id": { "type": "string", "nullable": true },
+                    "created_at": { "type": "string", "format": "date-time" }
+                  },
+                  "title": "LedgerEntry"
+                }
+              },
+              "total": { "type": "integer" }
+            },
+            "title": "LedgerResponse"
+          }
+        }
+      }
+    }
+  }
+}

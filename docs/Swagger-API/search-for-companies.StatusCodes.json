@@ -1,0 +1,25 @@
+{
+  "responses": {
+    "200": {
+      "description": "Search results",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" },
+                "deployment_token": { "type": "string" },
+                "owner_email": { "type": "string" },
+                "avatar_url": { "type": "string" }
+              },
+              "title": "CompanySearchResult"
+            }
+          }
+        }
+      }
+    }
+  }
+}

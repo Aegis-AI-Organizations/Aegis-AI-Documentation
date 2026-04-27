@@ -1,0 +1,36 @@
+{
+  "responses": {
+    "200": {
+      "description": "Scan details",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "PENDING",
+                  "PROVISIONING",
+                  "SCANNING",
+                  "ANALYZING",
+                  "FINISHED",
+                  "FAILED"
+                ]
+              },
+              "target_image": { "type": "string" },
+              "started_at": { "type": "string", "format": "date-time" },
+              "completed_at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              }
+            },
+            "title": "Scan"
+          }
+        }
+      }
+    }
+  }
+}

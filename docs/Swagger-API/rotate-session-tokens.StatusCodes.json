@@ -1,0 +1,23 @@
+{
+  "responses": {
+    "200": {
+      "description": "Token rotated",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "access_token": { "type": "string" },
+              "expires_in": {
+                "type": "integer",
+                "description": "Seconds until expiration"
+              },
+              "token_type": { "type": "string", "example": "Bearer" }
+            },
+            "title": "AuthResponse"
+          }
+        }
+      }
+    }
+  }
+}

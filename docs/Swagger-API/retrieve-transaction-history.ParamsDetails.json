@@ -1,0 +1,6 @@
+{
+  "parameters": [
+    { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+    { "name": "offset", "in": "query", "schema": { "type": "integer" } }
+  ]
+}
