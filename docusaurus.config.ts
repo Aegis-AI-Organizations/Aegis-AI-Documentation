@@ -16,7 +16,7 @@ const config: Config = {
   url: "https://aegis-ai-organizations.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/Aegis-Documentation/",
+  baseUrl: "/Aegis-AI-Documentation/",
 
   // GitHub pages deployment config.
   organizationName: "Aegis-AI-Organizations", // Usually your GitHub org/user name.
