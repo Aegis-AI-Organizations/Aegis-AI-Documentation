@@ -267,11 +267,28 @@ const sidebar: SidebarsConfig = {
     {
       type: "category",
       label: "Agent Operations",
+      link: {
+        type: "doc",
+        id: "Swagger-API/agent-operations",
+      },
       items: [
         {
           type: "doc",
-          id: "Agent/api",
-          label: "Agent API Reference",
+          id: "Swagger-API/register-a-new-remote-agent",
+          label: "Register a new remote agent",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/update-agent-operational-status",
+          label: "Update agent operational status",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/generate-presigned-upload-url",
+          label: "Generate presigned upload URL",
+          className: "api-method get",
         },
       ],
     },
