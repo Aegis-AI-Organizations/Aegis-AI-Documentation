@@ -29,10 +29,10 @@ info:
   license:
     name: Proprietary
 servers:
-  - url: https://api.aegis.ai/v2
+  - url: https://api.aegis.ai/api
     description: Production Environment (TLS 1.3 enforced)
-  - url: http://localhost:8080
-    description: Local Development Environment
+  - url: http://localhost/api
+    description: Local Development Environment (via Nginx Proxy)
 tags:
   - name: Authentication
     description: Identity management, session lifecycle, and profile control
@@ -46,6 +46,8 @@ tags:
     description: Token management, ledger tracking, and usage analytics
   - name: Platform
     description: Health monitoring and environment status
+  - name: Agents
+    description: Remote probe registration and heartbeat telemetry
 security:
   - BearerAuth: []
 paths:
@@ -277,6 +279,107 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OnboardCompanyResponse'
+
+  # --- Agents ---
+  /agents/register:
+    post:
+      summary: Register a new remote agent
+      description: Initiates a new probe identity using a deployment token.
+      tags:
+        - Agents
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, name]
+              properties:
+                token:
+                  type: string
+                  description: Organization deployment token (ag_...)
+                name:
+                  type: string
+                  description: Friendly name for the agent
+      responses:
+        '200':
+          description: Agent registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agent_id:
+                    type: string
+                    format: uuid
+
+  /agents/{id}/status:
+    post:
+      summary: Update agent heartbeat status
+      description: Refreshes the last_seen timestamp and current operational state.
+      tags:
+        - Agents
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [IDLE, RUNNING, ERROR, OFFLINE]
+      responses:
+        '200':
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
+  /agents/{id}/upload-url:
+    get:
+      summary: Request presigned telemetry upload URL
+      description: Generates a temporary S3/MinIO link for large file ingestion.
+      tags:
+        - Agents
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: filename
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Upload link generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  method:
+                    type: string
+                    example: PUT
 
   # --- Admin & Search ---
   /admin/companies:
@@ -798,146 +901,86 @@ components:
           type: string
         role:
           type: string
-        company_id:
-          type: string
-        avatar_url:
-          type: string
 
     AdminCreateUserRequest:
       type: object
-      required: [name, email, password, role, company_id]
+      required: [email, name, role, company_id]
       properties:
-        name:
-          type: string
         email:
           type: string
-        password:
+          format: email
+        name:
           type: string
-          minLength: 8
         role:
           $ref: '#/components/schemas/UserRole'
         company_id:
           type: string
+          format: uuid
 
-    # --- Scans ---
+    # --- Scans & Vulns ---
     Scan:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        target:
+          type: string
         status:
           type: string
-          enum: [PENDING, PROVISIONING, SCANNING, ANALYZING, FINISHED, FAILED]
-        target_image:
-          type: string
-        started_at:
+          enum: [PENDING, RUNNING, COMPLETED, FAILED]
+        created_at:
           type: string
           format: date-time
-        completed_at:
-          type: string
-          format: date-time
-          nullable: true
 
     CreateScanRequest:
       type: object
-      required: [target_image]
+      required: [target]
       properties:
-        target_image:
+        target:
           type: string
-          example: "nginx:latest"
+          example: "https://example.com"
 
     CreateScanResponse:
       type: object
       properties:
         scan_id:
           type: string
-        status:
-          type: string
+          format: uuid
 
-    # --- Vulnerabilities ---
     Vulnerability:
       type: object
       properties:
         id:
           type: string
-        vuln_type:
+          format: uuid
+        title:
           type: string
         severity:
           type: string
           enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
-        target_endpoint:
+        cve_id:
           type: string
-        description:
-          type: string
-        discovered_at:
-          type: string
-          format: date-time
+          nullable: true
 
     Evidence:
       type: object
       properties:
         id:
           type: string
-        vulnerability_id:
+          format: uuid
+        type:
           type: string
-        payload_used:
+        data:
           type: string
-        loot_data:
-          type: object
-        captured_at:
-          type: string
-          format: date-time
 
-    # --- Billing ---
+    # --- Billing & Finance ---
     BalanceResponse:
       type: object
       properties:
         company_id:
           type: string
         balance:
-          type: integer
-
-    LedgerResponse:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/LedgerEntry'
-        total:
-          type: integer
-
-    LedgerEntry:
-      type: object
-      properties:
-        id:
-          type: string
-        amount:
-          type: integer
-          description: Positive for addition, negative for consumption
-        reason:
-          type: string
-        scan_id:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-
-    UsageStatsResponse:
-      type: object
-      properties:
-        days:
-          type: array
-          items:
-            type: object
-            properties:
-              date:
-                type: string
-              total_consumed:
-                type: integer
-        total_period:
           type: integer
 
     AdjustTokensRequest:
@@ -949,60 +992,62 @@ components:
         reason:
           type: string
 
+    LedgerResponse:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LedgerEntry'
+
+    LedgerEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: integer
+        type:
+          type: string
+        reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    UsageStatsResponse:
+      type: object
+      properties:
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              tokens:
+                type: integer
+
     # --- Platform ---
     HealthStatus:
       type: object
       properties:
         status:
           type: string
-          example: "UP"
-        timestamp:
-          type: string
-          format: date-time
+          example: healthy
+        services:
+          type: object
 
     RootMetadata:
       type: object
       properties:
         version:
           type: string
-        service:
+        environment:
           type: string
-          example: "Aegis AI Control Plane"
 
-    AuditLogResponse:
-      type: object
-      properties:
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditLogEntry'
-        total:
-          type: integer
-
-    AuditLogEntry:
-      type: object
-      properties:
-        id:
-          type: string
-        user_id:
-          type: string
-        company_id:
-          type: string
-        action:
-          type: string
-        target_type:
-          type: string
-        target_id:
-          type: string
-        details:
-          type: string
-          description: JSON encoded details
-        ip_address:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-
+    # --- Errors ---
     ErrorResponse:
       type: object
       properties:
