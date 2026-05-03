@@ -264,6 +264,17 @@ const sidebar: SidebarsConfig = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Agent Operations",
+      items: [
+        {
+          type: "doc",
+          id: "Agent/api",
+          label: "Agent API Reference",
+        },
+      ],
+    },
   ],
 };
 
