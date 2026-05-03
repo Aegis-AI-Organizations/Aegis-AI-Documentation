@@ -156,7 +156,7 @@ paths:
       summary: Register a new remote agent
       description: Exchanges a deployment token for a unique agent identity.
       tags:
-        - "Agent Operations"
+        - Agents
       security: []
       requestBody:
         required: true
@@ -189,7 +189,7 @@ paths:
       summary: Update agent operational status
       description: Sends a heartbeat and telemetry status update.
       tags:
-        - "Agent Operations"
+        - Agents
       parameters:
         - name: id
           in: path
@@ -217,7 +217,7 @@ paths:
       summary: Generate presigned upload URL
       description: Returns a MinIO PUT URL for log/telemetry ingestion.
       tags:
-        - "Agent Operations"
+        - Agents
       parameters:
         - name: id
           in: path
