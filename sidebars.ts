@@ -93,7 +93,6 @@ const sidebars: SidebarsConfig = {
           "Official REST & SSE API Reference for the Aegis AI Control Plane.",
         slug: "/category/aegis-api",
       },
-      // @ts-ignore
       items: require("./docs/Swagger-API/sidebar.ts"),
     },
   ],

@@ -301,4 +301,4 @@ const sidebar: SidebarsConfig = {
   ],
 };
 
-export default sidebar.apisidebar;
+module.exports = sidebar.apisidebar;
