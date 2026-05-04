@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Agent registered successfully","content":{"application/json":{"schema":{"type":"object","properties":{"agent_id":{"type":"string","format":"uuid"},"agent_secret":{"type":"string","description":"Secure operational secret (only shown once)"}}}}}}}}

@@ -1,0 +1,1 @@
+{"parameters":[{"name":"prefix","in":"query","schema":{"type":"string"},"description":"Optional directory prefix (e.g., avatars, evidence)"}]}

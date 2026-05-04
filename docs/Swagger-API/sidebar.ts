@@ -262,6 +262,40 @@ const sidebar: SidebarsConfig = {
           label: "Retrieve root metadata",
           className: "api-method get",
         },
+        {
+          type: "doc",
+          id: "Swagger-API/generate-presigned-upload-url-user",
+          label: "Generate presigned upload URL (User)",
+          className: "api-method get",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Agents",
+      link: {
+        type: "doc",
+        id: "Swagger-API/agents",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "Swagger-API/register-a-new-remote-agent",
+          label: "Register a new remote agent",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/update-agent-operational-status",
+          label: "Update agent operational status",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "Swagger-API/generate-presigned-upload-url",
+          label: "Generate presigned upload URL",
+          className: "api-method get",
+        },
       ],
     },
     {

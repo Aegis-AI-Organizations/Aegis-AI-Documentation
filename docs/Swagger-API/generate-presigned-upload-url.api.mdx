@@ -1,0 +1,69 @@
+---
+id: generate-presigned-upload-url
+title: "Generate presigned upload URL"
+description: "Returns a MinIO PUT URL for log/telemetry ingestion. Requires Agent Secret."
+sidebar_label: "Generate presigned upload URL"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVs1uGzcQfpXBBigcQT9OctOpSuq4LpLWsJUUaJwDvTvaZcwlNyRXtiII6BsUKHpqD0Xfom/VPkK/4a4U2U4LFIguWu4OZ4bf980M11nBIfe6idrZbJqdcWy9DaTopbYn39Hpqzm9OntBC+fJuHIS2XDN0a9I25KD7BrTGb9vtedAs5JtpHPOPcdxNsyiKkM2fZOl9yF7O8wC563XcYW36+wpK89+1sYKy7cbfG6UV3DPPiQDiwWS0gV8aUmvUbAdZr4LWGTT6FuG17ziWmXTdRZXjewI0SM/WCLvWkW8aVt42WyGO6cLbTg99q7ft+xX/8P3RvLFoRtnAwf5/vjwUP5uA3oKE11aLhKMwIG9iiwHyp2NgEW2qKYxOleyZfIuyL71/bju8h3nERsb7xr2UXdRW28+kdwwA4yVKz6FCd+oujHyCuziHOn3cUNWcooiUE+ziWr0RCX+JmtdbCZtY5wqRhJW6PTLLVkpkayKsQnTiWwbKy51GCs9geVdVFzR5rKgI7vU3tlalHMwf3FOj8ZPiC2Iy7l4mAljHz3DsXG5MpUL8b7XF/KJvuIlG9ckh7ecL7Wib0ttbwjhb1bwvSfIc4G7Q3Rfljv0JHrWq0HWl8kIb7qH51udffP9/F5eszznEGjurtiSTxUGPVyuaKIQBCdCUqJNCHHhUkwdEz8zAZBmJ3QMzVyrFc1OT+55f0B///7bH3/9+RPtzJ9BWt4ZOjXKsmy6sBd2XjENBnddDgaEdcS3SpfVCMJKJWNzJjBQocR90iUZtWKf+oAYd27cYsE26CVTvrpkX7AsmRqjongZX9iTSJDrUiNlSlDzkFqrFxoAqA6W6Cjkyt4ON6Rla6RWLrUBO+g26DxGQ4c5PERWNSFJ6FKoHZKywFPDwJYkxZF8hLEc+8EDAejXHwGKZ3S1EOTThR0IGG10tZQjncKNtDNbDgZTmntdljituK2d1VG6n/Ilj5CpYdqKJiUeqHHX7DtG51w3zkOF185fLYy7liQk1LzyrCKd7J1DIvXSiJxXVot6gZZbhBT52esjKlRUxDdAJY9dhNBwrpXRH7CUIEKKYY7bQEeI4BuvwcPZ09kzCfIyIUV1a6IeoecoVIPzpbL6QwcUXetYUemVbXFMgnRA18F5CyRnRa3BRv/3tMN4SBzz8cM+4nMNj5ITHTt0A1mks73skYtJ92h3oa2bjtyOO0LTE8GEjkA55BWpttBRnrXZJ/CXn2WudKh/QVKcYKzvmRd2p+q+ccgA+4G9G819GyIpSEsDY1QeTy/sozGyPvW6Vphj4kqyReFSV/l9oR6Eyvk4MpB3IUd9LLvOOekHevFBh7il8ev5/HTkrFl1SQJ6XqDxV1tXZy52VbRrbHD4JKXBvu40Sec5pBvE3RFgXMG2aByELwVaqn36FzpP5EJ/siXBNBqNQIfoCwwYei0JOjulJ+PD8SEy4IWWrnMGbukcoy2B8XBwYdFQlp0xmkmy7ocTJCfNqJ+XHcQ7Do4smhZzP1Lu9P6+78usqcGjDJ9+35e7b2h3Pf17QdCYIV2OICY1xAZ9HlrZszjuJygKZTtYu4kk8/Vub1x/HLKf+2bTTYWI0pyg3Un/Hm5HcTc532CqCwLd7MTDNF1j9sYnpo/MMTFdry9V4FfebDbyuruLyFAtdFCXRm4jC2UC/8f5Dvpci4f0b/ld8er2xWepTCtmaRIuldcS6/PH7V8qu9qPuc1H7mVvYVWxKjBRJXr3QXpjE/e23LsmSdq7a8vxkUxedXts3xnTyfsn0wEDySIVLFjYZpealyS42fwDpqzf9g==
+sidebar_class_name: "get api-method"
+info_path: docs/Swagger-API/aegis-ai-gateway-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Generate presigned upload URL"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/agents/{id}/upload-url"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns a MinIO PUT URL for log/telemetry ingestion. Requires Agent Secret.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./generate-presigned-upload-url.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./generate-presigned-upload-url.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./generate-presigned-upload-url.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

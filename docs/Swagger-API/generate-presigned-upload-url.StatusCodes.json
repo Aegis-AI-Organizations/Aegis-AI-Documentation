@@ -1,0 +1,1 @@
+{"responses":{"200":{"description":"Presigned URL generated","content":{"application/json":{"schema":{"type":"object","properties":{"url":{"type":"string"},"method":{"type":"string","example":"PUT"}}}}}}}}
