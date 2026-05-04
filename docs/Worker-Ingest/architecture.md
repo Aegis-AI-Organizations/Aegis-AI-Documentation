@@ -54,4 +54,4 @@ graph LR
 
 ---
 
-*Aegis AI Telemetry & Data Engineering — 2026*
+_Aegis AI Telemetry & Data Engineering — 2026_

@@ -36,6 +36,7 @@ Le pool Deployer est géré par **KEDA** (Kubernetes Event-Driven Autoscaling) p
 ## 🛰️ Logique de Déploiement
 
 Le worker gère la traduction de :
+
 - **Topologies de Service** : Groupes d'autoscaling, déploiements et ensembles avec état (stateful sets).
 - **Métadonnées Réseau** : Règles d'ingress, équilibreurs de charge et entrées DNS internes.
 - **Contextes de Sécurité** : Réplication du niveau de privilège exact et des contraintes d'exécution de la cible réelle.
@@ -50,4 +51,4 @@ graph TD
 
 ---
 
-*Infrastructure Aegis AI & Jumeaux Numériques — 2026*
+_Infrastructure Aegis AI & Jumeaux Numériques — 2026_

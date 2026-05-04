@@ -36,6 +36,7 @@ The Deployer pool is managed by **KEDA** (Kubernetes Event-Driven Autoscaling) t
 ## 🛰️ Deployment Logic
 
 The worker handles the translation of:
+
 - **Service Topologies**: Auto-scaling groups, deployments, and stateful sets.
 - **Network Metadata**: Ingress rules, load balancers, and internal DNS entries.
 - **Security Contexts**: Replicating the exact privilege level and runtime constraints of the real target.
@@ -50,4 +51,4 @@ graph TD
 
 ---
 
-*Aegis AI Infrastructure & Digital Twins — 2026*
+_Aegis AI Infrastructure & Digital Twins — 2026_

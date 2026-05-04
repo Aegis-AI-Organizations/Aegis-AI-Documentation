@@ -1,1 +1,19 @@
-{"responses":{"200":{"description":"URL generated","content":{"application/json":{"schema":{"type":"object","properties":{"url":{"type":"string"},"object_name":{"type":"string"},"expires_in":{"type":"string","example":"15m"}}}}}}}}
+{
+  "responses": {
+    "200": {
+      "description": "URL generated",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "object_name": { "type": "string" },
+              "expires_in": { "type": "string", "example": "15m" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

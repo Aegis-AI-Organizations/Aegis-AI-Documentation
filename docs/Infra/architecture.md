@@ -41,9 +41,11 @@ graph TD
 Aegis enforces a **Default-Deny** network posture using **Cilium Network Policies**:
 
 ### 1. Unified Identity (Internal mTLS)
+
 No microservice trusts another based on IP. All internal communication is cryptographically verified using an internal Certificate Authority (CA) managed by **Cert-Manager**.
 
 ### 2. Micro-segmentation
+
 - **Gateway Isolation**: The Gateway is prevented from reaching any database directly. All data access must go through the Brain's gRPC interface.
 - **Data Confinement**: PostgreSQL and Neo4j only allow inbound connections from the `brain` service.
 - **Sandbox Containment**: Vulnerable target containers are isolated in a restricted topology. They can reach the internet to fetch payloads but are strictly blocked from probe-scanning the internal cluster infrastructure.
@@ -53,10 +55,11 @@ No microservice trusts another based on IP. All internal communication is crypto
 ## 🔄 Continuous Delivery (GitOps)
 
 ArgoCD monitors the `main` branch of this repository. When a change is detected:
+
 1. **Validation**: Kustomize renders the manifests for the `mvp` environment.
 2. **Sync**: ArgoCD applies the diff to the cluster.
 3. **Health Check**: Pods are rolled out and verified via Readiness/Liveness probes before the old version is terminated.
 
 ---
 
-*Aegis AI Infrastructure Engineering — 2026*
+_Aegis AI Infrastructure Engineering — 2026_

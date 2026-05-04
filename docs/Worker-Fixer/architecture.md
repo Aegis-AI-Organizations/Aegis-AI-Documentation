@@ -36,6 +36,7 @@ The Fixer pool is managed by **KEDA** (Kubernetes Event-Driven Autoscaling) to e
 ## 🛰️ Remediation Capabilities
 
 The worker targets various layers of the stack:
+
 - **Application Logic**: Generating patches for common web vulnerabilities (SQLi, XSS).
 - **Infastructure-as-Code**: Patching Terraform or CloudFormation misconfigurations.
 - **Kubernetes Resources**: Updating `NetworkPolicies`, `SecurityContexts`, and `PodDisruptionBudgets`.
@@ -50,4 +51,4 @@ graph LR
 
 ---
 
-*Aegis AI Remediation & Automation — 2026*
+_Aegis AI Remediation & Automation — 2026_

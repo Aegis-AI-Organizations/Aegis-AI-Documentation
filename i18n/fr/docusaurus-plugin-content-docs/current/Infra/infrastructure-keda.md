@@ -9,6 +9,7 @@ Aegis AI utilise **KEDA (Kubernetes Event-Driven Autoscaling)** pour gérer le c
 KEDA surveille les files d'attente de la plateforme et prend des décisions de mise à l'échelle en temps réel. C'est crucial pour les **opérations offensives à haute intensité** où un seul scan massif peut nécessiter des dizaines de workers en parallèle.
 
 ### Mécanisme de Déclenchement : Files d'Attente Temporal
+
 KEDA interroge la couche de persistance du cluster Temporal (PostgreSQL) pour vérifier la profondeur des files d'attente de tâches. Si la taille de la file dépasse un seuil, KEDA instruit Kubernetes de lancer plus de pods de workers.
 
 ```mermaid
@@ -24,12 +25,15 @@ graph TD
 ## 🛠️ Avantages Clés
 
 ### 1. Scale-to-Zero (Mise à l'échelle vers zéro)
+
 Lorsqu'il n'y a pas de scan actif, Aegis réduit les déploiements de workers à **0 réplica**. Cela réduit considérablement les coûts d'infrastructure dans les environnements cloud (AWS/GCP) et libère des ressources dans les clusters locaux.
 
 ### 2. Capacité de Rafale (Burstabillity)
+
 Lorsqu'une cible de scan importante (ex : plage IP d'une entreprise) est soumise, KEDA peut rapidement faire passer le pool de workers de 0 à plus de 20 réplicas, traitant la cible avec une concurrence maximale.
 
 ### 3. Conscience des Files d'Attente
+
 KEDA garantit que nous ne mettons à l'échelle que lorsqu'il y a **un travail réel à faire**, évitant ainsi les "mises à l'échelle fantômes" causées par le bruit de fond ou la consommation de mémoire inactive.
 
 ---
@@ -65,21 +69,25 @@ keda:
 Vous pouvez vérifier l'état de l'auto-scaler à l'aide de `kubectl` :
 
 ### 1. Vérifier les ScaledObjects
+
 ```bash
 kubectl get scaledobjects -n aegis-system
 ```
 
 ### 2. Inspecter l'Historique de Mise à l'Échelle
+
 ```bash
 kubectl describe scaledobject aegis-worker-pentest -n aegis-system
 ```
 
 ### 3. Surveillance du Cycle de Vie des Pods
+
 Observez la création/terminaison des pods :
+
 ```bash
 kubectl get pods -n aegis-system -l app=aegis-worker-pentest -w
 ```
 
 ---
 
-*Équipe Cloud Aegis AI — 2026*
+_Équipe Cloud Aegis AI — 2026_

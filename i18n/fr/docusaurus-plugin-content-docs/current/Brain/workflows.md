@@ -3,7 +3,9 @@
 Le "Cerveau" est l'orchestrateur asynchrone principal de l'écosystème Aegis. Conçu en Python robuste via le client PostgreSQL synchrone `psycopg` et `temporalio`, il reçoit les ordres d'audit de sécurité massifs en gRPC et coordonne une armée de 'workers' à travers des Workflows Temporal.
 
 ## Architecture (MVP v2)
+
 Dans la version 2 du framework, le Brain assume **le rôle exclusif** de commandeur de système :
+
 1. **Couche gRPC Serveur (`aegis.v2`)** : Écoute sans répit les impulsions relais provenant de l'API Gateway.
 2. **Client PostgreSQL (`psycopg`)** : Consigne l'état des scans, gère la génération des UUID, accumule les vulnérabilités trouvées en temps réel.
 3. **Client Temporal** : Lance les workflows asynchrones distribués à destination de la grille de microservices workers (`pentest-worker`, `ingest-worker`, etc.).
@@ -11,6 +13,7 @@ Dans la version 2 du framework, le Brain assume **le rôle exclusif** de command
 ## Panorama des Workflows Temporal
 
 ### 1. `PentestWorkflow`
+
 Le workflow le plus critique d'Aegis. Une fois éveillé par `StartScan`, le Brain décline ses étapes tactiques :
 
 - **`deploy_sandbox_target` (Activité K8s)** : Forge dynamiquement un "bac à sable" stérile dans le cluster (`aegis-war-room-{scan_id}`). L'image cible y est injectée et isolée hermétiquement des autres applications internes de la plateforme.
@@ -20,6 +23,7 @@ Le workflow le plus critique d'Aegis. Une fois éveillé par `StartScan`, le Bra
 ## Flux Métier (Workflows de Service)
 
 ### 1. Onboarding Manuel (MVP)
+
 Aujourd'hui, l'onboarding est une opération atomique gérée par les administrateurs Aegis.
 
 1.  **Requête gRPC** : L'API Gateway appelle `OnboardCompany`.
@@ -29,4 +33,5 @@ Aujourd'hui, l'onboarding est une opération atomique gérée par les administra
 5.  **Réponse Atomique** : Le système retourne les identifiants et le token de déploiement pour configuration immédiate de l'Agent.
 
 ## Périmètre Zero Trust
+
 Le Brain tourne dans l'enclave aveugle `aegis-system`. Protégé par les contraintes réseaux de Cilium, il reste **le seul et unique composant** formellement apte à adresser la base de données `aegis-postgres-mvp`.

@@ -23,14 +23,18 @@ graph LR
 ## 🛠️ Key Components
 
 ### 1. Internal Root CA
+
 The root of all trust for service-to-service communication. This CA is used to sign certificates for:
+
 - **Server Identity**: Proves the Brain is really the Brain.
 - **Client Identity**: Proves the Gateway is authorized to speak to the Brain.
 
 ### 2. Cert-Manager
+
 Orchestrates the lifecycle of these internal certificates. It ensures that certificates are automatically rotated and that secrets are correctly injected into the microservice namespaces.
 
 ### 3. Envoy Sidecars (Future)
+
 While current mTLS is handled at the application layer (Go/Python), future versions of Aegis will leverage **Cilium Service Mesh** or **Envoy** to handle this transparently.
 
 ---
@@ -67,20 +71,25 @@ tls:
 If you encounter `context deadline exceeded` or `transport: authentication handwriting failed`, follow these steps:
 
 ### 1. Verify Trust Roots
+
 Ensure both pods have the correct `ca.crt` mounted.
+
 ```bash
 kubectl exec -it <pod_name> -n aegis-system -- cat /etc/tls/ca.crt
 ```
 
 ### 2. Inspect Certificate Validity
+
 Check the expiration and SANs of the generated secrets:
+
 ```bash
 kubectl get secret brain-server-tls -n aegis-system -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x86 -text -noout
 ```
 
 ### 3. Log Inspection
+
 Check the Gateway logs for `BRAIN_TLS_ENABLE=true` confirmation.
 
 ---
 
-*Aegis AI Security Engineering Team — 2026*
+_Aegis AI Security Engineering Team — 2026_

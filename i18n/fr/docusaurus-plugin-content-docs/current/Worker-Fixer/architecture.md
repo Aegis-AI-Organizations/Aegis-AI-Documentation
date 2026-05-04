@@ -36,6 +36,7 @@ Le pool Fixer est géré par **KEDA** (Kubernetes Event-Driven Autoscaling) pour
 ## 🛰️ Capacités de Remédiation
 
 Le worker cible plusieurs couches de la pile :
+
 - **Logique Applicative** : Génération de correctifs pour les vulnérabilités web courantes (SQLi, XSS).
 - **Infrastructure-as-Code** : Correction des mauvaises configurations Terraform ou CloudFormation.
 - **Ressources Kubernetes** : Mise à jour des `NetworkPolicies`, `SecurityContexts` et `PodDisruptionBudgets`.
@@ -50,4 +51,4 @@ graph LR
 
 ---
 
-*Remédiation et Automatisation Aegis AI — 2026*
+_Remédiation et Automatisation Aegis AI — 2026_

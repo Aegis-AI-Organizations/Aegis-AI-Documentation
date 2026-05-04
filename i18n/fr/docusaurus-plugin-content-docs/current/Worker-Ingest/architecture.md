@@ -54,4 +54,4 @@ graph LR
 
 ---
 
-*Ingénierie Télémétrie et Données Aegis AI — 2026*
+_Ingénierie Télémétrie et Données Aegis AI — 2026_
