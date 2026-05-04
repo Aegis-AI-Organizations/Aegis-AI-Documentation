@@ -46,7 +46,7 @@ tags:
     description: Token management, ledger tracking, and usage analytics
   - name: Platform
     description: Health monitoring and environment status
-  - name: Agents
+  - name: Agent Operations
     description: Remote probe registration and heartbeat telemetry
 security:
   - BearerAuth: []
@@ -156,7 +156,7 @@ paths:
       summary: Register a new remote agent
       description: Exchanges a deployment token (passed in Authorization header) for a unique agent identity and secret.
       tags:
-        - Agents
+        - Agent Operations
       security:
         - BearerAuth: []
       requestBody:
@@ -190,7 +190,7 @@ paths:
       summary: Update agent operational status
       description: Sends a heartbeat and telemetry status update. Requires Agent Secret in Authorization header.
       tags:
-        - Agents
+        - Agent Operations
       security:
         - BearerAuth: []
       parameters:
@@ -220,7 +220,7 @@ paths:
       summary: Generate presigned upload URL
       description: Returns a MinIO PUT URL for log/telemetry ingestion. Requires Agent Secret.
       tags:
-        - Agents
+        - Agent Operations
       security:
         - BearerAuth: []
       parameters:

@@ -272,10 +272,10 @@ const sidebar: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Agents",
+      label: "Agent Operations",
       link: {
         type: "doc",
-        id: "Swagger-API/agents",
+        id: "Swagger-API/agent-operations",
       },
       items: [
         {
@@ -295,17 +295,6 @@ const sidebar: SidebarsConfig = {
           id: "Swagger-API/generate-presigned-upload-url",
           label: "Generate presigned upload URL",
           className: "api-method get",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Agent Operations",
-      items: [
-        {
-          type: "doc",
-          id: "Agent/api",
-          label: "Agent API Reference",
         },
       ],
     },
