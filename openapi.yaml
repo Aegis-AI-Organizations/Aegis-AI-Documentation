@@ -154,27 +154,25 @@ paths:
   /api/agents/register:
     post:
       summary: Register a new remote agent
-      description: Exchanges a deployment token for a unique agent identity.
+      description: Exchanges a deployment token (passed in Authorization header) for a unique agent identity and secret.
       tags:
-        - Agents
-      security: []
+        - Agent Operations
+      security:
+        - BearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [token, name]
+              required: [name]
               properties:
-                token:
-                  type: string
-                  description: Deployment token
                 name:
                   type: string
                   description: Friendly name for the agent
       responses:
         '200':
-          description: Agent registered
+          description: Agent registered successfully
           content:
             application/json:
               schema:
@@ -183,13 +181,18 @@ paths:
                   agent_id:
                     type: string
                     format: uuid
+                  agent_secret:
+                    type: string
+                    description: Secure operational secret (only shown once)
 
   /api/agents/{id}/status:
     post:
       summary: Update agent operational status
-      description: Sends a heartbeat and telemetry status update.
+      description: Sends a heartbeat and telemetry status update. Requires Agent Secret in Authorization header.
       tags:
-        - Agents
+        - Agent Operations
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -215,9 +218,11 @@ paths:
   /api/agents/{id}/upload-url:
     get:
       summary: Generate presigned upload URL
-      description: Returns a MinIO PUT URL for log/telemetry ingestion.
+      description: Returns a MinIO PUT URL for log/telemetry ingestion. Requires Agent Secret.
       tags:
-        - Agents
+        - Agent Operations
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
