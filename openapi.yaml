@@ -52,20 +52,26 @@ security:
   - BearerAuth: []
 paths:
   # --- Platform ---
-  /api/health:
+  /health:
     get:
-      summary: Retrieve platform health status
-      description: Performs a shallow check of the API Gateway and its connection to gRPC services.
+      summary: Retrieve platform health status (K8s)
+      description: Performs a shallow check of the API Gateway.
       tags:
         - Platform
       security: []
       responses:
         '200':
           description: System is operational
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthStatus'
+
+  /api/health:
+    get:
+      summary: Retrieve API health status
+      tags:
+        - Platform
+      security: []
+      responses:
+        '200':
+          description: API is operational
 
   /api/:
     get:
@@ -107,24 +113,6 @@ paths:
                 $ref: '#/components/schemas/AuthResponse'
         '401':
           description: Invalid credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/auth/me:
-    get:
-      summary: Retrieve current session profile
-      description: Returns the full identity of the authenticated user.
-      tags:
-        - Authentication
-      responses:
-        '200':
-          description: Profile retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
 
   /api/auth/refresh:
     post:
@@ -143,12 +131,24 @@ paths:
   /api/auth/logout:
     post:
       summary: Terminate current session
-      description: Revokes the refresh token and clears session cookies.
       tags:
         - Authentication
       responses:
         '204':
           description: Logged out successfully
+
+  /api/auth/me:
+    get:
+      summary: Retrieve current session profile
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 
   # --- Agent Operations ---
   /api/agents/register:
@@ -264,14 +264,9 @@ paths:
               properties:
                 name:
                   type: string
-                  example: "Jane Doe"
       responses:
         '200':
           description: Profile updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
 
   /api/users/me/profile/avatar:
     delete:
@@ -285,7 +280,6 @@ paths:
   /api/users/me/email:
     put:
       summary: Change account email
-      description: Requires current password for confirmation.
       tags:
         - Authentication
       requestBody:
@@ -325,6 +319,35 @@ paths:
       responses:
         '200':
           description: Password updated
+
+  # --- User Storage ---
+  /api/storage/upload-url:
+    get:
+      summary: Generate presigned upload URL (User)
+      description: Requires User JWT.
+      tags:
+        - Platform
+      parameters:
+        - name: prefix
+          in: query
+          schema:
+            type: string
+          description: Optional directory prefix (e.g., avatars, evidence)
+      responses:
+        '200':
+          description: URL generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  object_name:
+                    type: string
+                  expires_in:
+                    type: string
+                    example: "15m"
 
   # --- Companies ---
   /api/companies:
@@ -1037,6 +1060,34 @@ components:
           type: string
         environment:
           type: string
+
+    # --- Audit Logs ---
+    AuditLogResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEntry'
+        total:
+          type: integer
+
+    AuditLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        action:
+          type: string
+        actor_email:
+          type: string
+        company_id:
+          type: string
+        metadata:
+          type: object
+        created_at:
+          type: string
+          format: date-time
 
     # --- Errors ---
     ErrorResponse:
