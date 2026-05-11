@@ -2,13 +2,15 @@
 
 Cette section documente les points de terminaison utilisés par les agents Aegis pour s'enregistrer et communiquer avec le Brain via l'API Gateway.
 
-## Authentification
+## Authentification agent
 
-Toutes les requêtes (sauf l'enregistrement) nécessitent un **Deployment Token** fourni dans l'en-tête `Authorization`.
+L'enregistrement de l'agent nécessite un **Deployment Token** au format `ag_<43+ caractères URL-safe>`, fourni dans l'en-tête `Authorization`.
 
 ```http
-Authorization: Bearer ag_xxxxxxxxxxxx
+Authorization: Bearer ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 ```
+
+Après enregistrement, la Gateway retourne un `agent_secret`. Ce secret remplace le token de déploiement pour les routes opérationnelles de l'agent.
 
 ---
 
@@ -32,8 +34,9 @@ Utilisé par l'agent lors de son premier démarrage pour obtenir un identifiant 
 ```bash
 curl -X POST https://api.aegis.ai/api/agents/register \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg" \
   -d '{
-    "token": "ag_b249734f2f664f1787e43156fe54cd35",
+    "token": "ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg",
     "name": "Agent-Local-01"
   }'
 ```
@@ -42,7 +45,8 @@ curl -X POST https://api.aegis.ai/api/agents/register \
 
 ```json
 {
-  "agent_id": "dc91b2f3-905e-494f-b6ce-3fbfef8fc4c2"
+  "agent_id": "dc91b2f3-905e-494f-b6ce-3fbfef8fc4c2",
+  "agent_secret": "4b9a..."
 }
 ```
 
@@ -66,7 +70,7 @@ Permet à l'agent d'envoyer des battements de cœur (heartbeats) et de notifier 
 
 ```bash
 curl -X POST https://api.aegis.ai/api/agents/dc91b2f3.../status \
-  -H "Authorization: Bearer ag_b249734f2f664f1787e43156fe54cd35" \
+  -H "Authorization: Bearer <AGENT_SECRET>" \
   -d '{"status": "RUNNING"}'
 ```
 

@@ -57,7 +57,11 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Infrastructure Agent",
-          items: ["Agent/architecture"],
+          items: [
+            "Agent/architecture",
+            "Agent/quickstart",
+            "Agent/token-format",
+          ],
         },
         {
           type: "category",
