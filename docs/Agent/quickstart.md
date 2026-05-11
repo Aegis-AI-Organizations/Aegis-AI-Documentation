@@ -5,7 +5,7 @@ The Aegis Agent is a lightweight Rust-based probe that must be installed on the 
 ## Prerequisites
 
 1.  Have **Owner** access to your organization on the Aegis Dashboard.
-2.  Have generated or retrieved your **Deployment Token** (`ag_...`) from the Administration section.
+2.  Have generated or retrieved your **Deployment Token** (`ag_<43+ URL-safe chars>`) from the Dashboard.
 
 ## Rapid Installation (Docker)
 
@@ -14,8 +14,8 @@ The recommended way to deploy the agent is via Docker. Run the following command
 ```bash
 docker run -d \
   --name aegis-agent \
-  -e AEGIS_DEPLOYMENT_TOKEN="<YOUR_TOKEN>" \
-  -e AEGIS_BRAIN_URL="https://api.aegis.ai" \
+  -e DEPLOYMENT_TOKEN="<YOUR_TOKEN>" \
+  -e GATEWAY_URL="https://api.aegis.ai" \
   ghcr.io/aegis-ai/aegis-agent:latest
 ```
 
@@ -29,4 +29,4 @@ Once the agent is running, you should see new telemetry streams appearing in you
 ## Token Security
 
 > [!IMPORTANT]
-> The `deployment_token` is strictly confidential. It allows any probe to push data into your organization. If you believe your token has been compromised, regenerate it immediately from the Administration Dashboard.
+> The `DEPLOYMENT_TOKEN` is strictly confidential. It allows a probe to register itself in your organization. If you believe your token has been compromised, rotate or revoke it immediately from the Dashboard.
