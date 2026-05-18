@@ -6,17 +6,11 @@
       "application/json": {
         "schema": {
           "type": "object",
-          "required": [
-            "company_name",
-            "owner_name",
-            "owner_email",
-            "owner_password"
-          ],
+          "required": ["company_name", "owner_name", "owner_email"],
           "properties": {
             "company_name": { "type": "string" },
             "owner_name": { "type": "string" },
             "owner_email": { "type": "string" },
-            "owner_password": { "type": "string" },
             "plan_id": { "type": "string", "enum": ["starter", "pro", "scale"] }
           },
           "title": "OnboardCompanyRequest"

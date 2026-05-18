@@ -155,7 +155,7 @@ const sidebar: SidebarsConfig = {
         {
           type: "doc",
           id: "Swagger-API/atomic-client-onboarding",
-          label: "Atomic client onboarding",
+          label: "Post-payment client onboarding",
           className: "api-method post",
         },
         {
