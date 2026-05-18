@@ -22,15 +22,16 @@ The most critical workflow in Aegis AI. When triggered through the gRPC `StartSc
 
 ## Service Logic Flows
 
-### 1. Manual Onboarding (MVP)
+### 1. Post-payment Onboarding (MVP)
 
-Onboarding is currently an atomic operation managed by Aegis administrators.
+Onboarding is now a deferred activation flow managed by Aegis administrators after payment.
 
 1.  **gRPC Request**: The API Gateway calls internal `OnboardCompany` rpc.
 2.  **Entity Creation**: `CompanyService` saves the new `Company` record to PostgreSQL.
-3.  **Token Generation**: A unique 32-char hex `deployment_token` (`ag_` prefix) is generated via `secrets.token_hex`.
-4.  **Owner Initialization**: The initial "Owner" user is created and linked to the company.
-5.  **Atomic Response**: The system returns the credentials and deployment token for immediate agent configuration.
+3.  **Owner Initialization**: The initial "Owner" user is created with `pending_activation` and no usable initial password.
+4.  **Invitation Creation**: A one-time `aegis_inv_...` invitation token is generated, hashed in PostgreSQL, and sent by email.
+5.  **Account Activation**: The owner opens `/setup-password?token=...`, defines a password, and the Brain marks the invitation as used.
+6.  **Agent Token Delivery**: During activation, a clear `ag_...` agent token is generated, its hash is stored, and the clear token is returned only once.
 
 ## Zero Trust Security Scope
 

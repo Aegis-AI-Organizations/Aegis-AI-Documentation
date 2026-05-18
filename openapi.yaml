@@ -384,8 +384,8 @@ paths:
 
   /api/companies/onboard:
     post:
-      summary: Atomic client onboarding
-      description: Creates company, owner, and initial deployment token in a single operation.
+      summary: Post-payment client onboarding
+      description: Creates company and owner in pending activation, then sends a first-login invitation email.
       tags:
         - Administration
       requestBody:
@@ -866,15 +866,13 @@ components:
 
     OnboardCompanyRequest:
       type: object
-      required: [company_name, owner_name, owner_email, owner_password]
+      required: [company_name, owner_name, owner_email]
       properties:
         company_name:
           type: string
         owner_name:
           type: string
         owner_email:
-          type: string
-        owner_password:
           type: string
         plan_id:
           type: string
@@ -886,8 +884,6 @@ components:
         company_id:
           type: string
         owner_id:
-          type: string
-        deployment_token:
           type: string
 
     CompanySearchResult:

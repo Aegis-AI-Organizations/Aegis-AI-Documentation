@@ -22,15 +22,16 @@ Le workflow le plus critique d'Aegis. Une fois éveillé par `StartScan`, le Bra
 
 ## Flux Métier (Workflows de Service)
 
-### 1. Onboarding Manuel (MVP)
+### 1. Onboarding Post-Paiement (MVP)
 
-Aujourd'hui, l'onboarding est une opération atomique gérée par les administrateurs Aegis.
+L'onboarding est désormais un flow d'activation différée géré par les administrateurs Aegis après paiement.
 
 1.  **Requête gRPC** : L'API Gateway appelle `OnboardCompany`.
 2.  **Création de l'Entité** : Le `CompanyService` crée l'enregistrement `Company` en base de données.
-3.  **Génération du Token** : Un `deployment_token` unique (`ag_...`) est généré via `secrets.token_hex`.
-4.  **Initialisation du Propriétaire** : L'utilisateur "Owner" est créé et lié à l'entreprise.
-5.  **Réponse Atomique** : Le système retourne les identifiants et le token de déploiement pour configuration immédiate de l'Agent.
+3.  **Initialisation du Propriétaire** : L'utilisateur "Owner" est créé en `pending_activation`, sans mot de passe initial utilisable.
+4.  **Création de l'Invitation** : Un token d'invitation `aegis_inv_...` à usage unique est généré, hashé en base PostgreSQL puis envoyé par email.
+5.  **Activation du Compte** : L'owner ouvre `/setup-password?token=...`, définit son mot de passe et le Brain marque l'invitation comme utilisée.
+6.  **Remise du Token Agent** : Pendant l'activation, un token agent clair `ag_...` est généré, son hash est stocké, et le token clair est retourné une seule fois.
 
 ## Périmètre Zero Trust
 
