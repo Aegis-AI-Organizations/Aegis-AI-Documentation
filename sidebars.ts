@@ -24,7 +24,12 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "🚀 Getting Started",
-      items: ["Infra/kubernetes"], // MVP Setup
+      items: [
+        "Infra/getting-started",
+        "Infra/kubernetes",
+        "Agent/install-infrastructure",
+        "Dashboard/quickstart",
+      ],
     },
     {
       type: "category",
@@ -47,12 +52,21 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Brain Orchestrator",
-          items: ["Brain/llm-payloads"],
+          items: [
+            "Brain/workflows",
+            "Brain/multi-tenancy",
+            "Brain/neo4j-graph",
+            "Brain/llm-payloads",
+          ],
         },
         {
           type: "category",
           label: "Dashboard",
-          items: ["Dashboard/architecture", "Dashboard/quickstart"],
+          items: [
+            "Dashboard/architecture",
+            "Dashboard/quickstart",
+            "Dashboard/telemetry",
+          ],
         },
         {
           type: "category",
@@ -60,17 +74,40 @@ const sidebars: SidebarsConfig = {
           items: [
             "Agent/architecture",
             "Agent/quickstart",
+            "Agent/install-infrastructure",
             "Agent/token-format",
+            "Agent/api",
           ],
         },
         {
           type: "category",
-          label: "The Armory (Workers)",
+          label: "Workers",
           items: [
             "Worker-Pentest/architecture",
+            "Worker-Pentest/quickstart",
+            "Worker-Pentest/telemetry",
             "Worker-Deployer/architecture",
+            "Worker-Deployer/api",
             "Worker-Fixer/architecture",
+            "Worker-Fixer/quickstart",
+            "Worker-Fixer/telemetry",
             "Worker-Ingest/architecture",
+            "Worker-Ingest/quickstart",
+            "Worker-Ingest/telemetry",
+          ],
+        },
+        {
+          type: "category",
+          label: "Proto Contracts",
+          items: ["Proto/architecture", "Proto/quickstart", "Proto/telemetry"],
+        },
+        {
+          type: "category",
+          label: "Landing Page",
+          items: [
+            "Landing-Page/architecture",
+            "Landing-Page/quickstart",
+            "Landing-Page/telemetry",
           ],
         },
       ],

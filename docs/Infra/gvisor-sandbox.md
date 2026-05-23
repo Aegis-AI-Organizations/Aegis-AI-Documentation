@@ -1,3 +1,17 @@
-# gVisor Sandbox Runtime — Aegis AI Infra
+# Worker Sandboxing
 
-This document describes the use of **gVisor** as the container runtime for isolated sandbox workloads in the Aegis AI infrastructure.
+Security workers should run with strong runtime and Kubernetes isolation. gVisor can be used as the runtime boundary where the cluster supports it.
+
+## Recommended Controls
+
+- non-root containers;
+- read-only root filesystem where possible;
+- dropped Linux capabilities;
+- resource requests and limits;
+- restricted service accounts;
+- network policies around worker namespaces;
+- runtime class such as `runsc` when available.
+
+## Operational Rule
+
+Sandboxing is a defense-in-depth layer. It does not replace workflow authorization, target allow-listing, or tenant scoping.

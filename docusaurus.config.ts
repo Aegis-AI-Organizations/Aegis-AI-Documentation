@@ -363,7 +363,7 @@ const config: Config = {
             },
             {
               label: "Agent (Rust)",
-              to: "/docs/Agent/architecture", // Must specify an existing .md file, fetching the raw folder fails links check
+              to: "/docs/Agent/install-infrastructure",
             },
             {
               label: "Brain (Python)",

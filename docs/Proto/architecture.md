@@ -1,21 +1,20 @@
-# Protobuf Ecosystem Architecture (v2)
+# Protobuf Contracts
 
-This repository (`Aegis-AI-Proto`) is the single source of truth for all inter-microservice communication within the **Aegis AI Platform**. It uses `buf` to orchestrate protocol buffer compilation and manages the centralized generation of gRPC stubs.
+`Aegis-AI-Proto` is the contract source for internal gRPC communication between the Gateway and Brain. Generated Go and Python stubs must stay synchronized with the `.proto` definitions.
 
-## Version 2 (MVP)
+## Contract Families
 
-In the MVP architecture, the Aegis framework relies exclusively on **gRPC over HTTP/2** for communication between the API Gateway and the Brain orchestrator.
+| Service                | Purpose                                                 |
+| ---------------------- | ------------------------------------------------------- |
+| `AuthService`          | Login, refresh, logout, profile, account activation     |
+| `CompanyService`       | Companies, onboarding, users, token management          |
+| `AgentService`         | Agent registration, status, upload links, agent listing |
+| `ScanService`          | Scan lifecycle, reports, status streams                 |
+| `VulnerabilityService` | Findings and evidences                                  |
+| `BillingService`       | Balance, ledger, usage, token adjustment                |
+| `PingService`          | Health and connectivity                                 |
+| `InternalAuthService`  | Internal token verification                             |
 
-### Service Definitions
+## Compatibility Rule
 
-- **`aegis.v2.ScanService`**: Controls the lifecycle of security scans (`StartScan`, `GetScanStatus`, `ListScans`, `GetScanReport`).
-- **`aegis.v2.VulnerabilityService`**: Retrieves the findings and cryptographic evidence (`GetVulnerabilities`, `GetEvidences`).
-- **`aegis.v2.PingService`**: Validates end-to-end connectivity across the cluster.
-
-### CI/CD Code Sync
-
-Because protocol buffers tightly couple the orchestrators, this repository features an auto-sync pipeline.
-Whenever pushing to `main`, `.github/workflows/proto-sync.yml` automatically compiles the `v2` `.proto` definitions into Go and Python stubs. It inherently strips out troublesome runtime version validation statements from generated files to ensure extreme ecosystem compatibility, and actively propagates (pushes) the code to:
-
-- `Aegis-AI-Api-Gateway` (Golang implementations)
-- `Aegis-AI-Brain` (Python implementations)
+Additive changes are preferred. Removing fields, renumbering fields, or changing message meaning requires coordinated updates in Gateway, Brain, tests, and OpenAPI documentation.

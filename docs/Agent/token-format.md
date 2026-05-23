@@ -1,43 +1,39 @@
-# Format du token agent
+# Agent Token Format
 
-Cette page définit le format unique du token de déploiement utilisé pour enregistrer un agent Aegis.
+The deployment token is the one-time credential used to register a new Aegis Agent.
 
-## Token de déploiement
-
-Le token de déploiement est généré par Aegis lors de l'activation du compte owner ou lors d'une rotation manuelle.
-
-Format attendu :
+## Format
 
 ```text
-ag_<43+ caractères URL-safe>
+ag_<43+ URL-safe chars>
 ```
 
-Règles :
+Rules:
 
-- le token commence toujours par le préfixe `ag_` ;
-- le corps contient au minimum 43 caractères ;
-- les caractères autorisés sont `A-Z`, `a-z`, `0-9`, `_` et `-` ;
-- le token clair n'est affiché qu'une seule fois côté Dashboard ;
-- seul le hash SHA-256 du token est stocké côté backend.
+- the token always starts with `ag_`;
+- the body contains at least 43 characters;
+- allowed characters are `A-Z`, `a-z`, `0-9`, `_`, and `-`;
+- the clear token is displayed only once in the Dashboard;
+- only the SHA-256 hash is stored by the backend.
 
-Exemple :
+Example:
 
 ```text
 ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 ```
 
-## Utilisation par l'agent
+## Usage
 
-Le token de déploiement sert uniquement au premier enregistrement de l'agent :
+The deployment token is used only for first registration:
 
 ```http
 Authorization: Bearer ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 ```
 
-Après enregistrement, l'agent reçoit un `agent_secret`. Ce secret est utilisé pour les routes opérationnelles comme le heartbeat ou l'upload de logs.
+After registration, the agent receives an `agent_secret`. This secret is used for operational routes such as heartbeat updates and upload URL retrieval.
 
-## Rotation et révocation
+## Rotation and Revocation
 
-Une rotation invalide l'ancien token de déploiement et affiche le nouveau token une seule fois.
+Token rotation invalidates the previous deployment token and displays the new token once.
 
-Une révocation supprime le token de déploiement actif. Aucun nouvel agent ne peut alors s'enregistrer tant qu'un nouveau token n'a pas été généré.
+Token revocation removes the active deployment token. No new agent can register until a new token is generated.

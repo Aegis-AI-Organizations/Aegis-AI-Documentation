@@ -1,52 +1,37 @@
-# Multi-Tenancy Architecture
+# Multi-Tenancy
 
-Aegis AI is built from the ground up as a native multi-tenant platform. It ensures strict logical isolation between different organizations while sharing the same underlying infrastructure and orchestration engine.
+Aegis is a shared-platform system with strict tenant scoping. Customer data is isolated by `company_id` across authentication claims, gRPC metadata, database queries, and workflow inputs.
 
-## Core Isolation Mechanism
+## Identity Propagation
 
-The platform uses a **Shared Schema, Scoped Access** model. Instead of separate databases per company, isolation is enforced at the application and query levels using a mandatory `company_id` filter.
+1. A user authenticates through the Gateway.
+2. Brain issues a JWT containing user identity, role, and company scope.
+3. The Gateway forwards the access token to Brain on protected gRPC calls.
+4. Brain extracts identity and applies tenant filters before reading or mutating data.
 
-### 1. Identity Propagation
+## Tenant-Owned Resources
 
-The isolation lifecycle begins at authentication:
+The following resources must always be scoped to a company:
 
-- **JWT Claims**: Every issued Access Token contains a `company_id` claim in its payload.
-- **gRPC Metadata**: The API Gateway extracts this claim and injects it into the gRPC metadata (`x-company-id`) for all downstream calls to the Brain.
-- **Handler Context**: The Brain service uses a Python decorator (`@with_identity`) to extract this ID and make it available to the internal logic.
+- users and invitations;
+- agent deployment tokens and registered agents;
+- scans, vulnerabilities, evidences, and reports;
+- billing balances and ledger entries;
+- audit logs.
 
-### 2. SQL-Level Enforcement
+## Agent Isolation
 
-Every database query that interacts with tenant-owned data (Scans, Vulnerabilities, Evidences) must include a `WHERE company_id = %s` clause.
+Agent deployment tokens are company-bound credentials. The current format is:
 
-```python
-# Example of row-level isolation in the Brain service
-cur.execute(
-    """
-    SELECT id, status FROM scans
-    WHERE id = %s AND company_id = %s
-    """,
-    (scan_id, company_id),
-)
+```text
+ag_<43+ URL-safe chars>
 ```
 
-### 3. Resource Orchestration
+The backend stores only a hash of the deployment token. After first registration, the agent uses its own `agent_secret`; rotating or revoking the deployment token does not disconnect already registered agents.
 
-When a scan is dispatched to **Temporal**, the `company_id` is included in the workflow input. This ensures that:
+## Access Guarantees
 
-- **Worker Isolation**: Reports and logs are tagged with the correct owner.
-- **KEDA Scaling**: Future iterations will allow scaling worker pools based on specific tenant load.
-
-## Security Guarantees
-
-- **No Cross-Tenant Leaks**: A user from Company A can never view or modify resources belonging to Company B.
-- **Zero-Trust Validation**: Every microservice independently re-verifies the JWT signature to prevent internal identity spoofing.
-- **Relational Integrity**: Foreign key constraints ensure that all relational data (e.g., vulnerabilities) inherently belong to the same tenant as the parent resource (e.g., scan).
-
-## Probe Isolation (Deployment Tokens)
-
-To allow external probes (Aegis Agents) to push security telemetry back to the platform without requiring full user credentials, the platform issues **Deployment Tokens**.
-
-- **Structure**: Tokens are 32-character hex strings prefixed with `ag_` (e.g., `ag_8f3d...`).
-- **Organization Bound**: Each token is uniquely bound to one `company_id`.
-- **Stateless Verification**: When an Agent pushes data, the Brain verifies the token against the database to identify the correct tenant.
-- **Revocation**: If a token is compromised, it can be regenerated, immediately invalidating the old one and cutting off access for that specific probe deployment.
+- Customer roles cannot read another company's scans or agents.
+- Superadmin/admin routes require explicit elevated scopes.
+- Query handlers must apply tenant filters even when the Gateway already authenticated the request.
+- Audit entries should include actor and company context for traceability.

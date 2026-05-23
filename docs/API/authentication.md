@@ -1,49 +1,45 @@
 # Authentication
 
-Aegis AI implements a **Zero-Trust Security Model** based on JSON Web Tokens (JWT). All requests to the API Gateway (with the exception of Login) must include a valid identity token.
+The API Gateway uses short-lived JWT access tokens for browser/API requests and an HTTP-only refresh cookie for session renewal. Agent traffic uses a separate deployment-token and agent-secret flow documented in the Agent section.
 
-## Internal JWT Architecture
+## User Session Flow
 
-Unlike legacy versions that relied on external providers like Keycloak, Aegis AI now uses a decoupled **Internal Authentication Service**.
+1. `POST /api/auth/login` validates credentials through the Brain auth service.
+2. The Gateway returns `access_token` in the JSON response.
+3. The Gateway sets `refresh_token` as an HTTP-only cookie.
+4. The Dashboard sends `Authorization: Bearer <access_token>` on protected requests.
+5. `POST /api/auth/refresh` rotates the access token using the cookie.
+6. `POST /api/auth/logout` clears the refresh cookie and invalidates the server-side refresh token.
 
-1.  **Identity Provider**: Users authenticate against the `/auth/login` endpoint.
-2.  **JWT Issuance**: The Brain service verifies credentials and issues a signed JWT containing the `user_id`, `company_id`, and `role`.
-3.  **Stateless Session**: The platform does not store session state. Every request is verified cryptographically using a shared `JWT_SECRET`.
+## First Login Activation
 
-## Zero-Trust Propagation
+Invited owners and users activate their account with:
 
-To ensure maximum security and service isolation, identity is propagated using a **forward-and-verify** pattern:
-
-- **API Gateway**: Validates the incoming token from the user. If valid, it extracts the claims and forwards the **raw token** to downstream microservices (like the Brain) via gRPC metadata.
-- **Microservices (Brain)**: Independently re-verify the token signature. This ensures that even if the internal network is compromised, a service will never execute an unauthenticated command.
-
-## Usage
-
-Include the token in the `Authorization` header of every request:
-
-```bash
-Authorization: Bearer <your_access_token>
+```http
+POST /api/auth/setup-password
 ```
 
-### Token Claims
+The request contains the invitation token and the new password. For company owners, the response also includes `agent_token`, the one-time deployment token used to connect the first Aegis Agent.
 
-Your tokens include the following standard claims:
+## Roles
 
-- `sub`: Your unique User ID.
-- `company_id`: Your organization's unique ID (used for tenant isolation).
-- `role`: Your access level. Available roles include:
-  - **`superadmin`**: Global platform control.
-  - **`admin`**: Full control over a specific organization.
-  - **`commercial`**: Can manage companies and onboarding.
-  - **`operateur`**: Standard technical analyst.
-  - **`viewer`**: Read-only access.
-- `exp`: Token expiration timestamp.
+Current roles are:
 
-## Session Lifecycle
+| Role             | Typical scope                   |
+| ---------------- | ------------------------------- |
+| `superadmin`     | Platform-wide administration    |
+| `admin`          | Aegis-side administration       |
+| `billing_aegis`  | Platform billing operations     |
+| `technicien`     | Technical support operations    |
+| `support`        | Support and customer assistance |
+| `owner`          | Customer organization owner     |
+| `billing_client` | Customer billing access         |
+| `operateur`      | Customer technical operator     |
+| `viewer`         | Read-only customer access       |
 
-Aegis AI uses a dual-token strategy to balance security and user experience:
+## Security Rules
 
-1.  **Access Token**: Short-lived (typically 15 minutes). Used for all API requests. Keep this token in memory only.
-2.  **Refresh Token**: Long-lived (typically 7 days). Stored in a secure, **HTTP-only cookie** set by the `/auth/login` endpoint.
-
-To regenerate an access token without re-authenticating, hit the `/auth/refresh` endpoint. The server will automatically look for the valid refresh token cookie.
+- Keep access tokens in memory in the frontend.
+- Do not expose refresh tokens to JavaScript.
+- Treat deployment tokens and agent secrets as machine credentials, not user credentials.
+- Rotate or revoke the company deployment token if it is copied to an unsafe location.

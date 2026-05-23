@@ -1,3 +1,16 @@
-# Quickstart | Aegis-AI-Worker-Fixer
+# Quickstart Worker Fixer
 
-Document initialisé pour les tests de récupération Docusaurus par le plugin remote-content.
+## Développement local
+
+```bash
+go test ./...
+go run ./cmd/fixer
+```
+
+## Build conteneur
+
+```bash
+docker build -t aegis-worker-fixer .
+```
+
+Chaque règle de remédiation doit être testée, structurée et bornée par le tenant.

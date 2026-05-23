@@ -1,40 +1,32 @@
-# LLM-Driven Payload Generation
+# LLM Payload Assistance
 
-Aegis AI leverages Large Language Models (LLMs) to transform traditional, static vulnerability scanning into **Adaptive Offensive Operations**. Instead of relying solely on hardcoded lists of payloads, the platform generates context-aware exploit strings tailored to the targets it discovers.
+Aegis can use LLM-assisted logic to help generate candidate payloads and remediation explanations. This capability must stay bounded by safety controls and should not replace deterministic validation.
 
-## Core Strategy
+## Intended Use
 
-The **Worker-Pentest** uses LLMs to bridge the gap between "Finding a Weakness" and "Verifying an Exploit".
+- Suggest candidate payloads for supported vulnerability classes.
+- Adapt test inputs to observed service behavior.
+- Summarize technical evidence for reports.
+- Help produce remediation guidance after a finding is confirmed.
 
-### 1. Target Context Analysis
+## Safety Boundaries
 
-Before launching an attack, the worker collects metadata about the environment:
+- Do not send secrets, customer credentials, tokens, or raw private data to external model providers.
+- Execute offensive payloads only inside controlled scan/sandbox workflows.
+- Store evidence from the worker, not from model claims.
+- Require deterministic validation before marking a vulnerability as confirmed.
 
-- **Service Versioning**: (e.g., Apache 2.4.49, Nginx 1.18.0)
-- **Error Signatures**: Raw responses from previous probes.
-- **WAF Indicators**: Detection of specific security headers or filtering behavior.
+## Worker Interaction
 
-### 2. Prompt Engineering for Payloads
+The Pentest Worker should treat model output as input candidates. The worker remains responsible for:
 
-The platform uses a sophisticated prompt template to request payloads from an LLM (e.g., OpenAI GPT-4o or Anthropic Claude 3.5).
+- request execution;
+- response capture;
+- proof extraction;
+- severity classification;
+- evidence upload;
+- final status reporting.
 
-> **Example Prompt Pattern**:
-> _"You are an offensive security expert. A target is running Alpine Linux with a vulnerable search endpoint that reflects user input. Generate 5 SQL injection payloads designed to bypass basic regex filters while extracting the database version."_
+## Prompt Data
 
-### 3. Iterative Refinement
-
-If a payload is blocked or fails to trigger the expected behavior, the worker logs the failure and can re-prompt the LLM with the new evidence (e.g., "The previous payload triggered a 403 Forbidden. Suggest an alternative using double-URL encoding.").
-
-## Supported Vulnerability Classes
-
-Currently, LLM-driven generation is applied to:
-
-- **XSS (Cross-Site Scripting)**: Circumventing complex sanitizers and DOM protections.
-- **SQLi (SQL Injection)**: Crafting bypasses for specific database dialects (PostgreSQL, MySQL, SQLite).
-- **RCE (Remote Code Execution)**: Generating reverse shell one-liners tailored to the target's available binaries (nc, python, bash, perl).
-
-## Safety & Ethics
-
-- **Strict Sandboxing**: All LLM-generated payloads are detonated only within isolated, ephemeral Kubernetes sandboxes.
-- **Zero-Confidentiality**: No sensitive company data is sent to external LLMs; only target metadata and technical service identities are included in prompts.
-- **Human-in-the-Loop**: High-confidence vulnerabilities are flagged for human validation before being finalized in the scan report.
+Allowed prompt context should be limited to technical metadata such as service type, version, error class, HTTP status patterns, and sanitized response snippets.

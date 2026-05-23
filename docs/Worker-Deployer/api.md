@@ -1,26 +1,26 @@
-# API Reference: Worker Deployer
+# Deployer Worker API
 
-The `Aegis-AI-Worker-Deployer` exposes a fast and secure API for interacting with the infrastructure.
+The Deployer does not expose a public REST API. It is expected to be called internally by Brain or workflow orchestration.
 
-## Internal gRPC Endpoints (v1)
+## Internal Operations
 
-### `DeployWorker(DeployRequest) returns (DeployResponse)`
+| Operation        | Purpose                             |
+| ---------------- | ----------------------------------- |
+| Deploy worker    | Create a worker or sandbox resource |
+| Get status       | Return current deployment state     |
+| Terminate worker | Delete temporary resources          |
 
-- **Description**: Submits a request to instantiate a new isolated worker (e.g., Pentest or Ingest worker).
-- **DeployRequest Structure**:
-  - `tenant_id` (string): Identifies the customer/environment.
-  - `worker_type` (Enum): E.g., `WORKER_PENTEST`, `WORKER_INGEST`.
-  - `target_metadata` (map): The target domains or contexts the worker must assess.
-- **DeployResponse**:
-  - `worker_id` (string): A UUID to track this running instance.
-  - `status` (Enum): `DEPLOYING`, `FAILED`, `READY`.
+## Required Inputs
 
-### `GetWorkerStatus(StatusRequest) returns (StatusResponse)`
+- tenant or workflow identifier;
+- worker type;
+- target metadata;
+- resource limits;
+- namespace or sandbox policy.
 
-- **Description**: Returns the real-time resource usage and heartbeat of a specific worker container.
+## Required Outputs
 
-### `TerminateWorker(TerminateRequest) returns (TerminateResponse)`
-
-- **Description**: Signals the deployer to force-kill a worker container and purge its temporary data volumes.
-
-_Note: All API endpoints are tightly coupled with the Protobuf specs defined in the `Aegis-AI-Proto` repository._
+- worker id;
+- status;
+- Kubernetes resource references;
+- error details when deployment fails.

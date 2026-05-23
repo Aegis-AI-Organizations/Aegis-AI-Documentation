@@ -1,3 +1,24 @@
-# Quickstart | Aegis-AI-Landing
+# Landing Page Quickstart
 
-Document initialisé pour les tests de récupération Docusaurus par le plugin remote-content.
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Documentation Links
+
+Public documentation links should point to the Docusaurus site:
+
+```text
+https://aegis-ai-organizations.github.io/Aegis-AI-Documentation
+```
+
+Do not duplicate technical setup steps in the landing page; link to the maintained docs instead.

@@ -1,104 +1,45 @@
-# Passerelle API Aegis AI
+# API Gateway
 
-L'API Gateway est le point d'entrée central pour les clients HTTP externes (Dashboard, CLI) vers l'écosystème Aegis AI. Depuis l'architecture MVP v2, il opère comme un **Proxy gRPC**, ce qui implique qu'il ne contient aucune logique métier, il n'est connecté à aucune base de données et il n'orchestre plus les flux Temporal.
+L'API Gateway est le point d'entrée HTTP public du Dashboard et des agents. Elle gère CORS, rate limiting, middleware JWT, middleware agent et traduction REST/SSE vers les services gRPC Brain.
 
-## Routes mappées sur gRPC
+La référence complète est disponible dans **API Reference** depuis `openapi.yaml`.
 
-L'intégralité du trafic REST HTTP est converti et retransmis en toute sécurité via le protocole gRPC `aegis.v2` directement au **Brain** backend.
+## Routes publiques
 
-### `POST /scans`
+| Route                      | Méthode | Usage                         |
+| -------------------------- | ------- | ----------------------------- |
+| `/health`                  | `GET`   | Santé Kubernetes              |
+| `/api/health`              | `GET`   | Santé API                     |
+| `/api/`                    | `GET`   | Métadonnées racine            |
+| `/api/auth/login`          | `POST`  | Authentification              |
+| `/api/auth/refresh`        | `POST`  | Rotation du token d'accès     |
+| `/api/auth/setup-password` | `POST`  | Activation d'un compte invité |
 
-- **Description :** Initie un nouveau scan de sécurité ciblant une infrastructure.
-- **Payload :** `{"target_image": "nginx:latest"}`
-- **Routé vers :** `aegis.v2.ScanService.StartScan`
+## Routes utilisateur protégées
 
-### `GET /scans/{id}`
+| Domaine     | Routes                                                                                                                     |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Session     | `/api/auth/logout`, `/api/auth/me`                                                                                         |
+| Profil      | `/api/users/me/profile`, `/api/users/me/email`, `/api/users/me/password`, `/api/users/me/profile/avatar`                   |
+| Entreprises | `/api/companies`, `/api/companies/onboard`, `/api/companies/me/agent-token/rotate`, `/api/companies/me/agent-token/revoke` |
+| Agents      | `/api/agents`, `/api/agents/status`                                                                                        |
+| Scans       | `/api/scans`, `/api/scans/{id}`, `/api/scans/{id}/vulnerabilities`, `/api/scans/{id}/report`                               |
+| Flux        | `/api/scans/stream`, `/api/scans/{id}/stream`, `/api/admin/teams/stream`                                                   |
+| Facturation | `/api/billing/balance`, `/api/billing/ledger`, `/api/billing/stats`                                                        |
+| Stockage    | `/api/storage/upload-url`                                                                                                  |
+| Admin/Audit | `/api/admin/companies`, `/api/admin/users`, `/api/admin/audit-logs`, `/api/admin/companies/{id}/...`                       |
 
-- **Description :** Récupère le statut en direct d'un scan en cours ou terminé.
-- **Routé vers :** `aegis.v2.ScanService.GetScanStatus`
+## Routes agent
 
-### `GET /scans`
+| Route                         | Méthode | Identifiant          |
+| ----------------------------- | ------- | -------------------- |
+| `/api/agents/register`        | `POST`  | Token de déploiement |
+| `/api/agents/{id}/status`     | `POST`  | Secret agent         |
+| `/api/agents/{id}/upload-url` | `GET`   | Secret agent         |
 
-- **Description :** Liste tous les scans historiques et actifs.
-- **Routé vers :** `aegis.v2.ScanService.ListScans`
+## Notes opérationnelles
 
-### `GET /scans/{id}/vulnerabilities`
-
-- **Description :** Récupère la liste des vulnérabilités découvertes.
-- **Routé vers :** `aegis.v2.VulnerabilityService.GetVulnerabilities`
-
-### `GET /vulnerabilities/{id}/evidences`
-
-- **Description :** Récupère les preuves cryptographiques et historiques de frappe associés aux vulnérabilités exploitées.
-- **Routé vers :** `aegis.v2.VulnerabilityService.GetEvidences`
-
-### `GET /scans/{id}/report`
-
-- **Description :** Télécharge le rapport PDF complet résumant l'audit de sécurité effectué.
-- **Routé vers :** `aegis.v2.ScanService.GetScanReport`
-
-## Authentification & Session
-
-L'API utilise des JWT pour sécuriser l'accès et des cookies HTTP-only pour la persistance des sessions.
-
-### `POST /auth/login`
-
-- **Description :** Authentifie un utilisateur et retourne un jeton d'accès. Définit un cookie `refresh_token`.
-
-### `POST /auth/refresh`
-
-- **Description :** Régénère un jeton d'accès en utilisant le cookie de session.
-
-### `POST /auth/logout`
-
-- **Description :** Révoque la session et efface les cookies.
-
-### `GET /auth/me`
-
-- **Description :** Récupère le profil de l'utilisateur connecté (ID, email, rôle, entreprise).
-
-## Gestion du Profil
-
-### `PUT /users/me/profile`
-
-- **Description :** Met à jour les informations du profil (nom).
-
-### `DELETE /users/me/profile/avatar`
-
-- **Description :** Supprime la photo de profil actuelle.
-
-### `PUT /users/me/email`
-
-- **Description :** Modifie l'adresse email (nécessite le mot de passe).
-
-### `PUT /users/me/password`
-
-- **Description :** Modifie le mot de passe.
-
-## Gestion des Entreprises (Roles Admin/Commercial)
-
-### `GET /companies`
-
-- **Description :** Liste toutes les entreprises de la plateforme.
-
-### `POST /companies/onboard`
-
-- **Description :** **Workflow d'onboarding post-paiement.** Crée l'entreprise et le compte owner en `pending_activation`, envoie un email de première connexion et n'expose pas encore le token agent.
-
-### `POST /auth/setup-password`
-
-- **Description :** Active le compte owner via le token d'invitation à usage unique, définit le mot de passe, ouvre la session et retourne le token agent clair une seule fois.
-
-## Flux Temps-Réel (Streaming)
-
-### `GET /scans/stream`
-
-- **Description :** Flux SSE global pour les mises à jour de tous les scans.
-
-### `GET /scans/:id/stream`
-
-- **Description :** Flux SSE spécifique à un scan.
-
-## Configuration de Sécurité
-
-En tant que pilier de l'infrastructure Zero Trust, l'API Gateway est confinée par une stricte **Cilium Network Policy**, l'empêchant d'effectuer la moindre requête sortante hormis vers le **Brain Aegis** (Port 50051).
+- Les routes REST utilisent le préfixe `/api` derrière le proxy local.
+- Les routes SSE exigent un JWT utilisateur valide.
+- L'enregistrement agent exige le token `ag_...` dans l'en-tête `Authorization` et dans le corps JSON.
+- La logique métier doit rester dans Brain; la Gateway reste une couche de politique et de transport.

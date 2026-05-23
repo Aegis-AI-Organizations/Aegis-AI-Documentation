@@ -1,35 +1,35 @@
-# Agent API
+# API de l'agent
 
-This page documents the Gateway endpoints used by Aegis agents.
+Cette page documente les endpoints Gateway utilisés par les agents Aegis.
 
-## Authentication
+## Authentification
 
-Registration uses the company deployment token:
+L'enregistrement utilise le token de déploiement de l'entreprise :
 
 ```http
 Authorization: Bearer ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 ```
 
-After registration, the Gateway returns an `agent_secret`. Operational routes use that secret:
+Après l'enregistrement, la Gateway retourne un `agent_secret`. Les routes opérationnelles utilisent ce secret :
 
 ```http
 Authorization: Bearer <AGENT_SECRET>
 ```
 
-## Register an Agent
+## Enregistrer un agent
 
 ```http
 POST /api/agents/register
 ```
 
-Request body:
+Corps de requête :
 
-| Field   | Type     | Required | Description               |
-| ------- | -------- | -------- | ------------------------- |
-| `token` | `string` | Yes      | Company deployment token. |
-| `name`  | `string` | No       | Friendly agent name.      |
+| Champ   | Type     | Obligatoire | Description                           |
+| ------- | -------- | ----------- | ------------------------------------- |
+| `token` | `string` | Oui         | Token de déploiement de l'entreprise. |
+| `name`  | `string` | Non         | Nom lisible de l'agent.               |
 
-Example:
+Exemple :
 
 ```bash
 curl -X POST https://api.aegis-ai.fr/api/agents/register \
@@ -41,7 +41,7 @@ curl -X POST https://api.aegis-ai.fr/api/agents/register \
   }'
 ```
 
-Response:
+Réponse :
 
 ```json
 {
@@ -50,13 +50,13 @@ Response:
 }
 ```
 
-## Send Heartbeat Status
+## Envoyer un heartbeat
 
 ```http
 POST /api/agents/{agent_id}/status
 ```
 
-Request body:
+Corps de requête :
 
 ```json
 {
@@ -64,15 +64,15 @@ Request body:
 }
 ```
 
-Supported status values are `IDLE`, `RUNNING`, `ERROR`, and `OFFLINE`.
+Les statuts supportés sont `IDLE`, `RUNNING`, `ERROR` et `OFFLINE`.
 
-## Request an Upload URL
+## Demander une URL d'upload
 
 ```http
 GET /api/agents/{agent_id}/upload-url?filename=topology.json
 ```
 
-Response:
+Réponse :
 
 ```json
 {
@@ -81,15 +81,15 @@ Response:
 }
 ```
 
-## Dashboard Agent Status
+## État des agents dans le Dashboard
 
-Dashboard users can read aggregated agent status with:
+Les utilisateurs du Dashboard peuvent lire l'état agrégé des agents avec :
 
 ```http
 GET /api/agents/status
 ```
 
-Response:
+Réponse :
 
 ```json
 {

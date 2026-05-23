@@ -1,50 +1,34 @@
-# 🎛️ Dashboard Architecture: Real-time Analyst Interface
+# Dashboard Architecture
 
-The **Aegis AI Dashboard** is the primary command and control interface for security analysts. Built with **React 18** and **Vite**, it provides a high-density, real-time visualization of the entire offensive orchestration pipeline.
+The Aegis Dashboard is a React/Vite application used by customer operators and Aegis administrators. It consumes the Gateway REST and SSE APIs and keeps all business decisions on the backend.
 
----
+## Main Areas
 
-## 🏗️ Core Design Principles
+| Area               | Purpose                                                      |
+| ------------------ | ------------------------------------------------------------ |
+| Security dashboard | Agent status, recent scans, and scan launchpad               |
+| Vulnerabilities    | Scan list, findings, evidences, and report download          |
+| Users              | Organization and user administration                         |
+| Billing            | Balance, usage, and ledger views                             |
+| Audit              | Administrative action history                                |
+| Settings           | Profile, password, email, avatar, and agent-token operations |
 
-The Dashboard is designed for **responsiveness**, **state-synchronization**, and **security**:
+## Runtime Configuration
 
-1. **State-of-the-Art Core**: Leveraging **Vite** for near-instant development and optimized production builds.
-2. **Real-time Synchronization**: Uses **Server-Sent Events (SSE)** to stream live scan progress and worker logs directly from the API Gateway without client-side polling.
-3. **Decoupled Architecture**: The Dashboard is a pure Single Page Application (SPA) that interacts with the Aegis ecosystem solely through the standardized REST/SSE endpoints of the `Aegis-AI-Api-Gateway`.
+The frontend reads runtime values from `window.__RUNTIME_CONFIG__` and then Vite environment variables:
 
----
+| Key                                | Purpose                                           |
+| ---------------------------------- | ------------------------------------------------- |
+| `API_GATEWAY_URL` / `VITE_API_URL` | Gateway base URL                                  |
+| `DOCS_BASE_URL` / `VITE_DOCS_URL`  | Docusaurus base URL used by documentation buttons |
 
-## 🔐 Authentication & Session Hardening
+## Data Access
 
-Aegis enforces a Zero Trust posture for all analyst interactions:
+- API calls use the shared Axios client.
+- Protected routes depend on the auth store and JWT refresh flow.
+- Scan and team status updates use SSE where supported.
+- Agent status uses `/api/agents/status` to power the empty-state and monitoring widgets.
 
-- **OIDC with PKCE**: Authentication is handled via **OpenID Connect (OIDC)** using the **Proof Key for Code Exchange (PKCE)** flow to mitigate authorization code injection attacks.
-- **Silent Refresh**: Implements a secure silent-refresh mechanism to maintain sessions without requiring hard page reloads or exposing tokens to persistent storage.
-- **CSRF & XSS Mitigation**: Strictly typed data handling and secure HTTP-only cookies for refresh tokens.
+## Design Constraint
 
----
-
-## 🛰️ Technical Stack
-
-| Component        | Technology                     | Version |
-| ---------------- | ------------------------------ | ------- |
-| Frontend Library | **React 18** (Concurrent Mode) | 18.2+   |
-| Build Tooling    | **Vite**                       | 5.x     |
-| State Management | **Zustand**                    | 4.x     |
-| Data Fetching    | **React Query** (TanStack)     | 5.x     |
-| Real-time        | **SSE** (Server-Sent Events)   | —       |
-
----
-
-## 🌊 Logic Flow: Real-time Scans
-
-When an analyst initiates a scan, the Dashboard enters a high-intensity monitoring state:
-
-1. **Initiation**: POST request to `/scans` via the API Gateway.
-2. **Streaming**: Opens a persistent `EventSource` connection to `/scans/stream`.
-3. **State Updates**: Reacting to SSE events, the **Zustand** store is updated in real-time, triggering reactive UI changes across the Attack Map and Vulnerability tables.
-4. **Hydration**: On page reload, the Dashboard performs a "Session Recovery" to ensure the analyst returns to the exact state of active scans.
-
----
-
-_Aegis AI User Experience & Frontend Engineering — 2026_
+The Dashboard should remain an operational console: dense, clear, and action-oriented. Backend permissions must be authoritative even if frontend controls are hidden.

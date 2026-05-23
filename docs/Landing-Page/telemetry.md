@@ -1,3 +1,18 @@
-# Telemetry | Aegis-AI-Landing
+# Landing Page Telemetry
 
-Document initialisé pour les tests de récupération Docusaurus par le plugin remote-content.
+Landing telemetry should be privacy-preserving and separated from Dashboard operational telemetry.
+
+## Recommended Events
+
+- page view;
+- documentation link click;
+- contact or demo form submission;
+- build version and deployment environment.
+
+## Do Not Collect
+
+- Dashboard JWTs or refresh cookies;
+- deployment tokens;
+- agent secrets;
+- private infrastructure metadata;
+- vulnerability data.

@@ -1,3 +1,12 @@
-# Telemetry | Aegis-AI-Worker-Ingest
+# Télémétrie Worker Ingest
 
-Document initialisé pour les tests de récupération Docusaurus par le plugin remote-content.
+## Métriques recommandées
+
+- payloads reçus;
+- payloads rejetés par schéma ou taille;
+- latence de traitement;
+- nombre de retries;
+- erreurs d'écriture stockage;
+- profondeur de queue si utilisée.
+
+Les logs doivent contenir des identifiants sûrs et des clés d'objet, pas le contenu brut des payloads hors debug local explicite.

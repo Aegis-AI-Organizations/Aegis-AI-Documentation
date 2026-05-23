@@ -1,32 +1,56 @@
-# Quickstart | Aegis Agent (Rust)
+# Quickstart | Aegis Agent
 
-The Aegis Agent is a lightweight Rust-based probe that must be installed on the client's infrastructure to collect security telemetry and stream it back to the Brain.
+The Aegis Agent is a lightweight Rust probe installed inside a customer infrastructure. It registers through the API Gateway, stores its own operational secret locally, sends heartbeats, and uploads topology payloads through presigned storage URLs.
 
 ## Prerequisites
 
-1.  Have **Owner** access to your organization on the Aegis Dashboard.
-2.  Have generated or retrieved your **Deployment Token** (`ag_<43+ URL-safe chars>`) from the Dashboard.
+1. Owner or admin access to the Aegis Dashboard.
+2. A valid deployment token in the format `ag_<43+ URL-safe chars>`.
+3. Outbound HTTPS access from the host to the Gateway.
 
-## Rapid Installation (Docker)
-
-The recommended way to deploy the agent is via Docker. Run the following command, replacing `<YOUR_TOKEN>` with your deployment token:
+## Run with Docker
 
 ```bash
 docker run -d \
   --name aegis-agent \
-  -e DEPLOYMENT_TOKEN="<YOUR_TOKEN>" \
-  -e GATEWAY_URL="https://api.aegis.ai" \
+  --restart unless-stopped \
+  --read-only \
+  --cap-drop=ALL \
+  -e GATEWAY_URL="https://api.aegis-ai.fr" \
+  -e DEPLOYMENT_TOKEN="<YOUR_DEPLOYMENT_TOKEN>" \
+  -e AGENT_NAME="$(hostname)-aegis-agent" \
+  -v aegis-agent-state:/var/lib/aegis-agent \
   ghcr.io/aegis-ai/aegis-agent:latest
 ```
 
-## Verification
+The deployment token is only used for the first registration. The Gateway returns an `agent_id` and an `agent_secret`; the agent then uses that secret for heartbeats and upload URLs.
 
-Once the agent is running, you should see new telemetry streams appearing in your Dashboard under the "Infrastructure" tab.
+## Verify the Agent
 
-- **Status**: Connected
-- **Heartbeat**: < 1 min
+In the Dashboard, open the security dashboard and check the agent status panel:
+
+- `Agents deployed` should increase after registration.
+- `Active` should increase after the first heartbeat.
+- `Last seen` should update regularly.
+
+For a local health check, query the agent health endpoint:
+
+```bash
+curl http://127.0.0.1:8081/health
+```
+
+## Local Development
+
+Use HTTP only for local environments:
+
+```bash
+export GATEWAY_URL="http://localhost:8080"
+export DEPLOYMENT_TOKEN="ag_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg"
+export AGENT_NAME="local-agent-01"
+export AGENT_ALLOW_HTTP="true"
+cargo run
+```
 
 ## Token Security
 
-> [!IMPORTANT]
-> The `DEPLOYMENT_TOKEN` is strictly confidential. It allows a probe to register itself in your organization. If you believe your token has been compromised, rotate or revoke it immediately from the Dashboard.
+The deployment token is secret and is displayed only once after account activation or token rotation. If it leaks, revoke or rotate it from the Dashboard settings before deploying new agents.

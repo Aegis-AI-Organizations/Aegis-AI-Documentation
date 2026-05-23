@@ -1,38 +1,47 @@
-# The Aegis AI Brain (Orchestrator)
+# Brain Workflows
 
-The Brain is the monolithic, asynchronous orchestrator in the Aegis ecosystem. Designed around Python, `psycopg`, and `temporalio`, it ingests scanning orders via gRPC and commands the worker fleet through complex Temporal Workflows.
+Brain is the orchestration service behind the Gateway. It exposes gRPC services for authentication, companies, billing, agents, scans, vulnerabilities, and internal health checks.
 
-## Architecture (MVP v2)
+## Responsibilities
 
-In version 2 of the framework, the Brain assumes the exclusive role of system orchestrator:
+- Validate user credentials and issue JWT/refresh tokens.
+- Enforce tenant visibility and role-based access.
+- Persist companies, users, scans, vulnerabilities, evidences, audit logs, billing ledgers, and agent records.
+- Start and monitor pentest workflows.
+- Register agents and track their heartbeat status.
+- Generate report and storage links for downstream services.
 
-1. **gRPC Server Layer (`aegis.v2`)**: Listens continuously for requests originating from the API Gateway.
-2. **PostgreSQL Client**: Persists scan states, handles UUID generation, logs incoming vulnerabilities, and archives evidence blobs via `psycopg`.
-3. **Temporal Client**: Launches asynchronous, distributed workflows across the worker cluster (`pentest-worker`, `ingest-worker`, etc.).
+## Scan Workflow
 
-## Temporal Workflows Overview
+```mermaid
+sequenceDiagram
+    participant Dashboard
+    participant Gateway
+    participant Brain
+    participant Temporal
+    participant Worker as Pentest Worker
 
-### 1. `PentestWorkflow`
+    Dashboard->>Gateway: POST /api/scans
+    Gateway->>Brain: StartScan(target)
+    Brain->>Temporal: start pentest_workflow
+    Temporal->>Worker: execute scan activities
+    Worker-->>Brain: vulnerabilities and evidences
+    Brain-->>Gateway: scan id and status
+    Gateway-->>Dashboard: queued scan
+```
 
-The most critical workflow in Aegis AI. When triggered through the gRPC `StartScan`, the Brain begins stepping through activities:
+## Agent Workflow
 
-- **`deploy_sandbox_target` (Kubernetes Activity):** Dynamically spins up a sterile target namespace (`aegis-war-room-{scan_id}`) where the vulnerable image is exposed under strict network isolation.
-- **`run_pentest` (Pentest Worker):** In parallel, commands the remote pentest-worker node to blast payloads into the target within the sandbox. The worker generates `Evidences` and `Vulnerabilities` streams sent back to the temporal history.
-- **`cleanup_sandbox` (Kubernetes Activity):** Dismantles the target namespace to restore cluster equilibrium once the scan is successfully concluded.
+Agent registration and status are handled by Brain through the AgentService:
 
-## Service Logic Flows
+1. Validate the deployment token hash.
+2. Create an agent record bound to a company.
+3. Return an `agent_id` and `agent_secret`.
+4. Accept heartbeat updates signed with the agent secret.
+5. Expose summary counts to the Dashboard.
 
-### 1. Post-payment Onboarding (MVP)
+## Failure Handling
 
-Onboarding is now a deferred activation flow managed by Aegis administrators after payment.
-
-1.  **gRPC Request**: The API Gateway calls internal `OnboardCompany` rpc.
-2.  **Entity Creation**: `CompanyService` saves the new `Company` record to PostgreSQL.
-3.  **Owner Initialization**: The initial "Owner" user is created with `pending_activation` and no usable initial password.
-4.  **Invitation Creation**: A one-time `aegis_inv_...` invitation token is generated, hashed in PostgreSQL, and sent by email.
-5.  **Account Activation**: The owner opens `/setup-password?token=...`, defines a password, and the Brain marks the invitation as used.
-6.  **Agent Token Delivery**: During activation, a clear `ag_...` agent token is generated, its hash is stored, and the clear token is returned only once.
-
-## Zero Trust Security Scope
-
-The Brain is securely locked away within `aegis-system`. By Cilium Network Policies, it is the solitary component explicitly permitted inward ingress traffic to the `aegis-postgres-mvp` namespace.
+- gRPC methods return explicit status codes for invalid credentials, not found resources, and permission failures.
+- Temporal activities should be idempotent so retries do not duplicate tenant data.
+- Audit logs are written for sensitive administrative and token-management actions.

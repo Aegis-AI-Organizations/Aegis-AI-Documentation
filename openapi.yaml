@@ -20,16 +20,16 @@ info:
     3. **Permission Scopes**: Every endpoint is gated by specific RBAC scopes.
 
     ---
-    *Internal Version: 3.0.0 (Refined Role Structure)*
-  version: 3.0.0
+    *Internal Version: 3.1.0 (Agent onboarding, token rotation, dashboard status)*
+  version: 3.1.0
   contact:
     name: Aegis Security Engineering
-    url: https://aegis.ai
+    url: https://aegis-ai.fr
     email: security@aegis.ai
   license:
     name: Proprietary
 servers:
-  - url: https://api.aegis.ai/
+  - url: https://api.aegis-ai.fr/
     description: Production Environment (TLS 1.3 enforced)
   - url: http://localhost/
     description: Local Development Environment (via Nginx Proxy)
@@ -60,7 +60,7 @@ paths:
         - Platform
       security: []
       responses:
-        '200':
+        "200":
           description: System is operational
 
   /api/health:
@@ -70,7 +70,7 @@ paths:
         - Platform
       security: []
       responses:
-        '200':
+        "200":
           description: API is operational
 
   /api/:
@@ -81,12 +81,12 @@ paths:
         - Platform
       security: []
       responses:
-        '200':
+        "200":
           description: Metadata retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RootMetadata'
+                $ref: "#/components/schemas/RootMetadata"
 
   # --- Authentication ---
   /api/auth/login:
@@ -103,15 +103,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       responses:
-        '200':
+        "200":
           description: Successfully authenticated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthResponse'
-        '401':
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
           description: Invalid credentials
 
   /api/auth/refresh:
@@ -120,13 +120,50 @@ paths:
       description: Uses the secure refresh cookie to issue a new Access Token.
       tags:
         - Authentication
+      security: []
       responses:
-        '200':
+        "200":
           description: Token rotated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthResponse'
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Refresh token missing, invalid, or expired
+
+  /api/auth/setup-password:
+    post:
+      summary: Activate invited account and return the one-time agent token
+      description: |
+        Finalizes first-login activation from an invitation token, sets the secure refresh cookie,
+        returns an access token, and returns the initial company deployment token as `agent_token`.
+        The agent token is displayed only once and must be stored by the owner.
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetupPasswordRequest"
+      responses:
+        "200":
+          description: Account activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetupPasswordResponse"
+        "400":
+          description: Invalid body or weak password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Invalid or expired invitation token
+        "404":
+          description: Invited user not found
 
   /api/auth/logout:
     post:
@@ -134,7 +171,7 @@ paths:
       tags:
         - Authentication
       responses:
-        '204':
+        "204":
           description: Logged out successfully
 
   /api/auth/me:
@@ -143,47 +180,42 @@ paths:
       tags:
         - Authentication
       responses:
-        '200':
+        "200":
           description: Profile retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
 
   # --- Agent Operations ---
   /api/agents/register:
     post:
       summary: Register a new remote agent
-      description: Exchanges a deployment token (passed in Authorization header) for a unique agent identity and secret.
+      description: |
+        Exchanges a company deployment token for a unique agent identity and secret.
+        The deployment token is provided both as a Bearer token for the agent middleware
+        and in the JSON body consumed by the registration handler.
       tags:
         - Agent Operations
       security:
-        - BearerAuth: []
+        - AgentDeploymentToken: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required: [name]
-              properties:
-                name:
-                  type: string
-                  description: Friendly name for the agent
+              $ref: "#/components/schemas/AgentRegisterRequest"
       responses:
-        '200':
+        "200":
           description: Agent registered successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  agent_id:
-                    type: string
-                    format: uuid
-                  agent_secret:
-                    type: string
-                    description: Secure operational secret (only shown once)
+                $ref: "#/components/schemas/AgentRegisterResponse"
+        "400":
+          description: Invalid registration payload
+        "401":
+          description: Deployment token is invalid
 
   /api/agents/{id}/status:
     post:
@@ -192,7 +224,7 @@ paths:
       tags:
         - Agent Operations
       security:
-        - BearerAuth: []
+        - AgentSecret: []
       parameters:
         - name: id
           in: path
@@ -205,15 +237,16 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [status]
-              properties:
-                status:
-                  type: string
-                  enum: [IDLE, RUNNING, ERROR, OFFLINE]
+              $ref: "#/components/schemas/AgentStatusUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Status updated successfully
+        "400":
+          description: Invalid status payload
+        "401":
+          description: Agent secret is invalid
+        "500":
+          description: Status update failed
 
   /api/agents/{id}/upload-url:
     get:
@@ -222,7 +255,7 @@ paths:
       tags:
         - Agent Operations
       security:
-        - BearerAuth: []
+        - AgentSecret: []
       parameters:
         - name: id
           in: path
@@ -236,18 +269,65 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Presigned URL generated
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  url:
-                    type: string
-                  method:
-                    type: string
-                    example: PUT
+                $ref: "#/components/schemas/AgentUploadLinkResponse"
+        "400":
+          description: Missing filename query parameter
+        "401":
+          description: Agent secret is invalid
+        "500":
+          description: Upload URL generation failed
+
+  /api/agents:
+    get:
+      summary: List agents visible to the authenticated company
+      description: Returns registered agents for the current company scope. Superadmin/admin flows may pass `company_id`.
+      tags:
+        - Agent Operations
+      parameters:
+        - name: company_id
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: Optional company scope for privileged users.
+      responses:
+        "200":
+          description: Agent list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentListResponse"
+        "500":
+          description: Failed to list agents
+
+  /api/agents/status:
+    get:
+      summary: Retrieve dashboard agent status summary
+      description: Aggregated agent health used by the Dashboard empty-state and monitoring widget.
+      tags:
+        - Agent Operations
+      parameters:
+        - name: company_id
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Agent status summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentStatusSummary"
+        "500":
+          description: Failed to retrieve status summary
 
   # --- User Profile Management ---
   /api/users/me/profile:
@@ -265,7 +345,7 @@ paths:
                 name:
                   type: string
       responses:
-        '200':
+        "200":
           description: Profile updated
 
   /api/users/me/profile/avatar:
@@ -274,7 +354,7 @@ paths:
       tags:
         - Authentication
       responses:
-        '200':
+        "200":
           description: Avatar removed
 
   /api/users/me/email:
@@ -296,7 +376,7 @@ paths:
                 password:
                   type: string
       responses:
-        '200':
+        "200":
           description: Email updated
 
   /api/users/me/password:
@@ -317,7 +397,7 @@ paths:
                 new_password:
                   type: string
       responses:
-        '200':
+        "200":
           description: Password updated
 
   # --- User Storage ---
@@ -334,7 +414,7 @@ paths:
             type: string
           description: Optional directory prefix (e.g., avatars, evidence)
       responses:
-        '200':
+        "200":
           description: URL generated
           content:
             application/json:
@@ -357,7 +437,7 @@ paths:
       tags:
         - Administration
       responses:
-        '200':
+        "200":
           description: Companies list
           content:
             application/json:
@@ -367,7 +447,7 @@ paths:
                   companies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CompanySummary'
+                      $ref: "#/components/schemas/CompanySummary"
     post:
       summary: Register a new company
       tags:
@@ -377,9 +457,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCompanyRequest'
+              $ref: "#/components/schemas/CreateCompanyRequest"
       responses:
-        '201':
+        "201":
           description: Company registered
 
   /api/companies/onboard:
@@ -393,8 +473,53 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OnboardCompanyRequest'
+              $ref: "#/components/schemas/OnboardCompanyRequest"
       responses:
+        "201":
+          description: Company and pending owner created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardCompanyResponse"
+        "400":
+          description: Invalid onboarding request
+        "500":
+          description: Onboarding failed
+
+  /api/companies/me/agent-token/rotate:
+    post:
+      summary: Rotate current company deployment token
+      description: Generates and returns a new one-time deployment token for the authenticated company.
+      tags:
+        - Agent Operations
+      responses:
+        "201":
+          description: New deployment token generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentTokenResponse"
+        "400":
+          description: Invalid company context
+        "403":
+          description: Missing permission
+        "404":
+          description: Company not found
+
+  /api/companies/me/agent-token/revoke:
+    post:
+      summary: Revoke current company deployment token
+      description: Invalidates the active deployment token. Already registered agents keep using their `agent_secret`.
+      tags:
+        - Agent Operations
+      responses:
+        "204":
+          description: Deployment token revoked
+        "403":
+          description: Missing permission
+        "404":
+          description: Company not found
+
   # --- Admin & Search ---
   /api/admin/companies:
     get:
@@ -409,14 +534,14 @@ paths:
             type: string
           description: Partial name match or exact ID
       responses:
-        '200':
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CompanySearchResult'
+                  $ref: "#/components/schemas/CompanySearchResult"
 
   /api/admin/users:
     get:
@@ -433,14 +558,14 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Search results
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserSearchResult'
+                  $ref: "#/components/schemas/UserSearchResult"
     post:
       summary: Administrative user creation
       description: Directly create a user with specific roles for any company.
@@ -451,9 +576,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminCreateUserRequest'
+              $ref: "#/components/schemas/AdminCreateUserRequest"
       responses:
-        '201':
+        "201":
           description: User created
 
   /api/admin/audit-logs:
@@ -478,12 +603,12 @@ paths:
             type: integer
             default: 0
       responses:
-        '200':
+        "200":
           description: Audit logs list
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuditLogResponse'
+                $ref: "#/components/schemas/AuditLogResponse"
 
   /api/admin/teams/stream:
     get:
@@ -492,7 +617,7 @@ paths:
       tags:
         - Administration
       responses:
-        '200':
+        "200":
           description: SSE stream established
 
   # --- Scans ---
@@ -502,14 +627,14 @@ paths:
       tags:
         - Pentest Operations
       responses:
-        '200':
+        "200":
           description: List of scans
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Scan'
+                  $ref: "#/components/schemas/Scan"
     post:
       summary: Initialize a pentest workflow
       description: Dispatches a new mission to the worker fleet via Temporal.
@@ -520,14 +645,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateScanRequest'
+              $ref: "#/components/schemas/CreateScanRequest"
       responses:
-        '201':
+        "201":
           description: Scan queued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateScanResponse'
+                $ref: "#/components/schemas/CreateScanResponse"
 
   /api/scans/{id}:
     get:
@@ -541,12 +666,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Scan details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Scan'
+                $ref: "#/components/schemas/Scan"
 
   /api/scans/{id}/vulnerabilities:
     get:
@@ -560,14 +685,14 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Vulnerabilities list
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Vulnerability'
+                  $ref: "#/components/schemas/Vulnerability"
 
   /api/scans/{id}/report:
     get:
@@ -581,7 +706,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: PDF Binary data
           content:
             application/pdf:
@@ -595,7 +720,7 @@ paths:
       tags:
         - Pentest Operations
       responses:
-        '200':
+        "200":
           description: SSE established
 
   /api/scans/{id}/stream:
@@ -610,7 +735,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: SSE established
 
   # --- Vulnerabilities ---
@@ -627,14 +752,14 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Evidences list
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Evidence'
+                  $ref: "#/components/schemas/Evidence"
 
   # --- Billing ---
   /api/billing/balance:
@@ -643,12 +768,12 @@ paths:
       tags:
         - Billing & Finance
       responses:
-        '200':
+        "200":
           description: Balance details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceResponse'
+                $ref: "#/components/schemas/BalanceResponse"
 
   /api/billing/ledger:
     get:
@@ -665,12 +790,12 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Ledger entries
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LedgerResponse'
+                $ref: "#/components/schemas/LedgerResponse"
 
   /api/billing/stats:
     get:
@@ -684,12 +809,12 @@ paths:
             type: integer
             default: 30
       responses:
-        '200':
+        "200":
           description: Consumption stats
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsageStatsResponse'
+                $ref: "#/components/schemas/UsageStatsResponse"
 
   # --- Admin Billing ---
   /api/admin/companies/{id}/tokens/adjust:
@@ -709,14 +834,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdjustTokensRequest'
+              $ref: "#/components/schemas/AdjustTokensRequest"
       responses:
-        '200':
+        "200":
           description: Tokens adjusted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceResponse'
+                $ref: "#/components/schemas/BalanceResponse"
+
+  /api/admin/companies/{id}/agent-token/rotate:
+    post:
+      summary: Admin rotate company deployment token
+      description: Generates a new deployment token for the target company.
+      tags:
+        - Agent Operations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "201":
+          description: New deployment token generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentTokenResponse"
+        "400":
+          description: Missing or invalid company id
+        "403":
+          description: Missing admin permission
+        "404":
+          description: Company not found
 
   /api/admin/companies/{id}/billing/balance:
     get:
@@ -730,12 +882,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Balance details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceResponse'
+                $ref: "#/components/schemas/BalanceResponse"
 
   /api/admin/companies/{id}/billing/ledger:
     get:
@@ -749,12 +901,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Ledger entries
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LedgerResponse'
+                $ref: "#/components/schemas/LedgerResponse"
 
   /api/admin/companies/{id}/billing/stats:
     get:
@@ -768,12 +920,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Consumption stats
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsageStatsResponse'
+                $ref: "#/components/schemas/UsageStatsResponse"
 
 components:
   securitySchemes:
@@ -782,6 +934,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Access Token returned by /auth/login
+    AgentDeploymentToken:
+      type: http
+      scheme: bearer
+      bearerFormat: ag_<43+ URL-safe chars>
+      description: One-time company deployment token used only on /api/agents/register
+    AgentSecret:
+      type: http
+      scheme: bearer
+      bearerFormat: agent_secret
+      description: Per-agent operational secret returned by /api/agents/register
 
   schemas:
     # --- Auth & User ---
@@ -808,6 +970,31 @@ components:
           type: string
           example: Bearer
 
+    SetupPasswordRequest:
+      type: object
+      required: [token, password]
+      properties:
+        token:
+          type: string
+          description: Invitation token received by email.
+        password:
+          type: string
+          format: password
+          minLength: 8
+
+    SetupPasswordResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        agent_token:
+          type: string
+          description: One-time company deployment token displayed once.
+          pattern: "^ag_[A-Za-z0-9_-]{43,}$"
+        expires_in:
+          type: integer
+          example: 900
+
     User:
       type: object
       properties:
@@ -820,7 +1007,7 @@ components:
         name:
           type: string
         role:
-          $ref: '#/components/schemas/UserRole'
+          $ref: "#/components/schemas/UserRole"
         company_id:
           type: string
           format: uuid
@@ -830,7 +1017,18 @@ components:
 
     UserRole:
       type: string
-      enum: [superadmin, admin, billing_aegis, technicien, support, owner, billing_client, operateur, viewer]
+      enum:
+        [
+          superadmin,
+          admin,
+          billing_aegis,
+          technicien,
+          support,
+          owner,
+          billing_client,
+          operateur,
+          viewer,
+        ]
 
     # --- Companies ---
     CompanySummary:
@@ -922,10 +1120,104 @@ components:
         name:
           type: string
         role:
-          $ref: '#/components/schemas/UserRole'
+          $ref: "#/components/schemas/UserRole"
         company_id:
           type: string
           format: uuid
+
+    # --- Agents ---
+    AgentRegisterRequest:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+          pattern: "^ag_[A-Za-z0-9_-]{43,}$"
+          description: Company deployment token.
+        name:
+          type: string
+          description: Friendly agent name.
+          example: prod-node-01
+
+    AgentRegisterResponse:
+      type: object
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+        agent_secret:
+          type: string
+          description: Operational secret returned once and persisted by the agent.
+
+    AgentStatusUpdateRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [IDLE, RUNNING, ERROR, OFFLINE]
+
+    AgentUploadLinkResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        method:
+          type: string
+          example: PUT
+
+    AgentRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        company_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+        last_seen:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    AgentListResponse:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgentRecord"
+
+    AgentStatusSummary:
+      type: object
+      properties:
+        total_agents:
+          type: integer
+        active_agents:
+          type: integer
+        inactive_agents:
+          type: integer
+        last_seen:
+          type: string
+          format: date-time
+          nullable: true
+
+    AgentTokenResponse:
+      type: object
+      properties:
+        agent_token:
+          type: string
+          pattern: "^ag_[A-Za-z0-9_-]{43,}$"
+          description: New deployment token displayed once.
 
     # --- Scans & Vulns ---
     Scan:
@@ -1008,7 +1300,7 @@ components:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/LedgerEntry'
+            $ref: "#/components/schemas/LedgerEntry"
 
     LedgerEntry:
       type: object
@@ -1064,7 +1356,7 @@ components:
         logs:
           type: array
           items:
-            $ref: '#/components/schemas/AuditLogEntry'
+            $ref: "#/components/schemas/AuditLogEntry"
         total:
           type: integer
 

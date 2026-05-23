@@ -17,17 +17,13 @@ import Export from "@theme/ApiExplorer/Export";
 <span
   className={"theme-doc-version-badge badge badge--secondary"}
   children={"Version: 3.0.0"}
->
-</span>
+></span>
 
 <Heading
   as={"h1"}
   className={"openapi__heading"}
   children={"Aegis AI Gateway API"}
->
-</Heading>
-
-
+></Heading>
 
 # 🛡️ Aegis AI Control Plane API
 
@@ -35,20 +31,23 @@ The **Aegis AI Gateway** is the high-performance orchestration layer for the Aeg
 It provides secure, unified access to scan orchestration, vulnerability intelligence, team management, and billing operations.
 
 ### 🚀 Core Missions
-* **Automated Pentesting**: Trigger and monitor large-scale security scans powered by Temporal workflows.
-* **Threat Intelligence**: Access technical proofs and CVE data extracted by specialized worker fleets.
-* **Enterprise RBAC**: Manage multi-tenant organizations with granular roles (SuperAdmin, Admin, Billing, etc.).
-* **Financial Governance**: Monitor token consumption, manage licenses, and track audit trails.
+
+- **Automated Pentesting**: Trigger and monitor large-scale security scans powered by Temporal workflows.
+- **Threat Intelligence**: Access technical proofs and CVE data extracted by specialized worker fleets.
+- **Enterprise RBAC**: Manage multi-tenant organizations with granular roles (SuperAdmin, Admin, Billing, etc.).
+- **Financial Governance**: Monitor token consumption, manage licenses, and track audit trails.
 
 ### 🔒 Security & Authentication
+
 Aegis AI enforces a Zero-Trust architecture:
+
 1. **Primary Auth**: JWT Bearer Token (short-lived).
 2. **Session Persistence**: HTTP-only Secure Refresh Token (Rotation enforced).
 3. **Permission Scopes**: Every endpoint is gated by specific RBAC scopes.
 
 ---
-*Internal Version: 3.0.0 (Refined Role Structure)*
 
+_Internal Version: 3.0.0 (Refined Role Structure)_
 
 <div
   style={{"marginBottom":"2rem"}}
@@ -66,7 +65,6 @@ Aegis AI enforces a Zero-Trust architecture:
       label={"HTTP: Bearer Auth"}
       value={"BearerAuth"}
     >
-
 
       Access Token returned by /auth/login
 
@@ -96,6 +94,7 @@ Aegis AI enforces a Zero-Trust architecture:
         </table>
       </div>
     </TabItem>
+
   </SchemaTabs>
 </div><div
   style={{"display":"flex","flexDirection":"column","marginBottom":"var(--ifm-paragraph-margin-bottom)"}}
