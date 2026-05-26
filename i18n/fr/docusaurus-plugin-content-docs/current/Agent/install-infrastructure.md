@@ -40,7 +40,17 @@ docker run -d \
 
 ### Linux systemd
 
-Compilez ou téléchargez le binaire `aegis-ai-agent`, puis lancez l'installeur depuis le dépôt de l'agent :
+#### Méthode A : Installeur par script dynamique en une seule commande (Recommandé)
+
+Vous pouvez lancer une seule commande pour télécharger automatiquement le binaire statique MUSL compilé depuis le bucket de release, l'installer en tant que service Systemd et pré-remplir vos identifiants :
+
+```bash
+curl -sL "https://api.aegis-ai.fr/install.sh?token=<VOTRE_TOKEN_DE_DEPLOIEMENT>" | sudo bash
+```
+
+#### Méthode B : Construction et installation manuelles
+
+Compilez le binaire `aegis-ai-agent` et lancez le script d'installation locale manuellement :
 
 ```bash
 cargo build --release
@@ -67,6 +77,17 @@ Démarrez le service :
 sudo systemctl daemon-reload
 sudo systemctl enable --now aegis-agent.service
 sudo systemctl status aegis-agent.service
+```
+
+### Kubernetes (Helm Chart DaemonSet)
+
+Déployez l'agent en tant que DaemonSet sur tous les nœuds de calcul de votre cluster à l'aide du chart Helm (situé dans le dépôt de l'agent) :
+
+```bash
+helm install aegis-agent ./chart --set token=<VOTRE_TOKEN_DE_DEPLOIEMENT>
+```
+
+_Note : Le paramètre `--set token=XYZ` est strictement requis ; l'installation échouera si le token de déploiement est omis._
 ```
 
 ## 3. Prérequis réseau
