@@ -19,7 +19,7 @@ ag_<43+ URL-safe chars>
 
 ## 2. Choose the Installation Mode
 
-Use Docker for container platforms and fast rollout. Use systemd for Linux hosts where you want the agent installed as a native service.
+Choose the best deployment method for your infrastructure:
 
 ### Docker
 
@@ -40,7 +40,15 @@ docker run -d \
 
 ### Linux systemd
 
-Build or download the `aegis-ai-agent` binary, then run the installer from the agent repository:
+#### Method A: One-Click Dynamic Script Installer (Recommended)
+You can run a single command to automatically download the compiled static MUSL binary from the release bucket, install it as a Systemd service, and pre-populate your credentials:
+
+```bash
+curl -sL "https://api.aegis-ai.fr/install.sh?token=<YOUR_DEPLOYMENT_TOKEN>" | sudo bash
+```
+
+#### Method B: Manual Build & Install
+Build the `aegis-ai-agent` binary and run the local installation script manually:
 
 ```bash
 cargo build --release
@@ -68,6 +76,15 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now aegis-agent.service
 sudo systemctl status aegis-agent.service
 ```
+
+### Kubernetes (Helm Chart DaemonSet)
+
+Deploy the agent as a DaemonSet across all worker nodes in your cluster using the Helm chart (located in the agent repository):
+
+```bash
+helm install aegis-agent ./chart --set token=<YOUR_DEPLOYMENT_TOKEN>
+```
+*Note: The `--set token=XYZ` parameter is strictly required; the installation will fail if the deployment token is omitted.*
 
 ## 3. Network Requirements
 
