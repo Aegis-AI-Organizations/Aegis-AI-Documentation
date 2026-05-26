@@ -88,7 +88,6 @@ helm install aegis-agent ./chart --set token=<VOTRE_TOKEN_DE_DEPLOIEMENT>
 ```
 
 _Note : Le paramètre `--set token=XYZ` est strictement requis ; l'installation échouera si le token de déploiement est omis._
-```
 
 ## 3. Prérequis réseau
 
