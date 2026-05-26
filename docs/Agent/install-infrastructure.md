@@ -41,6 +41,7 @@ docker run -d \
 ### Linux systemd
 
 #### Method A: One-Click Dynamic Script Installer (Recommended)
+
 You can run a single command to automatically download the compiled static MUSL binary from the release bucket, install it as a Systemd service, and pre-populate your credentials:
 
 ```bash
@@ -48,6 +49,7 @@ curl -sL "https://api.aegis-ai.fr/install.sh?token=<YOUR_DEPLOYMENT_TOKEN>" | su
 ```
 
 #### Method B: Manual Build & Install
+
 Build the `aegis-ai-agent` binary and run the local installation script manually:
 
 ```bash
@@ -84,7 +86,8 @@ Deploy the agent as a DaemonSet across all worker nodes in your cluster using th
 ```bash
 helm install aegis-agent ./chart --set token=<YOUR_DEPLOYMENT_TOKEN>
 ```
-*Note: The `--set token=XYZ` parameter is strictly required; the installation will fail if the deployment token is omitted.*
+
+_Note: The `--set token=XYZ` parameter is strictly required; the installation will fail if the deployment token is omitted._
 
 ## 3. Network Requirements
 
