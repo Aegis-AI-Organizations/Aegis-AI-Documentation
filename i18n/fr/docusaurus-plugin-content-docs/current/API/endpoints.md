@@ -17,17 +17,17 @@ La référence complète est disponible dans **API Reference** depuis `openapi.y
 
 ## Routes utilisateur protégées
 
-| Domaine     | Routes                                                                                                                     |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Session     | `/api/auth/logout`, `/api/auth/me`                                                                                         |
-| Profil      | `/api/users/me/profile`, `/api/users/me/email`, `/api/users/me/password`, `/api/users/me/profile/avatar`                   |
-| Entreprises | `/api/companies`, `/api/companies/onboard`, `/api/companies/me/agent-token/rotate`, `/api/companies/me/agent-token/revoke` |
-| Agents      | `/api/agents`, `/api/agents/status`                                                                                        |
-| Scans       | `/api/scans`, `/api/scans/{id}`, `/api/scans/{id}/vulnerabilities`, `/api/scans/{id}/report`                               |
-| Flux        | `/api/scans/stream`, `/api/scans/{id}/stream`, `/api/admin/teams/stream`                                                   |
-| Facturation | `/api/billing/balance`, `/api/billing/ledger`, `/api/billing/stats`                                                        |
-| Stockage    | `/api/storage/upload-url`                                                                                                  |
-| Admin/Audit | `/api/admin/companies`, `/api/admin/users`, `/api/admin/audit-logs`, `/api/admin/companies/{id}/...`                       |
+| Domaine     | Routes                                                                                                                        |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Session     | `/api/auth/logout`, `/api/auth/me`                                                                                            |
+| Profil      | `/api/users/me/profile`, `/api/users/me/email`, `/api/users/me/password`, `/api/users/me/profile/avatar`                      |
+| Entreprises | `/api/companies`, `/api/companies/onboard`, `/api/companies/me/agent-token/rotate`, `/api/companies/me/agent-token/revoke`    |
+| Agents      | `/api/agents`, `/api/agents/status`                                                                                           |
+| Scans       | `/api/scans`, `/api/scans/{id}`, `/api/scans/{id}/vulnerabilities`, `/api/scans/{id}/report`                                  |
+| Flux        | `/api/scans/stream`, `/api/scans/{id}/stream`, `/api/admin/teams/stream`                                                      |
+| Facturation | `/api/billing/balance`, `/api/billing/ledger`, `/api/billing/stats`                                                           |
+| Stockage    | `/api/storage/upload-url`                                                                                                     |
+| Admin/Audit | `/api/admin/companies`, `/api/admin/users` invitation collaborateur, `/api/admin/audit-logs`, `/api/admin/companies/{id}/...` |
 
 ## Routes agent
 

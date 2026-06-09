@@ -19,7 +19,17 @@ Les utilisateurs invités activent leur compte avec :
 POST /api/auth/setup-password
 ```
 
-Pour le owner d'une entreprise, la réponse contient aussi `agent_token`, le token à usage unique nécessaire pour connecter le premier agent Aegis.
+Pour le owner d'une entreprise, la réponse contient aussi `agent_token`, le token à usage unique nécessaire pour connecter le premier agent Aegis. Les collaborateurs invités ne reçoivent pas de token agent.
+
+## Invitations collaborateurs
+
+Les collaborateurs ne sont plus créés avec un mot de passe provisoire. Les admins et owners les invitent avec :
+
+```http
+POST /api/admin/users
+```
+
+Brain crée l'utilisateur en `pending_activation`, stocke uniquement le hash du token d'invitation à usage unique, puis envoie l'email d'activation. Le collaborateur utilise ensuite `/api/auth/setup-password` pour définir son mot de passe.
 
 ## Rôles
 
