@@ -567,8 +567,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserSearchResult"
     post:
-      summary: Administrative user creation
-      description: Directly create a user with specific roles for any company.
+      summary: Administrative user invitation
+      description: Create a pending user and send a one-time activation email.
       tags:
         - Administration
       requestBody:
@@ -579,7 +579,7 @@ paths:
               $ref: "#/components/schemas/AdminCreateUserRequest"
       responses:
         "201":
-          description: User created
+          description: Invitation sent
 
   /api/admin/audit-logs:
     get:

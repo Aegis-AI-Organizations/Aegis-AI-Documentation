@@ -27,7 +27,7 @@ The full generated reference is available in **API Reference** from `openapi.yam
 | Streams     | `/api/scans/stream`, `/api/scans/{id}/stream`, `/api/admin/teams/stream`                                                   |
 | Billing     | `/api/billing/balance`, `/api/billing/ledger`, `/api/billing/stats`                                                        |
 | Storage     | `/api/storage/upload-url`                                                                                                  |
-| Audit/Admin | `/api/admin/companies`, `/api/admin/users`, `/api/admin/audit-logs`, `/api/admin/companies/{id}/...`                       |
+| Audit/Admin | `/api/admin/companies`, `/api/admin/users` invitation flow, `/api/admin/audit-logs`, `/api/admin/companies/{id}/...`       |
 
 ## Agent Routes
 

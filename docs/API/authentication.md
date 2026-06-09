@@ -19,7 +19,17 @@ Invited owners and users activate their account with:
 POST /api/auth/setup-password
 ```
 
-The request contains the invitation token and the new password. For company owners, the response also includes `agent_token`, the one-time deployment token used to connect the first Aegis Agent.
+The request contains the invitation token and the new password. For company owners, the response also includes `agent_token`, the one-time deployment token used to connect the first Aegis Agent. Invited collaborators do not receive an agent token.
+
+## Collaborator Invitations
+
+Collaborators are not created with a temporary password. Admins and organization owners invite them with:
+
+```http
+POST /api/admin/users
+```
+
+The Brain creates the user in `pending_activation`, stores only a hashed one-time invitation token, and sends the activation email. The collaborator then uses `/api/auth/setup-password` to define their own password.
 
 ## Roles
 
