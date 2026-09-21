@@ -15,11 +15,11 @@ flowchart LR
     Test -->|push to main| Release[release.yml]
 ```
 
-| Stage              | Workflow              | Runs on                | Purpose                                              |
-| ------------------ | --------------------- | ---------------------- | ------------------------------------------------- |
-| Lint               | `linting.yml`         | every push / PR        | Language linters, formatting, `pre-commit` hooks    |
-| Build & Test       | `build-and-test.yml`  | after lint             | Compile, unit/integration tests, coverage           |
-| Release            | `release.yml`         | push to `main` only    | Build and publish the container image / artifact    |
+| Stage        | Workflow             | Runs on             | Purpose                                          |
+| ------------ | -------------------- | ------------------- | ------------------------------------------------ |
+| Lint         | `linting.yml`        | every push / PR     | Language linters, formatting, `pre-commit` hooks |
+| Build & Test | `build-and-test.yml` | after lint          | Compile, unit/integration tests, coverage        |
+| Release      | `release.yml`        | push to `main` only | Build and publish the container image / artifact |
 
 Runners are ephemeral and tokens are narrowly scoped (`contents`, `packages`,
 `pages`, `id-token` as needed).

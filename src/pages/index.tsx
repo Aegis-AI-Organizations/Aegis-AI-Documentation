@@ -68,8 +68,8 @@ export default function Home(): React.JSX.Element {
 
           <p className="hero__subtitle">
             <Translate id="homepage.hero.subtitle">
-              Aegis continuously detects vulnerabilities, generates evidence, and
-              produces remediation workflows — fast.
+              Aegis continuously detects vulnerabilities, generates evidence,
+              and produces remediation workflows — fast.
             </Translate>
           </p>
 

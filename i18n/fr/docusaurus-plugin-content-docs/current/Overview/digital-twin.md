@@ -44,12 +44,12 @@ Le dépôt `vuln-app` est une application Flask volontairement vulnérable minim
 pentest de bout en bout. Elle est **réservée aux tests** et ne doit jamais être
 exposée publiquement.
 
-| Route      | Méthode | Comportement                                                            |
-| ---------- | ------- | ------------------------------------------------------------------- |
-| `/`        | `GET`   | Bannière statique (`Vulnerable Mock App`).                              |
+| Route      | Méthode | Comportement                                                                                                                                                                                                     |
+| ---------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`        | `GET`   | Bannière statique (`Vulnerable Mock App`).                                                                                                                                                                       |
 | `/search`  | `GET`   | **Simulacre d'injection SQL.** Si `q` contient une apostrophe, renvoie toute la table utilisateur factice (`results`, `count`, `status: success`) — un signal déterministe sur lequel le scanner peut s'appuyer. |
-| `/reflect` | `GET`   | **XSS réfléchie.** Renvoie `q` directement dans le corps HTML sans échappement. |
-| `/health`  | `GET`   | Sonde de readiness `{"status": "ok"}`.                                  |
+| `/reflect` | `GET`   | **XSS réfléchie.** Renvoie `q` directement dans le corps HTML sans échappement.                                                                                                                                  |
+| `/health`  | `GET`   | Sonde de readiness `{"status": "ok"}`.                                                                                                                                                                           |
 
 La table utilisateur factice contient de faux enregistrements `admin` / `user`
 avec des hashs de mot de passe MD5 : un « exploit » réussi produit donc du loot

@@ -6,11 +6,11 @@ each service repository, and aggregated here at build time.
 
 ## Content sources
 
-| Source                              | What it produces                                       | Where it lives |
-| ----------------------------------- | --------------------------------------------------- | -------------- |
-| `docusaurus-plugin-openapi-docs`    | The 40+ `Swagger-API/*` REST reference pages          | Generated from `openapi.yaml` into `docs/Swagger-API/` |
-| `docusaurus-plugin-remote-content`  | One file per service, fetched from that repo's `main` | `docs/<Service>/…` (en) and `i18n/fr/…/<Service>/…` (fr) |
-| Hand-written pages                   | Everything else (Overview, quickstarts, guides, …)   | Committed directly in `docs/` and `i18n/fr/…` |
+| Source                             | What it produces                                      | Where it lives                                           |
+| ---------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| `docusaurus-plugin-openapi-docs`   | The 40+ `Swagger-API/*` REST reference pages          | Generated from `openapi.yaml` into `docs/Swagger-API/`   |
+| `docusaurus-plugin-remote-content` | One file per service, fetched from that repo's `main` | `docs/<Service>/…` (en) and `i18n/fr/…/<Service>/…` (fr) |
+| Hand-written pages                 | Everything else (Overview, quickstarts, guides, …)    | Committed directly in `docs/` and `i18n/fr/…`            |
 
 ### Remote-synced files
 

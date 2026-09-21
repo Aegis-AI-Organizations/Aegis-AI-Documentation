@@ -7,15 +7,15 @@ rapides ; PostgreSQL sert aux tests d'intégration.
 
 ## Modèles principaux
 
-| Modèle          | Champs clés                                                       | Notes                                                              |
-| --------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
-| `Company`       | `name`, `logo_url`, `is_active`, `deployment_token`               | `deployment_token` est le hash SHA-256 du token `ag_` brut ; la valeur brute est affichée une fois et jamais persistée. |
-| `User`          | `email`, `password_hash`, `role`, `is_active`, `name`, `avatar_url` | `role` est un enum (voir RBAC ci-dessous) ; `password_hash` est bcrypt. |
-| `Agent`         | `company_id`, `name`, `token_hash`, `status`, `last_seen`, `created_at` | `token_hash` est le hash du secret opérationnel de l'agent ; `last_seen` alimente les compteurs actifs/inactifs. |
-| `RefreshToken`  | `token_hash`, `expires_at`, `revoked`                             | Invalide si `revoked` est vrai ou si `expires_at` est dans le passé. |
-| `Scan`          | `status`, `report_pdf`, `started_at`, `completed_at`              | Une exécution de pentest.                                          |
-| `Vulnerability` | `vuln_type`, `severity`                                          | Découvertes identifiées lors d'un scan.                            |
-| `Evidence`      | `payload_used`, `loot_data` (JSONB)                              | Preuve d'exploitation pour une vulnérabilité.                      |
+| Modèle          | Champs clés                                                             | Notes                                                                                                                   |
+| --------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `Company`       | `name`, `logo_url`, `is_active`, `deployment_token`                     | `deployment_token` est le hash SHA-256 du token `ag_` brut ; la valeur brute est affichée une fois et jamais persistée. |
+| `User`          | `email`, `password_hash`, `role`, `is_active`, `name`, `avatar_url`     | `role` est un enum (voir RBAC ci-dessous) ; `password_hash` est bcrypt.                                                 |
+| `Agent`         | `company_id`, `name`, `token_hash`, `status`, `last_seen`, `created_at` | `token_hash` est le hash du secret opérationnel de l'agent ; `last_seen` alimente les compteurs actifs/inactifs.        |
+| `RefreshToken`  | `token_hash`, `expires_at`, `revoked`                                   | Invalide si `revoked` est vrai ou si `expires_at` est dans le passé.                                                    |
+| `Scan`          | `status`, `report_pdf`, `started_at`, `completed_at`                    | Une exécution de pentest.                                                                                               |
+| `Vulnerability` | `vuln_type`, `severity`                                                 | Découvertes identifiées lors d'un scan.                                                                                 |
+| `Evidence`      | `payload_used`, `loot_data` (JSONB)                                     | Preuve d'exploitation pour une vulnérabilité.                                                                           |
 
 ## Relations
 

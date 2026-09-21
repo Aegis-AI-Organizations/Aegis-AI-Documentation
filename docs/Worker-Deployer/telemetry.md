@@ -5,15 +5,15 @@ operational value is traceable, cleanly torn-down infrastructure.
 
 ## Signals to track
 
-| Signal                     | Purpose                                                        |
-| -------------------------- | ----------------------------------------------------------- |
-| Sandbox create requests    | Volume of `CreateSandbox` calls from Brain workflows           |
-| Namespace lifecycle        | `aegis-war-room-<scan_id>` created / ready / deleted           |
-| Workload readiness         | Deployment/StatefulSet available vs failed, per workload       |
+| Signal                       | Purpose                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| Sandbox create requests      | Volume of `CreateSandbox` calls from Brain workflows                    |
+| Namespace lifecycle          | `aegis-war-room-<scan_id>` created / ready / deleted                    |
+| Workload readiness           | Deployment/StatefulSet available vs failed, per workload                |
 | `required` workload failures | Sandbox creation aborted because a required workload never became ready |
-| Network policy application | Default-deny egress and external-mock services in place        |
-| Teardown outcome           | Namespace deleted, or cleanup errors tolerated for missing resources |
-| Duration                   | Time from request to reachable endpoint; time to teardown      |
+| Network policy application   | Default-deny egress and external-mock services in place                 |
+| Teardown outcome             | Namespace deleted, or cleanup errors tolerated for missing resources    |
+| Duration                     | Time from request to reachable endpoint; time to teardown               |
 
 ## Status vocabulary
 

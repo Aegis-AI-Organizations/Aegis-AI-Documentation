@@ -13,25 +13,25 @@ sous forme de graphe que sous forme de lignes isolées.
 
 ## Nœuds typiques
 
-| Nœud            | Description                                       |
-| --------------- | ------------------------------------------------ |
-| `Company`       | Tenant propriétaire des données du graphe         |
-| `Agent`         | Sonde d'infrastructure déployée                   |
-| `Host`          | Machine ou nœud découvert par un agent            |
-| `Container`     | Charge de travail runtime                         |
-| `Service`       | Service ou endpoint applicatif exposé             |
-| `Scan`          | Exécution de pentest                              |
-| `Vulnerability` | Vulnérabilité liée à un scan ou à un asset        |
+| Nœud            | Description                                |
+| --------------- | ------------------------------------------ |
+| `Company`       | Tenant propriétaire des données du graphe  |
+| `Agent`         | Sonde d'infrastructure déployée            |
+| `Host`          | Machine ou nœud découvert par un agent     |
+| `Container`     | Charge de travail runtime                  |
+| `Service`       | Service ou endpoint applicatif exposé      |
+| `Scan`          | Exécution de pentest                       |
+| `Vulnerability` | Vulnérabilité liée à un scan ou à un asset |
 
 ## Relations typiques
 
-| Relation       | Signification                        |
-| -------------- | ---------------------------------- |
-| `OWNS`         | Frontière de propriété entreprise    |
-| `OBSERVED`     | Un agent a observé un asset           |
-| `RUNS`         | Un hôte exécute un conteneur ou service |
-| `EXPOSES`      | Une charge expose un endpoint         |
-| `FOUND`        | Un scan a trouvé une vulnérabilité    |
+| Relation       | Signification                            |
+| -------------- | ---------------------------------------- |
+| `OWNS`         | Frontière de propriété entreprise        |
+| `OBSERVED`     | Un agent a observé un asset              |
+| `RUNS`         | Un hôte exécute un conteneur ou service  |
+| `EXPOSES`      | Une charge expose un endpoint            |
+| `FOUND`        | Un scan a trouvé une vulnérabilité       |
 | `EVIDENCED_BY` | Une vulnérabilité a une preuve technique |
 
 ## Règle opérationnelle

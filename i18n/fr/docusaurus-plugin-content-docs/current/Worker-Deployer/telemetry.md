@@ -5,15 +5,15 @@ valeur opérationnelle est une infrastructure traçable et proprement détruite.
 
 ## Signaux à suivre
 
-| Signal                       | Objectif                                                       |
-| ---------------------------- | ----------------------------------------------------------- |
-| Requêtes de création de sandbox | Volume d'appels `CreateSandbox` depuis les workflows Brain     |
-| Cycle de vie du namespace    | `aegis-war-room-<scan_id>` créé / prêt / supprimé              |
-| Readiness des workloads      | Deployment/StatefulSet disponible vs échoué, par workload      |
-| Échecs de workload `required` | Création de sandbox interrompue car un workload requis n'est jamais devenu prêt |
-| Application des network policies | Egress default-deny et services mock externes en place     |
-| Résultat du teardown         | Namespace supprimé, ou erreurs de cleanup tolérées pour ressources absentes |
-| Durée                        | Temps de la requête à l'endpoint joignable ; temps de teardown |
+| Signal                           | Objectif                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------- |
+| Requêtes de création de sandbox  | Volume d'appels `CreateSandbox` depuis les workflows Brain                      |
+| Cycle de vie du namespace        | `aegis-war-room-<scan_id>` créé / prêt / supprimé                               |
+| Readiness des workloads          | Deployment/StatefulSet disponible vs échoué, par workload                       |
+| Échecs de workload `required`    | Création de sandbox interrompue car un workload requis n'est jamais devenu prêt |
+| Application des network policies | Egress default-deny et services mock externes en place                          |
+| Résultat du teardown             | Namespace supprimé, ou erreurs de cleanup tolérées pour ressources absentes     |
+| Durée                            | Temps de la requête à l'endpoint joignable ; temps de teardown                  |
 
 ## Vocabulaire de statut
 

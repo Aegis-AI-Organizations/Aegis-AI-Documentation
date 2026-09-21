@@ -34,14 +34,14 @@ flowchart LR
 
 ## Identité et authentification
 
-| Acteur              | Identifiant                          | Durée de vie / traitement                                            |
-| ------------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| Opérateur (user)    | Access token JWT                   | Courte durée, conservé en mémoire dans le frontend.                  |
-| Session opérateur   | Refresh token                     | Cookie HTTP-only, tourné à chaque refresh, révocable côté serveur.   |
-| Agent (enregistrement) | Token de déploiement `ag_<43+ car.>` | Usage unique, par entreprise ; seul le hash SHA-256 est stocké.  |
-| Agent (runtime)     | Secret agent                      | Par agent ; haché bcrypt côté serveur ; renvoyé une fois à l'enregistrement. |
-| Gateway → Brain     | Certificat client mTLS            | Monté depuis des secrets Kubernetes sous `/etc/brain/certs`.        |
-| Token interne       | Vérification `InternalAuthService`| Whitelist d'intercepteur gRPC pour les contrôles machine à machine. |
+| Acteur                 | Identifiant                          | Durée de vie / traitement                                                    |
+| ---------------------- | ------------------------------------ | ---------------------------------------------------------------------------- |
+| Opérateur (user)       | Access token JWT                     | Courte durée, conservé en mémoire dans le frontend.                          |
+| Session opérateur      | Refresh token                        | Cookie HTTP-only, tourné à chaque refresh, révocable côté serveur.           |
+| Agent (enregistrement) | Token de déploiement `ag_<43+ car.>` | Usage unique, par entreprise ; seul le hash SHA-256 est stocké.              |
+| Agent (runtime)        | Secret agent                         | Par agent ; haché bcrypt côté serveur ; renvoyé une fois à l'enregistrement. |
+| Gateway → Brain        | Certificat client mTLS               | Monté depuis des secrets Kubernetes sous `/etc/brain/certs`.                 |
+| Token interne          | Vérification `InternalAuthService`   | Whitelist d'intercepteur gRPC pour les contrôles machine à machine.          |
 
 Tourner ou révoquer un token de déploiement ne **déconnecte pas** les agents déjà
 enregistrés — ils continuent avec leur propre secret agent.
@@ -50,18 +50,18 @@ enregistrés — ils continuent avec leur propre secret agent.
 
 Les rôles sont synchronisés entre le Brain et la Gateway :
 
-| Rôle             | Côté        | Portée typique                        |
-| ---------------- | ----------- | ----------------------------------- |
-| `superadmin`     | Plateforme  | Administration de toute la plateforme |
-| `admin`          | Plateforme  | Administration côté Aegis             |
-| `billing_aegis`  | Plateforme  | Opérations de facturation plateforme  |
-| `technicien`     | Plateforme  | Opérations de support technique       |
-| `support`        | Plateforme  | Support et assistance client          |
-| `commercial`     | Plateforme  | Opérations commerciales / comptes     |
-| `owner`          | Client      | Owner de l'organisation cliente       |
-| `billing_client` | Client      | Accès facturation client              |
-| `operateur`      | Client      | Opérateur technique client            |
-| `viewer`         | Client      | Accès client en lecture seule         |
+| Rôle             | Côté       | Portée typique                        |
+| ---------------- | ---------- | ------------------------------------- |
+| `superadmin`     | Plateforme | Administration de toute la plateforme |
+| `admin`          | Plateforme | Administration côté Aegis             |
+| `billing_aegis`  | Plateforme | Opérations de facturation plateforme  |
+| `technicien`     | Plateforme | Opérations de support technique       |
+| `support`        | Plateforme | Support et assistance client          |
+| `commercial`     | Plateforme | Opérations commerciales / comptes     |
+| `owner`          | Client     | Owner de l'organisation cliente       |
+| `billing_client` | Client     | Accès facturation client              |
+| `operateur`      | Client     | Opérateur technique client            |
+| `viewer`         | Client     | Accès client en lecture seule         |
 
 Les rôles client ne peuvent jamais lire les scans ou agents d'une autre
 entreprise ; les routes plateforme élevées exigent des scopes élevés explicites.

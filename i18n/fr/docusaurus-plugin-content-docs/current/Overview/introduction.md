@@ -59,13 +59,13 @@ sur Kubernetes avec un pipeline GitOps.
 
 ## Où aller ensuite
 
-| Vous voulez…                                     | Lire                                                  |
-| ---------------------------------------------- | ---------------------------------------------------- |
-| Comprendre la carte complète des composants     | [Architecture système](./system-architecture.md)     |
-| Suivre un scan du clic au rapport               | [Cycle de vie de bout en bout](./lifecycle.md)       |
-| Savoir quel dépôt fait quoi                    | [Dépôts](./repositories.md)                          |
-| Comprendre le modèle de confiance et d'isolation | [Modèle de sécurité](./security-model.md)            |
-| Chercher un terme                              | [Glossaire](./glossary.md)                           |
-| Vérifier ce qui est implémenté aujourd'hui      | [Statut du projet](./project-status.md)              |
-| Déployer la plateforme                         | [Infrastructure · Démarrage](../Infra/getting-started.md) |
-| Appeler l'API publique                         | [Référence API](../Swagger-API/aegis-ai-gateway-api.info.mdx) |
+| Vous voulez…                                     | Lire                                                          |
+| ------------------------------------------------ | ------------------------------------------------------------- |
+| Comprendre la carte complète des composants      | [Architecture système](./system-architecture.md)              |
+| Suivre un scan du clic au rapport                | [Cycle de vie de bout en bout](./lifecycle.md)                |
+| Savoir quel dépôt fait quoi                      | [Dépôts](./repositories.md)                                   |
+| Comprendre le modèle de confiance et d'isolation | [Modèle de sécurité](./security-model.md)                     |
+| Chercher un terme                                | [Glossaire](./glossary.md)                                    |
+| Vérifier ce qui est implémenté aujourd'hui       | [Statut du projet](./project-status.md)                       |
+| Déployer la plateforme                           | [Infrastructure · Démarrage](../Infra/getting-started.md)     |
+| Appeler l'API publique                           | [Référence API](../Swagger-API/aegis-ai-gateway-api.info.mdx) |

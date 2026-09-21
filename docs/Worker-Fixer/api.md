@@ -6,11 +6,11 @@ permissions are handled through Brain and the Dashboard.
 
 ## Internal Operations
 
-| Operation             | Purpose                                                         |
-| --------------------- | ----------------------------------------------------------- |
-| Propose remediation   | Turn a confirmed finding + context into a patch proposal       |
-| Get status            | Return the current state of a remediation task                 |
-| Discard proposal      | Drop a generated proposal that was not accepted                |
+| Operation           | Purpose                                                  |
+| ------------------- | -------------------------------------------------------- |
+| Propose remediation | Turn a confirmed finding + context into a patch proposal |
+| Get status          | Return the current state of a remediation task           |
+| Discard proposal    | Drop a generated proposal that was not accepted          |
 
 ## Required Inputs
 

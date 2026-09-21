@@ -55,13 +55,13 @@ TypeScript) deployed on Kubernetes with a GitOps pipeline.
 
 ## Where to go next
 
-| You want to…                                   | Read                                                   |
-| ---------------------------------------------- | ------------------------------------------------------ |
-| Understand the full component map              | [System Architecture](./system-architecture.md)       |
-| Follow a scan from click to report             | [End-to-End Lifecycle](./lifecycle.md)                 |
-| Know which repository does what                | [Repositories](./repositories.md)                      |
-| Understand the trust and isolation model       | [Security Model](./security-model.md)                  |
-| Look up a term                                 | [Glossary](./glossary.md)                              |
-| Check what is implemented today                | [Project Status](./project-status.md)                  |
-| Deploy the platform                            | [Infrastructure · Getting Started](../Infra/getting-started.md) |
-| Call the public API                            | [API Reference](../Swagger-API/aegis-ai-gateway-api.info.mdx)   |
+| You want to…                             | Read                                                            |
+| ---------------------------------------- | --------------------------------------------------------------- |
+| Understand the full component map        | [System Architecture](./system-architecture.md)                 |
+| Follow a scan from click to report       | [End-to-End Lifecycle](./lifecycle.md)                          |
+| Know which repository does what          | [Repositories](./repositories.md)                               |
+| Understand the trust and isolation model | [Security Model](./security-model.md)                           |
+| Look up a term                           | [Glossary](./glossary.md)                                       |
+| Check what is implemented today          | [Project Status](./project-status.md)                           |
+| Deploy the platform                      | [Infrastructure · Getting Started](../Infra/getting-started.md) |
+| Call the public API                      | [API Reference](../Swagger-API/aegis-ai-gateway-api.info.mdx)   |

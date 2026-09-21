@@ -5,11 +5,11 @@ par le Brain ou l'orchestration de workflow.
 
 ## Opérations internes
 
-| Opération          | Objectif                                |
-| ------------------ | ------------------------------------- |
+| Opération          | Objectif                                    |
+| ------------------ | ------------------------------------------- |
 | Déployer un worker | Créer une ressource de worker ou de sandbox |
-| Obtenir le statut  | Retourner l'état de déploiement courant  |
-| Terminer un worker | Supprimer les ressources temporaires     |
+| Obtenir le statut  | Retourner l'état de déploiement courant     |
+| Terminer un worker | Supprimer les ressources temporaires        |
 
 ## Entrées requises
 

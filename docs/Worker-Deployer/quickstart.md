@@ -16,15 +16,15 @@ Given a topology request, the Deployer creates namespace
 
 Supported topology fidelity fields:
 
-| Area              | Fields                                                                 |
-| ----------------- | ------------------------------------------------------------------- |
-| Startup           | `command`, `args`, `working_dir`, `init_containers`                   |
-| Dependency order  | `depends_on` (creation order), `wait_for` (init-container TCP wait, e.g. `postgres:5432`) |
-| Files / storage   | `config_files`, `secret_files`, `empty_dirs`                         |
-| Identity          | `stateful: true` → StatefulSet with stable DNS                       |
-| Resources         | `resources.requests`, `resources.limits`                             |
-| Security          | `security_context`, `pod_security_context`                           |
-| Readiness policy  | `required: true` fails sandbox creation if the workload never becomes ready |
+| Area             | Fields                                                                                    |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| Startup          | `command`, `args`, `working_dir`, `init_containers`                                       |
+| Dependency order | `depends_on` (creation order), `wait_for` (init-container TCP wait, e.g. `postgres:5432`) |
+| Files / storage  | `config_files`, `secret_files`, `empty_dirs`                                              |
+| Identity         | `stateful: true` → StatefulSet with stable DNS                                            |
+| Resources        | `resources.requests`, `resources.limits`                                                  |
+| Security         | `security_context`, `pod_security_context`                                                |
+| Readiness policy | `required: true` fails sandbox creation if the workload never becomes ready               |
 
 Handled elsewhere: database dump restore (Brain seeding activities), rich external
 API responses / traffic capture (external mock runtime), ingress/TLS virtual hosts

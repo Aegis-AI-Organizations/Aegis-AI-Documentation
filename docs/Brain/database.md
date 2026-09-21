@@ -7,15 +7,15 @@ PostgreSQL is used for integration tests.
 
 ## Core Models
 
-| Model          | Key fields                                                        | Notes                                                              |
-| -------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
-| `Company`      | `name`, `logo_url`, `is_active`, `deployment_token`               | `deployment_token` is the SHA-256 hash of the raw `ag_` token; the raw value is shown once and never persisted. |
-| `User`         | `email`, `password_hash`, `role`, `is_active`, `name`, `avatar_url` | `role` is an enum (see RBAC below); `password_hash` is bcrypt.   |
-| `Agent`        | `company_id`, `name`, `token_hash`, `status`, `last_seen`, `created_at` | `token_hash` is the hashed operational agent secret; `last_seen` drives active/inactive counts. |
-| `RefreshToken` | `token_hash`, `expires_at`, `revoked`                             | Invalid if `revoked` is true or `expires_at` is in the past.       |
-| `Scan`         | `status`, `report_pdf`, `started_at`, `completed_at`              | One pentest execution.                                             |
-| `Vulnerability`| `vuln_type`, `severity`                                          | Findings discovered during a scan.                                 |
-| `Evidence`     | `payload_used`, `loot_data` (JSONB)                              | Proof of exploitation for a vulnerability.                         |
+| Model           | Key fields                                                              | Notes                                                                                                           |
+| --------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `Company`       | `name`, `logo_url`, `is_active`, `deployment_token`                     | `deployment_token` is the SHA-256 hash of the raw `ag_` token; the raw value is shown once and never persisted. |
+| `User`          | `email`, `password_hash`, `role`, `is_active`, `name`, `avatar_url`     | `role` is an enum (see RBAC below); `password_hash` is bcrypt.                                                  |
+| `Agent`         | `company_id`, `name`, `token_hash`, `status`, `last_seen`, `created_at` | `token_hash` is the hashed operational agent secret; `last_seen` drives active/inactive counts.                 |
+| `RefreshToken`  | `token_hash`, `expires_at`, `revoked`                                   | Invalid if `revoked` is true or `expires_at` is in the past.                                                    |
+| `Scan`          | `status`, `report_pdf`, `started_at`, `completed_at`                    | One pentest execution.                                                                                          |
+| `Vulnerability` | `vuln_type`, `severity`                                                 | Findings discovered during a scan.                                                                              |
+| `Evidence`      | `payload_used`, `loot_data` (JSONB)                                     | Proof of exploitation for a vulnerability.                                                                      |
 
 ## Relationships
 

@@ -42,12 +42,12 @@ The `vuln-app` repository is a minimal deliberately vulnerable Flask app
 (`python:3.9-slim`, listens on port `80`) used to validate the whole pentest
 pipeline end to end. It is **test-only** and must never be exposed publicly.
 
-| Route      | Method | Behavior                                                                 |
-| ---------- | ------ | --------------------------------------------------------------------- |
-| `/`        | `GET`  | Static banner (`Vulnerable Mock App`).                                   |
+| Route      | Method | Behavior                                                                                                                                                                             |
+| ---------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/`        | `GET`  | Static banner (`Vulnerable Mock App`).                                                                                                                                               |
 | `/search`  | `GET`  | **SQL-injection stand-in.** If `q` contains a quote, it returns the full mock user table (`results`, `count`, `status: success`) — a deterministic signal the scanner can assert on. |
-| `/reflect` | `GET`  | **Reflected XSS.** Echoes `q` straight into the HTML body with no escaping. |
-| `/health`  | `GET`  | `{"status": "ok"}` readiness probe.                                      |
+| `/reflect` | `GET`  | **Reflected XSS.** Echoes `q` straight into the HTML body with no escaping.                                                                                                          |
+| `/health`  | `GET`  | `{"status": "ok"}` readiness probe.                                                                                                                                                  |
 
 The mock user table contains fake `admin` / `user` rows with MD5 password hashes,
 so a successful "exploit" yields verifiable loot without any real secret.

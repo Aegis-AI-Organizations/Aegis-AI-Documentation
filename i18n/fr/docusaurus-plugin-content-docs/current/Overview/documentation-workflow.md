@@ -6,11 +6,11 @@ qu'il décrit, dans chaque dépôt de service, puis agrégé ici au moment du bu
 
 ## Sources de contenu
 
-| Source                              | Ce qu'elle produit                                    | Emplacement |
-| ----------------------------------- | --------------------------------------------------- | ----------- |
-| `docusaurus-plugin-openapi-docs`    | Les 40+ pages de référence REST `Swagger-API/*`       | Générées depuis `openapi.yaml` vers `docs/Swagger-API/` |
-| `docusaurus-plugin-remote-content`  | Un fichier par service, récupéré depuis le `main` du dépôt | `docs/<Service>/…` (en) et `i18n/fr/…/<Service>/…` (fr) |
-| Pages écrites à la main             | Tout le reste (Vue d'ensemble, quickstarts, guides…) | Commitées directement dans `docs/` et `i18n/fr/…` |
+| Source                             | Ce qu'elle produit                                         | Emplacement                                             |
+| ---------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------- |
+| `docusaurus-plugin-openapi-docs`   | Les 40+ pages de référence REST `Swagger-API/*`            | Générées depuis `openapi.yaml` vers `docs/Swagger-API/` |
+| `docusaurus-plugin-remote-content` | Un fichier par service, récupéré depuis le `main` du dépôt | `docs/<Service>/…` (en) et `i18n/fr/…/<Service>/…` (fr) |
+| Pages écrites à la main            | Tout le reste (Vue d'ensemble, quickstarts, guides…)       | Commitées directement dans `docs/` et `i18n/fr/…`       |
 
 ### Fichiers synchronisés à distance
 

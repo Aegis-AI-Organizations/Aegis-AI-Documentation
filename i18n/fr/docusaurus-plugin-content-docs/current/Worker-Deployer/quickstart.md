@@ -16,15 +16,15 @@ les utilisateurs.
 
 Champs de fidélité de topologie supportés :
 
-| Domaine            | Champs                                                                |
-| ------------------ | ---------------------------------------------------------------- |
-| Démarrage          | `command`, `args`, `working_dir`, `init_containers`                  |
-| Ordre de dépendance | `depends_on` (ordre de création), `wait_for` (attente TCP d'init-container, ex. `postgres:5432`) |
-| Fichiers / stockage | `config_files`, `secret_files`, `empty_dirs`                        |
-| Identité           | `stateful: true` → StatefulSet avec DNS stable                      |
-| Ressources         | `resources.requests`, `resources.limits`                            |
-| Sécurité           | `security_context`, `pod_security_context`                          |
-| Politique de readiness | `required: true` fait échouer la création de sandbox si le workload n'est jamais prêt |
+| Domaine                | Champs                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| Démarrage              | `command`, `args`, `working_dir`, `init_containers`                                              |
+| Ordre de dépendance    | `depends_on` (ordre de création), `wait_for` (attente TCP d'init-container, ex. `postgres:5432`) |
+| Fichiers / stockage    | `config_files`, `secret_files`, `empty_dirs`                                                     |
+| Identité               | `stateful: true` → StatefulSet avec DNS stable                                                   |
+| Ressources             | `resources.requests`, `resources.limits`                                                         |
+| Sécurité               | `security_context`, `pod_security_context`                                                       |
+| Politique de readiness | `required: true` fait échouer la création de sandbox si le workload n'est jamais prêt            |
 
 Gérés ailleurs : restauration de dump de base de données (activités de seeding
 Brain), réponses d'API externes riches / capture de trafic (runtime du mock

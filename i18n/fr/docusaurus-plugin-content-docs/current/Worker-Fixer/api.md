@@ -6,11 +6,11 @@ l'historique d'audit et les permissions passent par Brain et le Dashboard.
 
 ## Opérations internes
 
-| Opération              | Objectif                                                       |
-| ---------------------- | --------------------------------------------------------- |
-| Proposer une remédiation | Transformer une vulnérabilité confirmée + contexte en proposition de correctif |
-| Obtenir le statut      | Retourner l'état courant d'une tâche de remédiation            |
-| Abandonner une proposition | Écarter une proposition générée non acceptée               |
+| Opération                  | Objectif                                                                       |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| Proposer une remédiation   | Transformer une vulnérabilité confirmée + contexte en proposition de correctif |
+| Obtenir le statut          | Retourner l'état courant d'une tâche de remédiation                            |
+| Abandonner une proposition | Écarter une proposition générée non acceptée                                   |
 
 ## Entrées requises
 

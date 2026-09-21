@@ -50,16 +50,16 @@ Git.
 
 ## Tech stack
 
-| Component        | Technology                | Version   |
-| ---------------- | ------------------------- | --------- |
-| Orchestration    | Kubernetes                | 1.28+     |
-| GitOps           | Argo CD                   | stable    |
-| Autoscaling      | KEDA                      | 2.x       |
-| Certificates     | cert-manager              | 1.x       |
-| Ingress          | Nginx Ingress Controller  | —         |
-| Workflow engine  | Temporal                  | Helm 0.x  |
-| Database         | PostgreSQL (Bitnami)      | 16        |
-| Sandbox runtime  | gVisor (`runsc`)          | `sandbox-*` namespaces |
+| Component       | Technology               | Version                |
+| --------------- | ------------------------ | ---------------------- |
+| Orchestration   | Kubernetes               | 1.28+                  |
+| GitOps          | Argo CD                  | stable                 |
+| Autoscaling     | KEDA                     | 2.x                    |
+| Certificates    | cert-manager             | 1.x                    |
+| Ingress         | Nginx Ingress Controller | —                      |
+| Workflow engine | Temporal                 | Helm 0.x               |
+| Database        | PostgreSQL (Bitnami)     | 16                     |
+| Sandbox runtime | gVisor (`runsc`)         | `sandbox-*` namespaces |
 
 ## Bootstrap the MVP environment
 

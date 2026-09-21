@@ -50,16 +50,16 @@ Kubernetes — jamais dans Git.
 
 ## Stack technique
 
-| Composant        | Technologie               | Version   |
-| ---------------- | ------------------------- | --------- |
-| Orchestration    | Kubernetes                | 1.28+     |
-| GitOps           | Argo CD                   | stable    |
-| Autoscaling      | KEDA                      | 2.x       |
-| Certificats      | cert-manager              | 1.x       |
-| Ingress          | Nginx Ingress Controller  | —         |
-| Moteur de workflow | Temporal                | Helm 0.x  |
-| Base de données  | PostgreSQL (Bitnami)      | 16        |
-| Runtime sandbox  | gVisor (`runsc`)          | namespaces `sandbox-*` |
+| Composant          | Technologie              | Version                |
+| ------------------ | ------------------------ | ---------------------- |
+| Orchestration      | Kubernetes               | 1.28+                  |
+| GitOps             | Argo CD                  | stable                 |
+| Autoscaling        | KEDA                     | 2.x                    |
+| Certificats        | cert-manager             | 1.x                    |
+| Ingress            | Nginx Ingress Controller | —                      |
+| Moteur de workflow | Temporal                 | Helm 0.x               |
+| Base de données    | PostgreSQL (Bitnami)     | 16                     |
+| Runtime sandbox    | gVisor (`runsc`)         | namespaces `sandbox-*` |
 
 ## Amorcer l'environnement MVP
 

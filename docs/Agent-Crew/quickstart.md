@@ -2,10 +2,10 @@
 
 The Agent Crew ships as a single Docker image with two modes:
 
-| Mode                   | Purpose                                                              |
-| ---------------------- | ------------------------------------------------------------------ |
-| `CREWAI_MODE=worker`   | Production path. Connects to Temporal and processes `run_crew_pentest` activities from `CREWAI_TASK_QUEUE`. |
-| `CREWAI_MODE=cli`      | Local debug. Runs `src/main.py` directly for prompt/model iteration. |
+| Mode                 | Purpose                                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `CREWAI_MODE=worker` | Production path. Connects to Temporal and processes `run_crew_pentest` activities from `CREWAI_TASK_QUEUE`. |
+| `CREWAI_MODE=cli`    | Local debug. Runs `src/main.py` directly for prompt/model iteration.                                        |
 
 ## Prerequisites
 

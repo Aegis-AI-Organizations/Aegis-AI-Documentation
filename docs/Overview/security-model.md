@@ -34,14 +34,14 @@ flowchart LR
 
 ## Identity and authentication
 
-| Actor            | Credential                        | Lifetime / handling                                                  |
-| ---------------- | -------------------------------- | ------------------------------------------------------------------- |
-| Operator (user)  | JWT access token                 | Short-lived, kept in memory in the frontend.                         |
-| Operator session | Refresh token                    | HTTP-only cookie, rotated on every refresh, revocable server-side.   |
-| Agent (register) | Deployment token `ag_<43+ chars>`| One-time, per company; only the SHA-256 hash is stored.              |
-| Agent (runtime)  | Agent secret                     | Per agent; bcrypt-hashed server-side; returned once at registration. |
-| Gateway → Brain  | mTLS client certificate          | Mounted from Kubernetes secrets under `/etc/brain/certs`.            |
-| Internal token   | `InternalAuthService` verification| gRPC interceptor whitelist for machine-to-machine checks.            |
+| Actor            | Credential                         | Lifetime / handling                                                  |
+| ---------------- | ---------------------------------- | -------------------------------------------------------------------- |
+| Operator (user)  | JWT access token                   | Short-lived, kept in memory in the frontend.                         |
+| Operator session | Refresh token                      | HTTP-only cookie, rotated on every refresh, revocable server-side.   |
+| Agent (register) | Deployment token `ag_<43+ chars>`  | One-time, per company; only the SHA-256 hash is stored.              |
+| Agent (runtime)  | Agent secret                       | Per agent; bcrypt-hashed server-side; returned once at registration. |
+| Gateway → Brain  | mTLS client certificate            | Mounted from Kubernetes secrets under `/etc/brain/certs`.            |
+| Internal token   | `InternalAuthService` verification | gRPC interceptor whitelist for machine-to-machine checks.            |
 
 Rotating or revoking a deployment token does **not** disconnect already-registered
 agents — they keep using their own agent secret.
@@ -50,18 +50,18 @@ agents — they keep using their own agent secret.
 
 Roles are synchronized between Brain and the Gateway:
 
-| Role             | Side     | Typical scope                         |
-| ---------------- | -------- | ------------------------------------ |
-| `superadmin`     | Platform | Platform-wide administration          |
-| `admin`          | Platform | Aegis-side administration             |
-| `billing_aegis`  | Platform | Platform billing operations           |
-| `technicien`     | Platform | Technical support operations          |
-| `support`        | Platform | Support and customer assistance       |
-| `commercial`     | Platform | Commercial / account operations       |
-| `owner`          | Customer | Customer organization owner           |
-| `billing_client` | Customer | Customer billing access               |
-| `operateur`      | Customer | Customer technical operator           |
-| `viewer`         | Customer | Read-only customer access             |
+| Role             | Side     | Typical scope                   |
+| ---------------- | -------- | ------------------------------- |
+| `superadmin`     | Platform | Platform-wide administration    |
+| `admin`          | Platform | Aegis-side administration       |
+| `billing_aegis`  | Platform | Platform billing operations     |
+| `technicien`     | Platform | Technical support operations    |
+| `support`        | Platform | Support and customer assistance |
+| `commercial`     | Platform | Commercial / account operations |
+| `owner`          | Customer | Customer organization owner     |
+| `billing_client` | Customer | Customer billing access         |
+| `operateur`      | Customer | Customer technical operator     |
+| `viewer`         | Customer | Read-only customer access       |
 
 Customer roles can never read another company's scans or agents; elevated
 platform routes require explicit elevated scopes.

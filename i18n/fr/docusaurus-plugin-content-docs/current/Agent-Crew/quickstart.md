@@ -2,10 +2,10 @@
 
 L'Agent Crew est livré comme une image Docker unique avec deux modes :
 
-| Mode                   | Objectif                                                            |
-| ---------------------- | --------------------------------------------------------------- |
-| `CREWAI_MODE=worker`   | Chemin de production. Se connecte à Temporal et traite les activités `run_crew_pentest` depuis `CREWAI_TASK_QUEUE`. |
-| `CREWAI_MODE=cli`      | Debug local. Exécute `src/main.py` directement pour itérer sur les prompts/modèles. |
+| Mode                 | Objectif                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `CREWAI_MODE=worker` | Chemin de production. Se connecte à Temporal et traite les activités `run_crew_pentest` depuis `CREWAI_TASK_QUEUE`. |
+| `CREWAI_MODE=cli`    | Debug local. Exécute `src/main.py` directement pour itérer sur les prompts/modèles.                                 |
 
 ## Prérequis
 
