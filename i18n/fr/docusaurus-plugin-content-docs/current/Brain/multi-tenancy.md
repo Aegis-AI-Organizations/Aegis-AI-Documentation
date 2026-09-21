@@ -1,28 +1,47 @@
 # Multi-tenancy
 
-Aegis est une plateforme partagée avec un cloisonnement strict par tenant. Les données client sont isolées par `company_id` dans les claims, métadonnées gRPC, requêtes base de données et inputs de workflow.
+Aegis est un système à plateforme partagée avec un cloisonnement strict par
+tenant. Les données client sont isolées par `company_id` à travers les claims
+d'authentification, les métadonnées gRPC, les requêtes en base et les entrées de
+workflow.
 
-## Propagation d'identité
+## Propagation de l'identité
 
-1. L'utilisateur s'authentifie via la Gateway.
-2. Brain émet un JWT contenant identité, rôle et périmètre entreprise.
-3. La Gateway transmet le token à Brain sur les appels gRPC protégés.
-4. Brain extrait l'identité et applique les filtres tenant.
+1. Un utilisateur s'authentifie via la Gateway.
+2. Le Brain émet un JWT contenant l'identité utilisateur, le rôle et la portée
+   entreprise.
+3. La Gateway transmet l'access token au Brain sur les appels gRPC protégés.
+4. Le Brain extrait l'identité et applique les filtres tenant avant toute lecture
+   ou mutation de données.
 
-## Ressources tenant
+## Ressources rattachées au tenant
 
-- utilisateurs et invitations;
-- tokens de déploiement et agents;
-- scans, vulnérabilités, preuves et rapports;
-- soldes et ledger de facturation;
-- journaux d'audit.
+Les ressources suivantes doivent toujours être cloisonnées à une entreprise :
 
-## Isolation agent
+- utilisateurs et invitations ;
+- tokens de déploiement d'agent et agents enregistrés ;
+- scans, vulnérabilités, preuves et rapports ;
+- soldes de facturation et entrées de ledger ;
+- audit logs.
 
-Les tokens de déploiement sont liés à une entreprise et suivent le format :
+## Isolation des agents
+
+Les tokens de déploiement d'agent sont des identifiants liés à l'entreprise. Le
+format actuel est :
 
 ```text
 ag_<43+ caractères URL-safe>
 ```
 
-Le backend ne stocke que leur hash. Après l'enregistrement, l'agent utilise son `agent_secret`; la rotation du token de déploiement ne déconnecte pas les agents déjà enregistrés.
+Le backend ne stocke qu'un hash du token de déploiement. Après le premier
+enregistrement, l'agent utilise son propre `agent_secret` ; tourner ou révoquer le
+token de déploiement ne déconnecte pas les agents déjà enregistrés.
+
+## Garanties d'accès
+
+- Les rôles client ne peuvent pas lire les scans ou agents d'une autre entreprise.
+- Les routes superadmin/admin exigent des scopes élevés explicites.
+- Les handlers de requête doivent appliquer les filtres tenant même si la Gateway
+  a déjà authentifié la requête.
+- Les entrées d'audit doivent inclure l'acteur et le contexte entreprise pour la
+  traçabilité.

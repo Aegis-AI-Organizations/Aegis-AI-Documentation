@@ -7,10 +7,15 @@ go test ./...
 go run ./cmd/fixer
 ```
 
-## Build conteneur
+## Build du conteneur
 
 ```bash
 docker build -t aegis-worker-fixer .
 ```
 
-Chaque règle de remédiation doit être testée, structurée et bornée par le tenant.
+## Checklist d'implémentation
+
+- Ajouter des tests unitaires pour chaque règle de remédiation.
+- Garder la sortie structurée.
+- S'assurer que les patchs générés sont cloisonnés au tenant.
+- Retourner des erreurs actionnables au Brain plutôt que de paniquer.

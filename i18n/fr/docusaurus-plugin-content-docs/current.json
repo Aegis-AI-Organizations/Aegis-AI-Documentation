@@ -1,0 +1,250 @@
+{
+  "version.label": {
+    "message": "Actuelle",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.📖 Overview": {
+    "message": "📖 Vue d'ensemble",
+    "description": "The label for category '📖 Overview' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🛡️ Welcome": {
+    "message": "🛡️ Bienvenue",
+    "description": "The label for category '🛡️ Welcome' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🚀 Getting Started": {
+    "message": "🚀 Démarrage",
+    "description": "The label for category '🚀 Getting Started' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🧠 Core Concepts": {
+    "message": "🧠 Concepts clés",
+    "description": "The label for category '🧠 Core Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🏗️ Services": {
+    "message": "🏗️ Services",
+    "description": "The label for category '🏗️ Services' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.API Gateway": {
+    "message": "API Gateway",
+    "description": "The label for category 'API Gateway' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Brain Orchestrator": {
+    "message": "Orchestrateur Brain",
+    "description": "The label for category 'Brain Orchestrator' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Agent Crew (CrewAI)": {
+    "message": "Agent Crew (CrewAI)",
+    "description": "The label for category 'Agent Crew (CrewAI)' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Dashboard": {
+    "message": "Dashboard",
+    "description": "The label for category 'Dashboard' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Infrastructure Agent": {
+    "message": "Agent d'infrastructure",
+    "description": "The label for category 'Infrastructure Agent' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Workers": {
+    "message": "Workers",
+    "description": "The label for category 'Workers' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Proto Contracts": {
+    "message": "Contrats Proto",
+    "description": "The label for category 'Proto Contracts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Landing Page": {
+    "message": "Landing Page",
+    "description": "The label for category 'Landing Page' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🔐 Security & Infra": {
+    "message": "🔐 Sécurité & Infra",
+    "description": "The label for category '🔐 Security & Infra' in sidebar 'docsSidebar'"
+  },
+  "sidebar.apiSidebar.category.Aegis AI Gateway API": {
+    "message": "API Aegis AI Gateway",
+    "description": "The label for category 'Aegis AI Gateway API' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Aegis AI Gateway API.link.generated-index.title": {
+    "message": "API Aegis AI Gateway",
+    "description": "The generated-index page title for category 'Aegis AI Gateway API' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Aegis AI Gateway API.link.generated-index.description": {
+    "message": "Référence officielle des API REST & SSE du plan de contrôle Aegis AI.",
+    "description": "The generated-index page description for category 'Aegis AI Gateway API' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Authentication": {
+    "message": "Authentification",
+    "description": "The label for category 'Authentication' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Pentest Operations": {
+    "message": "Opérations de pentest",
+    "description": "The label for category 'Pentest Operations' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Vulnerabilities": {
+    "message": "Vulnérabilités",
+    "description": "The label for category 'Vulnerabilities' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Administration": {
+    "message": "Administration",
+    "description": "The label for category 'Administration' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Billing & Finance": {
+    "message": "Facturation & Finance",
+    "description": "The label for category 'Billing & Finance' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Platform": {
+    "message": "Plateforme",
+    "description": "The label for category 'Platform' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.category.Agent Operations": {
+    "message": "Opérations agent",
+    "description": "The label for category 'Agent Operations' in sidebar 'apiSidebar'"
+  },
+  "sidebar.apiSidebar.doc.Authenticate and establish a session": {
+    "message": "Authenticate and establish a session",
+    "description": "The label for the doc item 'Authenticate and establish a session' in sidebar 'apiSidebar', linking to the doc Swagger-API/authenticate-and-establish-a-session"
+  },
+  "sidebar.apiSidebar.doc.Retrieve current session profile": {
+    "message": "Retrieve current session profile",
+    "description": "The label for the doc item 'Retrieve current session profile' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-current-session-profile"
+  },
+  "sidebar.apiSidebar.doc.Rotate session tokens": {
+    "message": "Rotate session tokens",
+    "description": "The label for the doc item 'Rotate session tokens' in sidebar 'apiSidebar', linking to the doc Swagger-API/rotate-session-tokens"
+  },
+  "sidebar.apiSidebar.doc.Terminate current session": {
+    "message": "Terminate current session",
+    "description": "The label for the doc item 'Terminate current session' in sidebar 'apiSidebar', linking to the doc Swagger-API/terminate-current-session"
+  },
+  "sidebar.apiSidebar.doc.Update personal profile": {
+    "message": "Update personal profile",
+    "description": "The label for the doc item 'Update personal profile' in sidebar 'apiSidebar', linking to the doc Swagger-API/update-personal-profile"
+  },
+  "sidebar.apiSidebar.doc.Remove profile avatar": {
+    "message": "Remove profile avatar",
+    "description": "The label for the doc item 'Remove profile avatar' in sidebar 'apiSidebar', linking to the doc Swagger-API/remove-profile-avatar"
+  },
+  "sidebar.apiSidebar.doc.Change account email": {
+    "message": "Change account email",
+    "description": "The label for the doc item 'Change account email' in sidebar 'apiSidebar', linking to the doc Swagger-API/change-account-email"
+  },
+  "sidebar.apiSidebar.doc.Change account password": {
+    "message": "Change account password",
+    "description": "The label for the doc item 'Change account password' in sidebar 'apiSidebar', linking to the doc Swagger-API/change-account-password"
+  },
+  "sidebar.apiSidebar.doc.List pentest operations": {
+    "message": "List pentest operations",
+    "description": "The label for the doc item 'List pentest operations' in sidebar 'apiSidebar', linking to the doc Swagger-API/list-pentest-operations"
+  },
+  "sidebar.apiSidebar.doc.Initialize a pentest workflow": {
+    "message": "Initialize a pentest workflow",
+    "description": "The label for the doc item 'Initialize a pentest workflow' in sidebar 'apiSidebar', linking to the doc Swagger-API/initialize-a-pentest-workflow"
+  },
+  "sidebar.apiSidebar.doc.Retrieve specific scan status": {
+    "message": "Retrieve specific scan status",
+    "description": "The label for the doc item 'Retrieve specific scan status' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-specific-scan-status"
+  },
+  "sidebar.apiSidebar.doc.Download PDF pentest report": {
+    "message": "Download PDF pentest report",
+    "description": "The label for the doc item 'Download PDF pentest report' in sidebar 'apiSidebar', linking to the doc Swagger-API/download-pdf-pentest-report"
+  },
+  "sidebar.apiSidebar.doc.Universal scan status stream (SSE)": {
+    "message": "Universal scan status stream (SSE)",
+    "description": "The label for the doc item 'Universal scan status stream (SSE)' in sidebar 'apiSidebar', linking to the doc Swagger-API/universal-scan-status-stream-sse"
+  },
+  "sidebar.apiSidebar.doc.Mission-specific status stream (SSE)": {
+    "message": "Mission-specific status stream (SSE)",
+    "description": "The label for the doc item 'Mission-specific status stream (SSE)' in sidebar 'apiSidebar', linking to the doc Swagger-API/mission-specific-status-stream-sse"
+  },
+  "sidebar.apiSidebar.doc.Retrieve discoveries for a scan": {
+    "message": "Retrieve discoveries for a scan",
+    "description": "The label for the doc item 'Retrieve discoveries for a scan' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-discoveries-for-a-scan"
+  },
+  "sidebar.apiSidebar.doc.Retrieve technical evidences": {
+    "message": "Retrieve technical evidences",
+    "description": "The label for the doc item 'Retrieve technical evidences' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-technical-evidences"
+  },
+  "sidebar.apiSidebar.doc.List accessible companies": {
+    "message": "List accessible companies",
+    "description": "The label for the doc item 'List accessible companies' in sidebar 'apiSidebar', linking to the doc Swagger-API/list-accessible-companies"
+  },
+  "sidebar.apiSidebar.doc.Register a new company": {
+    "message": "Register a new company",
+    "description": "The label for the doc item 'Register a new company' in sidebar 'apiSidebar', linking to the doc Swagger-API/register-a-new-company"
+  },
+  "sidebar.apiSidebar.doc.Post-payment client onboarding": {
+    "message": "Post-payment client onboarding",
+    "description": "The label for the doc item 'Post-payment client onboarding' in sidebar 'apiSidebar', linking to the doc Swagger-API/atomic-client-onboarding"
+  },
+  "sidebar.apiSidebar.doc.Search for companies": {
+    "message": "Search for companies",
+    "description": "The label for the doc item 'Search for companies' in sidebar 'apiSidebar', linking to the doc Swagger-API/search-for-companies"
+  },
+  "sidebar.apiSidebar.doc.Search for users": {
+    "message": "Search for users",
+    "description": "The label for the doc item 'Search for users' in sidebar 'apiSidebar', linking to the doc Swagger-API/search-for-users"
+  },
+  "sidebar.apiSidebar.doc.Administrative user creation": {
+    "message": "Administrative user creation",
+    "description": "The label for the doc item 'Administrative user creation' in sidebar 'apiSidebar', linking to the doc Swagger-API/administrative-user-creation"
+  },
+  "sidebar.apiSidebar.doc.Retrieve system audit trails": {
+    "message": "Retrieve system audit trails",
+    "description": "The label for the doc item 'Retrieve system audit trails' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-system-audit-trails"
+  },
+  "sidebar.apiSidebar.doc.Real-time team updates (SSE)": {
+    "message": "Real-time team updates (SSE)",
+    "description": "The label for the doc item 'Real-time team updates (SSE)' in sidebar 'apiSidebar', linking to the doc Swagger-API/real-time-team-updates-sse"
+  },
+  "sidebar.apiSidebar.doc.Get current token balance": {
+    "message": "Get current token balance",
+    "description": "The label for the doc item 'Get current token balance' in sidebar 'apiSidebar', linking to the doc Swagger-API/get-current-token-balance"
+  },
+  "sidebar.apiSidebar.doc.Retrieve transaction history": {
+    "message": "Retrieve transaction history",
+    "description": "The label for the doc item 'Retrieve transaction history' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-transaction-history"
+  },
+  "sidebar.apiSidebar.doc.Usage analytics": {
+    "message": "Usage analytics",
+    "description": "The label for the doc item 'Usage analytics' in sidebar 'apiSidebar', linking to the doc Swagger-API/usage-analytics"
+  },
+  "sidebar.apiSidebar.doc.Adjust company balance": {
+    "message": "Adjust company balance",
+    "description": "The label for the doc item 'Adjust company balance' in sidebar 'apiSidebar', linking to the doc Swagger-API/adjust-company-balance"
+  },
+  "sidebar.apiSidebar.doc.Admin view of company balance": {
+    "message": "Admin view of company balance",
+    "description": "The label for the doc item 'Admin view of company balance' in sidebar 'apiSidebar', linking to the doc Swagger-API/admin-view-of-company-balance"
+  },
+  "sidebar.apiSidebar.doc.Admin view of company ledger": {
+    "message": "Admin view of company ledger",
+    "description": "The label for the doc item 'Admin view of company ledger' in sidebar 'apiSidebar', linking to the doc Swagger-API/admin-view-of-company-ledger"
+  },
+  "sidebar.apiSidebar.doc.Admin view of company usage": {
+    "message": "Admin view of company usage",
+    "description": "The label for the doc item 'Admin view of company usage' in sidebar 'apiSidebar', linking to the doc Swagger-API/admin-view-of-company-usage"
+  },
+  "sidebar.apiSidebar.doc.Retrieve platform health status": {
+    "message": "Retrieve platform health status",
+    "description": "The label for the doc item 'Retrieve platform health status' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-platform-health-status"
+  },
+  "sidebar.apiSidebar.doc.Retrieve root metadata": {
+    "message": "Retrieve root metadata",
+    "description": "The label for the doc item 'Retrieve root metadata' in sidebar 'apiSidebar', linking to the doc Swagger-API/retrieve-root-metadata"
+  },
+  "sidebar.apiSidebar.doc.Generate presigned upload URL (User)": {
+    "message": "Generate presigned upload URL (User)",
+    "description": "The label for the doc item 'Generate presigned upload URL (User)' in sidebar 'apiSidebar', linking to the doc Swagger-API/generate-presigned-upload-url-user"
+  },
+  "sidebar.apiSidebar.doc.Register a new remote agent": {
+    "message": "Register a new remote agent",
+    "description": "The label for the doc item 'Register a new remote agent' in sidebar 'apiSidebar', linking to the doc Swagger-API/register-a-new-remote-agent"
+  },
+  "sidebar.apiSidebar.doc.Update agent operational status": {
+    "message": "Update agent operational status",
+    "description": "The label for the doc item 'Update agent operational status' in sidebar 'apiSidebar', linking to the doc Swagger-API/update-agent-operational-status"
+  },
+  "sidebar.apiSidebar.doc.Generate presigned upload URL": {
+    "message": "Generate presigned upload URL",
+    "description": "The label for the doc item 'Generate presigned upload URL' in sidebar 'apiSidebar', linking to the doc Swagger-API/generate-presigned-upload-url"
+  }
+}

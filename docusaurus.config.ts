@@ -295,6 +295,31 @@ const config: Config = {
         documents: ["architecture.md"],
       },
     ],
+    // 12. Aegis Agent Crew
+    // NOTE: Agent-Crew docs are maintained as static pages under docs/Agent-Crew
+    // and i18n/fr/.../Agent-Crew until the Aegis-AI-Agent-Crew repository exposes
+    // docs/{en,fr}/architecture.md publicly on `main`. Re-enable the two
+    // remote-content blocks below once the raw URLs return 200.
+    // [
+    //   "docusaurus-plugin-remote-content",
+    //   {
+    //     name: "agent-crew-docs-en",
+    //     sourceBaseUrl:
+    //       "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent-Crew/main/docs/en/",
+    //     outDir: "docs/Agent-Crew",
+    //     documents: ["architecture.md"],
+    //   },
+    // ],
+    // [
+    //   "docusaurus-plugin-remote-content",
+    //   {
+    //     name: "agent-crew-docs-fr",
+    //     sourceBaseUrl:
+    //       "https://raw.githubusercontent.com/Aegis-AI-Organizations/Aegis-AI-Agent-Crew/main/docs/fr/",
+    //     outDir: "i18n/fr/docusaurus-plugin-content-docs/current/Agent-Crew",
+    //     documents: ["architecture.md"],
+    //   },
+    // ],
   ],
 
   presets: [
@@ -358,6 +383,10 @@ const config: Config = {
           title: "Developers",
           items: [
             {
+              label: "Project Overview",
+              to: "/docs/Overview/introduction",
+            },
+            {
               label: "Gateway API (Swagger)",
               to: "/docs/Swagger-API/aegis-ai-gateway-api",
             },
@@ -384,11 +413,15 @@ const config: Config = {
             },
             {
               label: "Getting Started",
-              to: "/docs/Infra/architecture", // Fallback to architecture since getting-started isn't localized yet
+              to: "/docs/Infra/getting-started",
             },
             {
               label: "Kubernetes & gVisor",
-              to: "/docs/Infra/architecture", // Fallback
+              to: "/docs/Infra/kubernetes",
+            },
+            {
+              label: "GitOps & Argo CD",
+              to: "/docs/Infra/gitops-argocd",
             },
           ],
         },

@@ -1,15 +1,24 @@
 import React from "react";
-import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Translate, { translate } from "@docusaurus/Translate";
 import Layout from "@theme/Layout";
 
 export default function Home(): React.JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Home | ${siteConfig.title}`}
-      description="Documentation for Aegis AI Platform. Explore the architecture, APIs, and guidelines."
+      title={translate({
+        id: "homepage.meta.title",
+        message: "Home | {siteTitle}",
+        description: "The homepage browser tab title",
+      }).replace("{siteTitle}", siteConfig.title)}
+      description={translate({
+        id: "homepage.meta.description",
+        message:
+          "Documentation for Aegis AI Platform. Explore the architecture, APIs, and guidelines.",
+        description: "The homepage meta description",
+      })}
     >
       <main className="hero">
         <div
@@ -40,18 +49,28 @@ export default function Home(): React.JSX.Element {
                 marginRight: "8px",
               }}
             ></span>
-            v2.0 is now live
+            <Translate id="homepage.badge">v2.0 is now live</Translate>
           </div>
 
           <h1 className="hero__title">
-            Autonomous <br />
-            <span>Offensive Security</span> <br />
-            Built for Production.
+            <Translate id="homepage.hero.title.line1">Autonomous</Translate>{" "}
+            <br />
+            <span>
+              <Translate id="homepage.hero.title.line2">
+                Offensive Security
+              </Translate>
+            </span>{" "}
+            <br />
+            <Translate id="homepage.hero.title.line3">
+              Built for Production.
+            </Translate>
           </h1>
 
           <p className="hero__subtitle">
-            Aegis continuously detects vulnerabilities, generates evidence, and
-            produces remediation workflows — fast.
+            <Translate id="homepage.hero.subtitle">
+              Aegis continuously detects vulnerabilities, generates evidence, and
+              produces remediation workflows — fast.
+            </Translate>
           </p>
 
           <div
@@ -65,7 +84,7 @@ export default function Home(): React.JSX.Element {
           >
             <Link
               className="button button--primary button--lg"
-              to="/docs/Agent/architecture"
+              to="/docs/Overview/introduction"
               style={{
                 minWidth: "220px",
                 display: "flex",
@@ -87,7 +106,9 @@ export default function Home(): React.JSX.Element {
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
-              Platform Documentation
+              <Translate id="homepage.cta.docs">
+                Platform Documentation
+              </Translate>
             </Link>
             <Link
               className="button button--secondary button--outline button--lg"
@@ -115,7 +136,9 @@ export default function Home(): React.JSX.Element {
                 <polyline points="4 17 10 11 4 5"></polyline>
                 <line x1="12" y1="19" x2="20" y2="19"></line>
               </svg>
-              Interactive API (Swagger)
+              <Translate id="homepage.cta.api">
+                Interactive API (Swagger)
+              </Translate>
             </Link>
           </div>
         </div>
@@ -170,11 +193,15 @@ export default function Home(): React.JSX.Element {
                   marginBottom: "1rem",
                 }}
               >
-                Microservices Core
+                <Translate id="homepage.feature.microservices.title">
+                  Microservices Core
+                </Translate>
               </h3>
               <p style={{ color: "#94a3b8", lineHeight: "1.6" }}>
-                Explore the Rust-based ingestion agent, Go control plane, and
-                Temporal Python workflows securely orchestrated.
+                <Translate id="homepage.feature.microservices.body">
+                  Explore the Rust-based ingestion agent, Go control plane, and
+                  Temporal Python workflows securely orchestrated.
+                </Translate>
               </p>
             </div>
             <div
@@ -216,11 +243,15 @@ export default function Home(): React.JSX.Element {
                   marginBottom: "1rem",
                 }}
               >
-                Native Swagger UI
+                <Translate id="homepage.feature.swagger.title">
+                  Native Swagger UI
+                </Translate>
               </h3>
               <p style={{ color: "#94a3b8", lineHeight: "1.6" }}>
-                Full OpenAPI v3 integration. Test endpoints, generate client
-                codes, and review API responses directly from the hub.
+                <Translate id="homepage.feature.swagger.body">
+                  Full OpenAPI v3 integration. Test endpoints, generate client
+                  codes, and review API responses directly from the hub.
+                </Translate>
               </p>
             </div>
             <div
@@ -261,11 +292,15 @@ export default function Home(): React.JSX.Element {
                   marginBottom: "1rem",
                 }}
               >
-                Security Hardened
+                <Translate id="homepage.feature.security.title">
+                  Security Hardened
+                </Translate>
               </h3>
               <p style={{ color: "#94a3b8", lineHeight: "1.6" }}>
-                Built for SOC analysts. Documentation for ephemeral isolated
-                sandboxes deployed over Kubernetes & Cilium.
+                <Translate id="homepage.feature.security.body">
+                  Built for SOC analysts. Documentation for ephemeral isolated
+                  sandboxes deployed over Kubernetes & Cilium.
+                </Translate>
               </p>
             </div>
           </div>

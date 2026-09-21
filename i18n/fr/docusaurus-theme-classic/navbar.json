@@ -1,0 +1,22 @@
+{
+  "title": {
+    "message": "Aegis AI",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Logo Aegis AI",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Documentation": {
+    "message": "Documentation",
+    "description": "Navbar item with label Documentation"
+  },
+  "item.label.API Reference": {
+    "message": "Référence API",
+    "description": "Navbar item with label API Reference"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

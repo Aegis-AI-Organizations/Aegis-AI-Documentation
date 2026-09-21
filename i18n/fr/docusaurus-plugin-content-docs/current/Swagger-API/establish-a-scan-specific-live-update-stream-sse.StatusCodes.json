@@ -1,5 +1,0 @@
-{
-  "responses": {
-    "200": { "description": "SSE stream successfully established" }
-  }
-}

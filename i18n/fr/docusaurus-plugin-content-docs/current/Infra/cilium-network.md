@@ -1,11 +1,20 @@
-# Network policies
+# Politiques réseau
 
-Les network policies réduisent le rayon d'impact entre services Aegis et pods workers.
+Les politiques réseau réduisent le rayon d'impact entre les services Aegis et les
+pods workers.
 
-## Objectifs
+## Objectifs des politiques
 
-- Autoriser l'ingress public uniquement si nécessaire.
-- Autoriser Dashboard vers Gateway.
-- Autoriser Gateway vers Brain et infrastructure requise.
-- Autoriser Brain vers bases, queues, stockage et Temporal.
-- Restreindre les workers aux cibles et endpoints backend approuvés.
+- N'autoriser l'ingress public que là où c'est nécessaire.
+- Autoriser le Dashboard à atteindre la Gateway par le chemin d'ingress configuré.
+- Autoriser la Gateway à atteindre le Brain et l'infrastructure requise.
+- Autoriser le Brain à atteindre bases de données, files, stockage et Temporal.
+- Restreindre les workers aux cibles approuvées et aux endpoints backend.
+
+## Checklist de revue
+
+- Le default-deny est appliqué quand c'est praticable.
+- Les namespaces de workers ne peuvent pas atteindre des services plateforme non
+  liés.
+- Les services de base de données n'acceptent le trafic que des charges attendues.
+- L'egress DNS est explicitement autorisé quand l'egress default-deny est activé.

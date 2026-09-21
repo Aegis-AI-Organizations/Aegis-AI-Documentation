@@ -1,18 +1,27 @@
-# API Worker Deployer
+# API du Worker Deployer
 
-Le Deployer n'expose pas d'API REST publique. Il est appelé en interne par Brain ou l'orchestration.
+Le Deployer n'expose pas d'API REST publique. Il est censé être appelé en interne
+par le Brain ou l'orchestration de workflow.
 
 ## Opérations internes
 
-| Opération       | Usage                                 |
-| --------------- | ------------------------------------- |
-| Déployer worker | Créer une ressource worker ou sandbox |
-| Lire statut     | Retourner l'état courant              |
-| Terminer worker | Supprimer les ressources temporaires  |
+| Opération          | Objectif                                |
+| ------------------ | ------------------------------------- |
+| Déployer un worker | Créer une ressource de worker ou de sandbox |
+| Obtenir le statut  | Retourner l'état de déploiement courant  |
+| Terminer un worker | Supprimer les ressources temporaires     |
 
-## Sorties attendues
+## Entrées requises
 
-- worker id;
-- statut;
-- références Kubernetes;
-- détails d'erreur en cas d'échec.
+- identifiant de tenant ou de workflow ;
+- type de worker ;
+- métadonnées de cible ;
+- limites de ressources ;
+- politique de namespace ou de sandbox.
+
+## Sorties requises
+
+- id du worker ;
+- statut ;
+- références de ressources Kubernetes ;
+- détails d'erreur en cas d'échec de déploiement.

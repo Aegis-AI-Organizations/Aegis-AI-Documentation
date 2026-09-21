@@ -1,14 +1,19 @@
-# Télémétrie Landing Page
+# Télémétrie de la Landing Page
 
-La télémétrie de la landing page doit rester respectueuse de la vie privée et séparée de la télémétrie opérationnelle du Dashboard.
+La télémétrie de la landing doit préserver la vie privée et rester séparée de la
+télémétrie opérationnelle du Dashboard.
 
 ## Événements recommandés
 
-- page vue;
-- clic vers documentation;
-- soumission contact ou démo;
-- version de build et environnement.
+- vue de page ;
+- clic sur un lien de documentation ;
+- soumission d'un formulaire de contact ou de démo ;
+- version de build et environnement de déploiement.
 
 ## À ne pas collecter
 
-JWT Dashboard, refresh cookies, tokens de déploiement, secrets agents, métadonnées d'infrastructure privées ou données de vulnérabilités.
+- JWT ou cookies de refresh du Dashboard ;
+- tokens de déploiement ;
+- secrets agent ;
+- métadonnées d'infrastructure privées ;
+- données de vulnérabilités.

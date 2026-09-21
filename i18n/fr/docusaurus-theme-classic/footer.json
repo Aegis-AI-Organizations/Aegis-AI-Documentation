@@ -1,0 +1,62 @@
+{
+  "link.title.Developers": {
+    "message": "Développeurs",
+    "description": "The title of the footer links column with title=Developers in the footer"
+  },
+  "link.title.Infrastructure": {
+    "message": "Infrastructure",
+    "description": "The title of the footer links column with title=Infrastructure in the footer"
+  },
+  "link.title.Aegis Security": {
+    "message": "Aegis Security",
+    "description": "The title of the footer links column with title=Aegis Security in the footer"
+  },
+  "link.item.label.Project Overview": {
+    "message": "Vue d'ensemble du projet",
+    "description": "The label of footer link with label=Project Overview linking to /docs/Overview/introduction"
+  },
+  "link.item.label.Gateway API (Swagger)": {
+    "message": "API Gateway (Swagger)",
+    "description": "The label of footer link with label=Gateway API (Swagger) linking to /docs/Swagger-API/aegis-ai-gateway-api"
+  },
+  "link.item.label.Agent (Rust)": {
+    "message": "Agent (Rust)",
+    "description": "The label of footer link with label=Agent (Rust) linking to /docs/Agent/install-infrastructure"
+  },
+  "link.item.label.Brain (Python)": {
+    "message": "Brain (Python)",
+    "description": "The label of footer link with label=Brain (Python) linking to /docs/Brain/workflows"
+  },
+  "link.item.label.Worker Stack": {
+    "message": "Stack Workers",
+    "description": "The label of footer link with label=Worker Stack linking to /docs/Worker-Pentest/architecture"
+  },
+  "link.item.label.Architecture": {
+    "message": "Architecture",
+    "description": "The label of footer link with label=Architecture linking to /docs/Infra/architecture"
+  },
+  "link.item.label.Getting Started": {
+    "message": "Démarrage",
+    "description": "The label of footer link with label=Getting Started linking to /docs/Infra/getting-started"
+  },
+  "link.item.label.Kubernetes & gVisor": {
+    "message": "Kubernetes & gVisor",
+    "description": "The label of footer link with label=Kubernetes & gVisor linking to /docs/Infra/kubernetes"
+  },
+  "link.item.label.GitOps & Argo CD": {
+    "message": "GitOps & Argo CD",
+    "description": "The label of footer link with label=GitOps & Argo CD linking to /docs/Infra/gitops-argocd"
+  },
+  "link.item.label.Official Website": {
+    "message": "Site officiel",
+    "description": "The label of footer link with label=Official Website linking to https://www.aegis.ai"
+  },
+  "link.item.label.Project GitHub": {
+    "message": "GitHub du projet",
+    "description": "The label of footer link with label=Project GitHub linking to https://github.com/Aegis-AI-Organizations"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 Aegis AI Platform. Conçu avec Docusaurus.",
+    "description": "The footer copyright"
+  }
+}

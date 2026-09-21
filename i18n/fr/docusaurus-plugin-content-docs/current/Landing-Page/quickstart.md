@@ -13,4 +13,13 @@ npm run dev
 npm run build
 ```
 
-Les liens de documentation publics doivent pointer vers Docusaurus et ne pas dupliquer les procédures techniques.
+## Liens de documentation
+
+Les liens de documentation publics doivent pointer vers le site Docusaurus :
+
+```text
+https://aegis-ai-organizations.github.io/Aegis-AI-Documentation
+```
+
+Ne dupliquez pas les étapes de configuration technique dans la landing page ;
+faites plutôt un lien vers la documentation maintenue.

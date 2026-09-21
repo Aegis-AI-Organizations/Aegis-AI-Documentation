@@ -8,15 +8,15 @@ cargo test
 cargo run
 ```
 
-## Build conteneur
+## Build du conteneur
 
 ```bash
 docker build -t aegis-worker-ingest .
 ```
 
-## Checklist configuration
+## Checklist de configuration
 
-- Connectivité Gateway ou stockage disponible.
-- Contexte tenant fourni par métadonnées fiables.
-- Limites de taille configurées.
-- Retries sûrs en cas de doublon.
+- La connectivité vers l'endpoint Gateway ou stockage est disponible.
+- Le contexte tenant est fourni par des métadonnées de confiance.
+- Les limites de taille de payload sont configurées.
+- Le comportement de retry est sûr pour les soumissions en double.

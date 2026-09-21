@@ -1,8 +1,9 @@
 # Déploiement Kubernetes
 
-Le déploiement Kubernetes utilise des manifests par environnement et le chart réutilisable `aegis-service`.
+Le déploiement Kubernetes utilise des manifests spécifiques à l'environnement et
+un chart `aegis-service` réutilisable.
 
-## Layout
+## Disposition du dépôt
 
 ```text
 kubernetes/
@@ -11,7 +12,7 @@ kubernetes/
   envs/mvp/
 ```
 
-## Commandes utiles
+## Opérations courantes
 
 ```bash
 kubectl get applications -n argocd
@@ -19,10 +20,16 @@ kubectl get pods -n aegis-system
 kubectl logs -n aegis-system deploy/aegis-api-gateway
 ```
 
-## Readiness
+## Configuration des services
 
-- Gateway `/health` répond.
-- Dashboard sert les assets.
-- Brain gRPC est joignable depuis Gateway.
-- Redis, Neo4j, Temporal et stockage objet sont sains.
-- Les workers démarrent et remontent leur statut.
+Chaque dossier de service contient un `application.yaml` Argo CD et un fichier
+`values.yaml`. Gardez la configuration runtime dans les values et les secrets
+Kubernetes ; n'intégrez pas de secrets dans Git.
+
+## Contrôles de readiness
+
+- La Gateway `/health` renvoie un succès.
+- Le Dashboard sert les assets statiques.
+- L'endpoint gRPC du Brain est joignable depuis la Gateway.
+- Redis, Neo4j, Temporal et le stockage objet sont sains.
+- Les workers peuvent démarrer et reporter leur statut.

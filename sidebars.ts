@@ -17,6 +17,23 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     {
       type: "category",
+      label: "📖 Overview",
+      collapsed: false,
+      items: [
+        "Overview/introduction",
+        "Overview/system-architecture",
+        "Overview/lifecycle",
+        "Overview/digital-twin",
+        "Overview/repositories",
+        "Overview/security-model",
+        "Overview/glossary",
+        "Overview/project-status",
+        "Overview/ci-cd",
+        "Overview/documentation-workflow",
+      ],
+    },
+    {
+      type: "category",
       label: "🛡️ Welcome",
       collapsed: false,
       items: ["Infra/architecture"], // Vision/Architecture as landing
@@ -56,8 +73,14 @@ const sidebars: SidebarsConfig = {
             "Brain/workflows",
             "Brain/multi-tenancy",
             "Brain/neo4j-graph",
+            "Brain/database",
             "Brain/llm-payloads",
           ],
+        },
+        {
+          type: "category",
+          label: "Agent Crew (CrewAI)",
+          items: ["Agent-Crew/architecture", "Agent-Crew/quickstart"],
         },
         {
           type: "category",
@@ -77,6 +100,7 @@ const sidebars: SidebarsConfig = {
             "Agent/install-infrastructure",
             "Agent/token-format",
             "Agent/api",
+            "Agent/telemetry",
           ],
         },
         {
@@ -88,7 +112,10 @@ const sidebars: SidebarsConfig = {
             "Worker-Pentest/telemetry",
             "Worker-Deployer/architecture",
             "Worker-Deployer/api",
+            "Worker-Deployer/quickstart",
+            "Worker-Deployer/telemetry",
             "Worker-Fixer/architecture",
+            "Worker-Fixer/api",
             "Worker-Fixer/quickstart",
             "Worker-Fixer/telemetry",
             "Worker-Ingest/architecture",
@@ -116,10 +143,12 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "🔐 Security & Infra",
       items: [
+        "Infra/gitops-argocd",
         "Infra/cilium-network",
         "Infra/gvisor-sandbox",
         "Infra/security-mtls",
         "Infra/infrastructure-keda",
+        "Infra/email-configuration",
       ],
     },
   ],
