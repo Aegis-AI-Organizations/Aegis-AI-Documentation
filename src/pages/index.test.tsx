@@ -12,7 +12,7 @@ describe("documentation homepage", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Platform Documentation" }),
-    ).toHaveAttribute("href", "/docs/Agent/architecture");
+    ).toHaveAttribute("href", "/docs/Overview/introduction");
     expect(
       screen.getByRole("link", { name: "Interactive API (Swagger)" }),
     ).toHaveAttribute("href", "/docs/Swagger-API/aegis-ai-gateway-api");

@@ -9,6 +9,10 @@ export default defineConfig({
         __dirname,
         "test/mocks/docusaurus-context.ts",
       ),
+      "@docusaurus/Translate": resolve(
+        __dirname,
+        "test/mocks/docusaurus-translate.tsx",
+      ),
       "@theme/Layout": resolve(__dirname, "test/mocks/theme-layout.tsx"),
     },
   },
