@@ -13,7 +13,8 @@ implemented; per-service pages carry the detail.
 | Agent heartbeat / status   | Implemented     | `last_seen` drives the Dashboard active/inactive summary.                                 |
 | Topology collection        | Implemented     | Presigned-URL upload; Ingest Worker normalization; Neo4j projection.                      |
 | Security scan              | In progress     | Temporal orchestration working; digital-twin sandbox; PDF reports generated.              |
-| Agent Crew (CrewAI)        | In progress     | `run_crew_pentest` activity; non-destructive V1; in-cluster Ollama.                       |
+| Agent Crew (CrewAI)        | In progress     | `run_crew_pentest` activity; non-destructive V1; deployed in the `mvp` cluster with a pinned release image and in-cluster Ollama. |
+| Company profile self-service | Implemented   | Owner/admin edit org name, avatar, size, and type from the Dashboard (`GET`/`PUT /api/companies/me`). |
 | Vulnerabilities & evidence | Implemented     | Persisted with loot in JSONB; linked in Neo4j.                                            |
 | Remediation (Fixer)        | In progress     | Proposal generation; PR-style, non-destructive.                                           |
 | Billing (token ledger)     | Implemented     | Per-company balance and ledger.                                                           |

@@ -167,6 +167,6 @@ Tests d'intégration après branchement Infra :
 - Déployer Ollama et Agent Crew dans le cluster MVP.
 - Lancer un scan topologie via Brain.
 - Vérifier que Brain appelle `run_crew_pentest` sur `CREWAI_TASK_QUEUE`.
-- Vérifier que les logs Agent Crew montrent l'exécution Planner, Guider et Executor.
+- Vérifier que les logs Agent Crew montrent l'exécution Pentest Orchestrator, Cybersecurity Expert et Read-only Command Executor.
 - Vérifier que le scan atteint `COMPLETED`.
 - Vérifier que les findings et artefacts de rapport sont persistés.

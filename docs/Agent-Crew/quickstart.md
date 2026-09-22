@@ -1,39 +1,65 @@
-# Agent Crew Quickstart
+---
+sidebar_position: 2
+title: Quickstart
+---
 
-The Agent Crew ships as a single Docker image with two modes:
+# 🚀 Quickstart: Agent Crew
 
-| Mode                 | Purpose                                                                                                     |
-| -------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `CREWAI_MODE=worker` | Production path. Connects to Temporal and processes `run_crew_pentest` activities from `CREWAI_TASK_QUEUE`. |
-| `CREWAI_MODE=cli`    | Local debug. Runs `src/main.py` directly for prompt/model iteration.                                        |
+The Agent Crew ships as a single Docker image with two entrypoints.
+
+| Mode                   | Entrypoint         | Purpose                                                              |
+| ---------------------- | ------------------ | --------------------------------------------------------------- |
+| `CREWAI_MODE=worker`   | `src/worker.py`    | Production. Connects to Temporal and processes `run_crew_pentest` activities from `CREWAI_TASK_QUEUE`. |
+| `CREWAI_MODE=cli`      | `src/main.py`      | Local debug. Runs the crew directly for prompt / model iteration. |
+
+---
 
 ## Prerequisites
 
 - Python 3.10+ (3.12 slim in the container).
 - Reachable Temporal frontend (worker mode).
-- Reachable Ollama endpoint serving `llama3.1:8b`, `whiterabbitneo`, and
-  `deepseek-coder-v2` (or an OpenAI-compatible provider).
+- Reachable Ollama serving `llama3.1:8b` (Pentest Orchestrator), `whiterabbitneo`
+  (Cybersecurity Expert), `deepseek-coder-v2` (Read-only Command Executor) — or
+  an OpenAI-compatible provider. The `PLANNER_*` / `GUIDER_*` / `EXECUTOR_*`
+  environment variable prefixes map to these three roles.
 
-## Run the CLI mode locally
+---
+
+## CLI mode (local)
 
 ```bash
 pip install -r requirements.txt
-
-export CREWAI_MODE=cli
-export PLANNER_PROVIDER=ollama
-export PLANNER_MODEL=llama3.1:8b
-export PLANNER_API_BASE=http://localhost:11434
-export GUIDER_PROVIDER=ollama
-export GUIDER_MODEL=whiterabbitneo
-export GUIDER_API_BASE=http://localhost:11434
-export EXECUTOR_PROVIDER=ollama
-export EXECUTOR_MODEL=deepseek-coder-v2
-export EXECUTOR_API_BASE=http://localhost:11434
+cp .env.example .env    # set Ollama host / API keys
 
 python src/main.py
 ```
 
-## Run the worker mode (Aegis deployment)
+A markdown summary is written to `security_report_findings.md`.
+
+## Worker mode (local)
+
+```bash
+CREWAI_MODE=worker python src/worker.py
+```
+
+The worker connects to `TEMPORAL_HOST`, registers the `run_crew_pentest`
+activity, and listens on `CREWAI_TASK_QUEUE`.
+
+## Docker
+
+Build:
+
+```bash
+docker build -t aegis-ai-agent-crew:test .
+```
+
+Run CLI mode from the image:
+
+```bash
+docker run --rm -e CREWAI_MODE=cli aegis-ai-agent-crew:test
+```
+
+Run worker mode with explicit endpoints:
 
 ```bash
 docker run --rm \
@@ -44,21 +70,61 @@ docker run --rm \
   -e PLANNER_API_BASE=http://ollama-mvp.aegis-system.svc.cluster.local:11434 \
   -e GUIDER_API_BASE=http://ollama-mvp.aegis-system.svc.cluster.local:11434 \
   -e EXECUTOR_API_BASE=http://ollama-mvp.aegis-system.svc.cluster.local:11434 \
-  ghcr.io/aegis-ai/aegis-agent-crew:latest
+  aegis-ai-agent-crew:test
 ```
 
-In the MVP cluster the image is deployed by Argo CD alongside an in-cluster Ollama
-`ClusterIP` service. Models are never bundled in the application image.
+Ollama is deployed separately in-cluster (ClusterIP); models are never bundled in
+the application image.
+
+---
 
 ## Verify
 
-- Worker mode logs show a Temporal connection and a registered `run_crew_pentest`
-  activity.
-- Launching a topology scan through Brain produces `Planner`, `Guider`, and
-  `Executor` log lines.
-- The scan reaches `COMPLETED` and findings / report artifacts are persisted by
-  Brain.
+```bash
+python -m compileall src
+pytest -q
+```
 
-If Temporal is unreachable, the container exits in worker mode. If Ollama is
+- Worker logs show a Temporal connection and a registered `run_crew_pentest`
+  activity.
+- A topology scan launched through the Brain produces log lines from the
+  **Pentest Orchestrator**, **Cybersecurity Expert**, and **Read-only Command
+  Executor**.
+- The scan reaches `COMPLETED`; findings and the report artifact are persisted by
+  the Brain.
+
+If Temporal is unreachable the container exits (worker mode). If Ollama is
 unreachable, `run_crew_pentest` returns a controlled failure with a clear error
-code. See [Architecture · Error Handling](./architecture.md) for the full matrix.
+code. See [architecture.md](./architecture.md) for the full error matrix.
+
+---
+
+## Production deployment
+
+The image is published to `ghcr.io/aegis-ai-organizations/aegis-ai-agent-crew`
+as a **public** GHCR package, so fresh clusters can pull it without relying on
+node-local image cache or `imagePullSecrets`.
+
+- **Pin an immutable release tag** (e.g. `v2.0.8`) in production Kubernetes
+  manifests. Never deploy `latest`.
+- Runtime defaults: `CREWAI_MODE=worker`, `CREWAI_TASK_QUEUE=CREWAI_TASK_QUEUE`,
+  `TEMPORAL_HOST=aegis-temporal-mvp-frontend.aegis-system.svc.cluster.local:7233`.
+
+Verify a cluster deployment:
+
+```bash
+kubectl get deployment crewai-worker-mvp -n aegis-system -o wide
+kubectl logs -n aegis-system deployment/crewai-worker-mvp
+```
+
+Successful startup logs include `Agent Crew worker started`.
+
+### Rollback
+
+Change the pinned image tag in `Aegis-AI-Infra` at
+`kubernetes/envs/mvp/crewai-worker/values.yaml`, then let Argo CD sync the
+previous release tag.
+
+---
+
+*Aegis AI Multi-Agent Orchestration — 2026*

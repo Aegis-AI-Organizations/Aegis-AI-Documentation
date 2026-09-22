@@ -16,6 +16,7 @@ flowchart TD
     Root --> Dash[dashboard]
     Root --> Pen[pentest-worker]
     Root --> Ing[ingest-worker]
+    Root --> Crew[crewai-worker]
     Root --> Infra["infrastructure : cert-manager, keda, redis, neo4j, temporal, cloudflared, ..."]
 ```
 
@@ -34,6 +35,7 @@ kubernetes/
       dashboard/
       pentest-worker/
       ingest-worker/
+      crewai-worker/          # Image de release Agent Crew épinglée
       infrastructure/
         cert-manager/        # TLS / mTLS automatisés
         keda/                # Autoscaling événementiel

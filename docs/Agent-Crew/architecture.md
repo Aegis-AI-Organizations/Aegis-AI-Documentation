@@ -167,6 +167,6 @@ Integration tests after Infra wiring:
 - Deploy Ollama and Agent Crew in the MVP cluster.
 - Launch a topology scan through Brain.
 - Verify Brain calls `run_crew_pentest` on `CREWAI_TASK_QUEUE`.
-- Verify Agent Crew logs show Planner, Guider, and Executor execution.
+- Verify Agent Crew logs show Pentest Orchestrator, Cybersecurity Expert, and Read-only Command Executor execution.
 - Verify scan reaches `COMPLETED`.
 - Verify findings/report artifacts are persisted.

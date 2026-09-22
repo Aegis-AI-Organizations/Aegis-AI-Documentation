@@ -13,7 +13,8 @@ implémenté ; les pages par service portent le détail.
 | Heartbeat / statut agent      | Implémenté    | `last_seen` alimente le résumé actifs/inactifs du Dashboard.                                               |
 | Collecte de topologie         | Implémenté    | Upload par URL présignée ; normalisation Worker Ingest ; projection Neo4j.                                 |
 | Scan de sécurité              | En cours      | Orchestration Temporal fonctionnelle ; sandbox jumeau numérique ; rapports PDF générés.                    |
-| Agent Crew (CrewAI)           | En cours      | Activité `run_crew_pentest` ; V1 non destructive ; Ollama in-cluster.                                      |
+| Agent Crew (CrewAI)           | En cours      | Activité `run_crew_pentest` ; V1 non destructive ; déployé dans le cluster `mvp` avec une image de release épinglée et Ollama in-cluster. |
+| Profil entreprise en self-service | Implémenté | Owner/admin modifient nom, avatar, taille et type de l'organisation depuis le Dashboard (`GET`/`PUT /api/companies/me`). |
 | Vulnérabilités & preuves      | Implémenté    | Persistées avec loot en JSONB ; reliées dans Neo4j.                                                        |
 | Remédiation (Fixer)           | En cours      | Génération de propositions ; style PR, non destructif.                                                     |
 | Facturation (ledger tokens)   | Implémenté    | Solde et ledger par entreprise.                                                                            |
