@@ -7,10 +7,10 @@ title: Quickstart
 
 The Agent Crew ships as a single Docker image with two entrypoints.
 
-| Mode                   | Entrypoint         | Purpose                                                              |
-| ---------------------- | ------------------ | --------------------------------------------------------------- |
-| `CREWAI_MODE=worker`   | `src/worker.py`    | Production. Connects to Temporal and processes `run_crew_pentest` activities from `CREWAI_TASK_QUEUE`. |
-| `CREWAI_MODE=cli`      | `src/main.py`      | Local debug. Runs the crew directly for prompt / model iteration. |
+| Mode                 | Entrypoint      | Purpose                                                                                                |
+| -------------------- | --------------- | ------------------------------------------------------------------------------------------------------ |
+| `CREWAI_MODE=worker` | `src/worker.py` | Production. Connects to Temporal and processes `run_crew_pentest` activities from `CREWAI_TASK_QUEUE`. |
+| `CREWAI_MODE=cli`    | `src/main.py`   | Local debug. Runs the crew directly for prompt / model iteration.                                      |
 
 ---
 
@@ -127,4 +127,4 @@ previous release tag.
 
 ---
 
-*Aegis AI Multi-Agent Orchestration — 2026*
+_Aegis AI Multi-Agent Orchestration — 2026_
