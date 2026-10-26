@@ -6,23 +6,23 @@ implémenté ; les pages par service portent le détail.
 
 ## Statut des fonctionnalités
 
-| Domaine                       | Statut        | Notes                                                                                                      |
-| ----------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------- |
-| Onboarding client             | Implémenté    | Création atomique entreprise + owner + token de déploiement dans le Brain.                                 |
-| Enregistrement agent          | Implémenté    | Deux phases : token de déploiement → secret agent ; seuls les hashs stockés.                               |
-| Heartbeat / statut agent      | Implémenté    | `last_seen` alimente le résumé actifs/inactifs du Dashboard.                                               |
-| Collecte de topologie         | Implémenté    | Upload par URL présignée ; normalisation Worker Ingest ; projection Neo4j.                                 |
-| Scan de sécurité              | En cours      | Orchestration Temporal fonctionnelle ; sandbox jumeau numérique ; rapports PDF générés.                    |
-| Agent Crew (CrewAI)           | En cours      | Activité `run_crew_pentest` ; V1 non destructive ; déployé dans le cluster `mvp` avec une image de release épinglée et Ollama in-cluster. |
-| Profil entreprise en self-service | Implémenté | Owner/admin modifient nom, avatar, taille et type de l'organisation depuis le Dashboard (`GET`/`PUT /api/companies/me`). |
-| Vulnérabilités & preuves      | Implémenté    | Persistées avec loot en JSONB ; reliées dans Neo4j.                                                        |
-| Remédiation (Fixer)           | En cours      | Génération de propositions ; style PR, non destructif.                                                     |
-| Facturation (ledger tokens)   | Implémenté    | Solde et ledger par entreprise.                                                                            |
-| Mises à jour temps réel (SSE) | Implémenté    | Flux de scan et flux d'équipe admin.                                                                       |
-| Multi-tenancy & RBAC          | Implémenté    | Cloisonnement `company_id` ; modèle à 9 rôles synchronisé Brain ↔ Gateway.                                |
-| mTLS interne                  | Partiel       | Entrées de certificat Gateway ↔ Brain câblées ; validation stricte en production en cours de déploiement. |
-| Déploiement GitOps            | Implémenté    | App-of-Apps Argo CD pour l'environnement `mvp`.                                                            |
-| Autoscaling (KEDA)            | Prévu/partiel | Charges candidates identifiées : workers pentest, ingest, deployer, fixer.                                 |
+| Domaine                           | Statut        | Notes                                                                                                                                     |
+| --------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Onboarding client                 | Implémenté    | Création atomique entreprise + owner + token de déploiement dans le Brain.                                                                |
+| Enregistrement agent              | Implémenté    | Deux phases : token de déploiement → secret agent ; seuls les hashs stockés.                                                              |
+| Heartbeat / statut agent          | Implémenté    | `last_seen` alimente le résumé actifs/inactifs du Dashboard.                                                                              |
+| Collecte de topologie             | Implémenté    | Upload par URL présignée ; normalisation Worker Ingest ; projection Neo4j.                                                                |
+| Scan de sécurité                  | En cours      | Orchestration Temporal fonctionnelle ; sandbox jumeau numérique ; rapports PDF générés.                                                   |
+| Agent Crew (CrewAI)               | En cours      | Activité `run_crew_pentest` ; V1 non destructive ; déployé dans le cluster `mvp` avec une image de release épinglée et Ollama in-cluster. |
+| Profil entreprise en self-service | Implémenté    | Owner/admin modifient nom, avatar, taille et type de l'organisation depuis le Dashboard (`GET`/`PUT /api/companies/me`).                  |
+| Vulnérabilités & preuves          | Implémenté    | Persistées avec loot en JSONB ; reliées dans Neo4j.                                                                                       |
+| Remédiation (Fixer)               | En cours      | Génération de propositions ; style PR, non destructif.                                                                                    |
+| Facturation (ledger tokens)       | Implémenté    | Solde et ledger par entreprise.                                                                                                           |
+| Mises à jour temps réel (SSE)     | Implémenté    | Flux de scan et flux d'équipe admin.                                                                                                      |
+| Multi-tenancy & RBAC              | Implémenté    | Cloisonnement `company_id` ; modèle à 9 rôles synchronisé Brain ↔ Gateway.                                                               |
+| mTLS interne                      | Partiel       | Entrées de certificat Gateway ↔ Brain câblées ; validation stricte en production en cours de déploiement.                                |
+| Déploiement GitOps                | Implémenté    | App-of-Apps Argo CD pour l'environnement `mvp`.                                                                                           |
+| Autoscaling (KEDA)                | Prévu/partiel | Charges candidates identifiées : workers pentest, ingest, deployer, fixer.                                                                |
 
 ## Priorités connues
 
